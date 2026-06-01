@@ -114,93 +114,20 @@
   margin-bottom: 1.5rem;
 }
 
-// Песочница (Sandbox)
-.sandbox {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  background-color: $color-gray-50;
-  padding: 1.5rem;
-  border-radius: $radius-md;
-  border: 1px solid $color-gray-200;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.sandbox-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.control-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: $color-gray-600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .button-row {
-    display: flex;
-    gap: 0.4rem;
-
-    button {
-      flex: 1;
-      padding: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: $color-gray-700;
-      border: 1px solid $color-gray-300;
-      background-color: $color-white;
-      border-radius: $radius-sm;
-      transition: all $transition-fast;
-
-      &:hover {
-        background-color: $color-gray-100;
-        border-color: $color-gray-300;
-      }
-
-      &.active {
-        background-color: $color-primary;
-        border-color: $color-primary;
-        color: $color-white;
-      }
-    }
-  }
-}
-
-.sandbox-preview-area {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: $color-gray-600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+// Демонстрационный бокс
+.preview-container-wrapper {
+  margin-bottom: 2rem;
 }
 
 .preview-container {
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $color-white;
+  background-color: $color-gray-50;
   border: 1px dashed $color-gray-300;
-  border-radius: $radius-sm;
-  min-height: 200px;
+  border-radius: $radius-md;
+  min-height: 220px;
+  padding: 2rem;
 }
 
 .preview-box {
@@ -258,5 +185,10 @@
     margin-bottom: 0;
     border-radius: 0;
     box-shadow: none;
+
+    code {
+      display: block;
+      line-height: 1.8; // Увеличенный интервал для предотвращения наложения инлайновых полей ввода
+    }
   }
 }

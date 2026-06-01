@@ -25,7 +25,7 @@
     </div>
   </section>
 
-  <!-- Блок 2: Способы подключения (Интерактивный переключатель) -->
+  <!-- Блок 2: Способы подключения -->
   <section class="topic-section">
     <h2>Способы подключения CSS</h2>
     <p>Существует три способа добавить стили на страницу. Нажми на вкладки, чтобы увидеть синтаксис для каждого метода:</p>
@@ -40,7 +40,7 @@
       @if (linkingMethod() === 'inline') {
         <div>
           <p>Стили пишутся прямо в HTML-теге через атрибут <code>style</code>. Метод применяется только к одному конкретному элементу на странице.</p>
-          <pre><code>&lt;div style="background-color: {{ selectedColor() }}; border-radius: {{ selectedRadius() }}; padding: {{ selectedPadding() }};"&gt;CSS&lt;/div&gt;</code></pre>
+          <pre><code>&lt;div style="background-color: {{ selectedColor() }}; border-radius: {{ borderRadius() }}; padding: {{ padding() }};"&gt;CSS&lt;/div&gt;</code></pre>
         </div>
       }
       @if (linkingMethod() === 'internal') {
@@ -49,8 +49,8 @@
           <pre><code>&lt;style&gt;
   .box {{ '{' }}
     background-color: {{ selectedColor() }};
-    border-radius: {{ selectedRadius() }};
-    padding: {{ selectedPadding() }};
+    border-radius: {{ borderRadius() }};
+    padding: {{ padding() }};
   {{ '}' }}
 &lt;/style&gt;</code></pre>
         </div>
@@ -64,8 +64,8 @@
 &lt;!-- В файле styles.css --&gt;
 .box {{ '{' }}
   background-color: {{ selectedColor() }};
-  border-radius: {{ selectedRadius() }};
-  padding: {{ selectedPadding() }};
+  border-radius: {{ borderRadius() }};
+  padding: {{ padding() }};
 {{ '}' }}</code></pre>
         </div>
       }
@@ -75,62 +75,31 @@
   <!-- Блок 3: Интерактивная песочница -->
   <section class="topic-section">
     <h2>Интерактивная песочница</h2>
-    <p>Изменяй свойства ниже, чтобы увидеть, как CSS-код и внешний вид элемента меняются в реальном времени:</p>
+    <p>Редактируй значения свойств прямо в окне CSS-кода ниже! Результат мгновенно отобразится на демонстрационном элементе:</p>
 
-    <div class="sandbox">
-      <div class="sandbox-controls">
-        <div class="control-group">
-          <label>Цвет фона (background-color):</label>
-          <div class="button-row">
-            <button (click)="selectedColor.set('#1c7ed6')" [class.active]="selectedColor() === '#1c7ed6'">Синий</button>
-            <button (click)="selectedColor.set('#c92a2a')" [class.active]="selectedColor() === '#c92a2a'">Красный</button>
-            <button (click)="selectedColor.set('#2b8a3e')" [class.active]="selectedColor() === '#2b8a3e'">Зеленый</button>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label>Скругление углов (border-radius):</label>
-          <div class="button-row">
-            <button (click)="selectedRadius.set('0px')" [class.active]="selectedRadius() === '0px'">Острые</button>
-            <button (click)="selectedRadius.set('8px')" [class.active]="selectedRadius() === '8px'">Мягкие</button>
-            <button (click)="selectedRadius.set('50%')" [class.active]="selectedRadius() === '50%'">Круг</button>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label>Внутренние отступы (padding):</label>
-          <div class="button-row">
-            <button (click)="selectedPadding.set('0.5rem')" [class.active]="selectedPadding() === '0.5rem'">Маленькие</button>
-            <button (click)="selectedPadding.set('1.5rem')" [class.active]="selectedPadding() === '1.5rem'">Средние</button>
-            <button (click)="selectedPadding.set('3rem')" [class.active]="selectedPadding() === '3rem'">Большие</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="sandbox-preview-area">
-        <label>Живой просмотр (Live Preview):</label>
-        <div class="preview-container">
-          <div class="preview-box" [ngStyle]="{
-            'background-color': selectedColor(),
-            'border-radius': selectedRadius(),
-            'padding': selectedPadding()
-          }">
-            <span class="preview-text">CSS</span>
-          </div>
+    <!-- Демонстрационный бокс -->
+    <div class="preview-container-wrapper">
+      <div class="preview-container">
+        <div class="preview-box" [ngStyle]="{
+          'background-color': selectedColor(),
+          'border-radius': borderRadius(),
+          'padding': padding()
+        }">
+          <span class="preview-text">CSS</span>
         </div>
       </div>
     </div>
 
-    <!-- Результирующий код -->
+    <!-- Интерактивный код (он же пульт управления) -->
     <div class="code-output">
       <div class="code-output-header">
-        <span>Результат компиляции:</span>
-        <button class="copy-btn" (click)="copyToClipboard('.box {\n  background-color: ' + selectedColor() + ';\n  border-radius: ' + selectedRadius() + ';\n  padding: ' + selectedPadding() + ';\n}')">Копировать код</button>
+        <span>Интерактивный CSS-код (редактируй прямо здесь):</span>
+        <button class="copy-btn" (click)="copyToClipboard('.box {\n  background-color: ' + selectedColor() + ';\n  border-radius: ' + borderRadius() + ';\n  padding: ' + padding() + ';\n}')">Копировать код</button>
       </div>
       <pre><code>.box {{ '{' }}
-  background-color: {{ selectedColor() }};
-  border-radius: {{ selectedRadius() }};
-  padding: {{ selectedPadding() }};
+  background-color: <app-color-selector [(color)]="selectedColor"></app-color-selector>;
+  border-radius: <app-unit-selector property="border-radius" [(value)]="radiusValue" [(unit)]="radiusUnit"></app-unit-selector>;
+  padding: <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>;
 {{ '}' }}</code></pre>
     </div>
   </section>

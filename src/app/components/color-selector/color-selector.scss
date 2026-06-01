@@ -1,0 +1,78 @@
+@import "../../../styles/variables";
+
+.color-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  vertical-align: middle;
+}
+
+// Стилизуем сам нативный инпут цвета в виде круглого превью
+.color-preview {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+
+  // Оформление цветного кружка для Webkit (Chrome, Safari, Edge)
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  &::-webkit-color-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  }
+
+  // Оформление цветного кружка для Firefox
+  &::-moz-color-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.color-input {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: $font-code;
+  font-size: inherit;
+  width: 80px;
+  padding: 0 2px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  outline: none;
+  transition: border-bottom-color $transition-fast;
+
+  &:focus, &:hover {
+    border-bottom-color: $color-primary;
+  }
+}
+
+.copy-color-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-gray-600;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: $radius-sm;
+  transition: color $transition-fast, background-color $transition-fast;
+
+  &:hover {
+    color: $color-white;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}

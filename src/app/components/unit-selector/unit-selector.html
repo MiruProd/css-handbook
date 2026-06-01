@@ -1,0 +1,20 @@
+<div class="unit-selector">
+  <!-- Числовое поле ввода с динамическим контролем границ -->
+  <input type="number" 
+         [ngModel]="value()" 
+         (ngModelChange)="onValueChange($event)" 
+         [min]="currentMin()" 
+         [max]="currentMax()" 
+         class="value-input">
+
+  <!-- Выпадающий список единиц измерения (скрывается, если разрешенных единиц нет) -->
+  @if (allowedUnits().length > 0) {
+    <select [ngModel]="unit()" 
+            (ngModelChange)="unit.set($event)" 
+            class="unit-select">
+      @for (u of allowedUnits(); track u) {
+        <option [value]="u">{{ u }}</option>
+      }
+    </select>
+  }
+</div>
