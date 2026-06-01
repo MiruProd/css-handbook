@@ -4,6 +4,7 @@ import { Introduction } from './pages/block-1/introduction/introduction';
 import { Selectors } from './pages/block-1/selectors/selectors';
 import { BoxModel } from './pages/block-1/box-model/box-model';
 import { Display } from './pages/block-1/display/display';
+import { Units } from './pages/block-1/units/units';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
       {
         path: 'display',
         component: Display,
+      },
+      {
+        path: 'units',
+        component: Units,
       },
     ],
   },

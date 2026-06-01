@@ -21,13 +21,16 @@ export const CSS_PROPERTIES_CONFIG: Record<string, PropertyConfig> = {
     },
   },
   width: {
-    units: ['px', 'rem', 'em', '%'],
+    units: ['px', 'rem', 'em', '%', 'vw', 'vh', 'ch'],
     defaultUnit: 'px',
     limits: {
       px: { min: 50, max: 400 },
       rem: { min: 3, max: 25 },
       em: { min: 3, max: 25 },
       '%': { min: 10, max: 100 },
+      vw: { min: 10, max: 100 },
+      vh: { min: 10, max: 100 },
+      ch: { min: 5, max: 40 },
     },
   },
   height: {

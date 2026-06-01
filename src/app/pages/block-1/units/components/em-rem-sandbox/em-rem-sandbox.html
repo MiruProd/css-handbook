@@ -1,0 +1,142 @@
+<div class="sandbox-section">
+  <h3>Интерактивный стенд: Относительность em и rem</h3>
+  <p class="section-desc">
+    Настраивай базовые шрифты окружения (корень документа и родитель) и посмотри, как меняются реальные пиксельные размеры дочернего элемента при переключении относительных величин <code>em</code> и <code>rem</code>.
+  </p>
+
+  <div class="sandbox-grid">
+    <!-- Левая колонка: Пульт управления -->
+    <div class="controls-panel">
+      
+      <!-- Секция: Внешнее окружение -->
+      <div class="panel-section-title">Внешнее окружение (Контекст):</div>
+      
+      <div class="control-item">
+        <div class="control-row">
+          <span class="control-label font-bold">Корень (:root / html) font-size:</span>
+          <span class="unit-badge">{{ rootFontSize() }}px</span>
+        </div>
+        <input 
+          type="range" 
+          [value]="rootFontSize()" 
+          (input)="rootFontSize.set(+$any($event.target).value)" 
+          min="10" 
+          max="24" 
+          step="1" 
+          class="range-slider"
+        >
+        <span class="control-subtext">База для вычисления всех значений <code>rem</code> на странице.</span>
+      </div>
+
+      <div class="control-item">
+        <div class="control-row">
+          <span class="control-label font-bold">Родитель (.parent) font-size:</span>
+          <span class="unit-badge">{{ parentFontSize() }}px</span>
+        </div>
+        <input 
+          type="range" 
+          [value]="parentFontSize()" 
+          (input)="parentFontSize.set(+$any($event.target).value)" 
+          min="10" 
+          max="36" 
+          step="1" 
+          class="range-slider"
+        >
+        <span class="control-subtext">База для значений <code>em</code> у шрифта прямого наследника.</span>
+      </div>
+
+      <!-- Секция: Настройки элемента -->
+      <div class="panel-section-title">Свойства элемента:</div>
+
+      <!-- Размер шрифта элемента -->
+      <div class="control-item">
+        <div class="control-row">
+          <span class="control-label">font-size (размер шрифта):</span>
+          <app-unit-selector property="padding" [(value)]="fontSizeValue" [(unit)]="fontSizeUnit"></app-unit-selector>
+        </div>
+        <input 
+          type="range" 
+          [value]="fontSizeValue()" 
+          (input)="fontSizeValue.set(+$any($event.target).value)" 
+          [min]="fontSizeMin()" 
+          [max]="fontSizeMax()" 
+          [step]="fontSizeUnit() === 'px' ? 1 : 0.1" 
+          class="range-slider"
+        >
+      </div>
+
+      <!-- Ширина элемента -->
+      <div class="control-item">
+        <div class="control-row">
+          <span class="control-label">width (ширина):</span>
+          <app-unit-selector property="width" [(value)]="widthValue" [(unit)]="widthUnit"></app-unit-selector>
+        </div>
+        <input 
+          type="range" 
+          [value]="widthValue()" 
+          (input)="widthValue.set(+$any($event.target).value)" 
+          [min]="widthMin()" 
+          [max]="widthMax()" 
+          [step]="widthStep()" 
+          class="range-slider"
+        >
+      </div>
+
+      <!-- Внутренний отступ элемента -->
+      <div class="control-item">
+        <div class="control-row">
+          <span class="control-label">padding (отступ):</span>
+          <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>
+        </div>
+        <input 
+          type="range" 
+          [value]="paddingValue()" 
+          (input)="paddingValue.set(+$any($event.target).value)" 
+          [min]="paddingMin()" 
+          [max]="paddingMax()" 
+          [step]="paddingStep()" 
+          class="range-slider"
+        >
+      </div>
+
+    </div>
+
+    <!-- Правая колонка: Визуализация -->
+    <div class="visual-panel">
+      <div class="environment-container">
+        <span class="env-label">Эмуляция браузера (база :root = {{ rootFontSize() }}px)</span>
+        
+        <!-- Родительский бокс -->
+        <div class="parent-box" [ngStyle]="parentStyles()">
+          <span class="parent-box-label">Родитель (.parent) [font-size: {{ parentFontSize() }}px]</span>
+          
+          <!-- Тестируемый элемент -->
+          <div class="target-box" [ngStyle]="targetStyles()">
+            <span class="target-text">Элемент</span>
+            
+            <!-- Информационная табличка реальных размеров в пикселях -->
+            <div class="metrics-overlay">
+              <div class="metric-line font-size-metric">
+                font-size: <strong>{{ calculatedFontSizePx() }}px</strong> 
+                <span class="formula">({{ fontSizeValue() }}{{ fontSizeUnit() }})</span>
+              </div>
+              <div class="metric-line width-metric">
+                width: <strong>{{ calculatedWidthPx() }}px</strong>
+                <span class="formula">({{ widthValue() }}{{ widthUnit() }})</span>
+              </div>
+              <div class="metric-line padding-metric">
+                padding: <strong>{{ calculatedPaddingPx() }}px</strong>
+                <span class="formula">({{ paddingValue() }}{{ paddingUnit() }})</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-wrapper">
+    <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
+  </div>
+</div>
