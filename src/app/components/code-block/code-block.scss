@@ -1,4 +1,4 @@
-@import "../../../styles/variables";
+@use "../../../styles/variables" as *;
 
 .code-block {
   border: 1px solid $color-gray-200;
@@ -63,5 +63,51 @@ pre {
     display: block;
     white-space: pre-wrap;
     word-break: break-word;
+
+    // ТОКЕНЫ ПОДСВЕТКИ СИНТАКСИСА
+    
+    // Селекторы CSS (.class-name, h3, #id)
+    .token-selector {
+      color: $color-code-selector; 
+      font-weight: 600;
+    }
+
+    // Свойства CSS (color, border, padding)
+    .token-property {
+      color: $color-code-property; 
+    }
+
+    // Значения CSS (solid, dashed, block)
+    .token-value {
+      color: $color-code-value; 
+    }
+
+    // HTML теги (div, p, button)
+    .token-tag {
+      color: $color-code-tag; 
+      font-weight: 600;
+    }
+
+    // HTML атрибуты (class, id, data-type)
+    .token-attr {
+      color: $color-code-property; 
+    }
+
+    // HTML строки в кавычках ("accent", "text-highlight")
+    .token-string {
+      color: $color-code-value; 
+    }
+
+    // Переменные CSS var(--color-primary)
+    .token-variable {
+      color: $color-code-variable; 
+      font-style: italic;
+    }
+
+    // HEX цвета (дополнительное точечное оформление)
+    .token-color {
+      font-weight: 700;
+      text-decoration: underline dotted rgba($color-white, 0.25);
+    }
   }
 }

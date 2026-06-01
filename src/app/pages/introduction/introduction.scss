@@ -1,9 +1,4 @@
-@import "../../../styles/variables";
-
-.topic-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
+@use "../../../styles/variables" as *;
 
 .topic-header {
   margin-bottom: 2.5rem;
@@ -47,17 +42,17 @@
 
     &.selector {
       background-color: rgba($color-success, 0.2);
-      color: #8ce99a;
+      color: $color-success-100;
     }
 
     &.property {
       background-color: rgba($color-primary, 0.2);
-      color: #a5d8ff;
+      color: $color-primary-100;
     }
 
     &.value {
       background-color: rgba($color-warning, 0.2);
-      color: #ffd8a8;
+      color: $color-warning-100;
     }
   }
 
@@ -188,7 +183,7 @@
 
     code {
       display: block;
-      line-height: 1.8; // Увеличенный интервал для предотвращения наложения инлайновых полей ввода
+      line-height: 1.8;
     }
   }
 }

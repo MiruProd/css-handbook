@@ -1,35 +1,88 @@
-// Цветовая палитра (Бренд)
-$color-primary: #1c7ed6;        // Активный элемент, фокус
-$color-primary-light: #e7f5ff;  // Фон активных элементов
-$color-primary-hover: #1565c0;  // Ховер-состояние
+// ==========================================================================
+// ГЛОБАЛЬНАЯ ДИЗАЙН-СИСТЕМА (ПЕРЕМЕННЫЕ)
+// ==========================================================================
 
-// Нейтральные цвета
-$color-white: #ffffff;
-$color-gray-50: #f8f9fa;        // Сайдбар
-$color-gray-100: #f1f3f5;       // Ховеры, подложки
-$color-gray-200: #e9ecef;       // Границы, разделители
-$color-gray-300: #dee2e6;       // Вторичные границы
-$color-gray-600: #868e96;       // Вторичный текст, подписи
-$color-gray-700: #495057;       // Основной текст
-$color-gray-900: #212529;       // Заголовки, акцентный текст
+// 1. НЕЙТРАЛЬНЫЕ ОТТЕНКИ (Шкала серых цветов от 50 до 900)
+$color-white:     #ffffff;
+$color-gray-50:   #f8f9fa;  // Подложки, сайдбар
+$color-gray-100:  #f1f3f5;  // Легкие ховеры, кнопки, подложки блоков кода
+$color-gray-200:  #e9ecef;  // Границы, разделительные линии
+$color-gray-300:  #dee2e6;  // Фокусные границы
+$color-gray-400:  #ced4da;  // Плейсхолдеры
+$color-gray-500:  #adb5bd;  // Иконки
+$color-gray-600:  #868e96;  // Вторичный текст, подписи
+$color-gray-700:  #495057;  // Основной текст статей
+$color-gray-800:  #343a40;  // Контрастный текст
+$color-gray-900:  #212529;  // Заголовки, темные темы блоков кода
 
-// Вспомогательные цвета
-$color-success: #2b8a3e;
-$color-warning: #e67e22;
-$color-danger: #c92a2a;
+// 2. ФУНКЦИОНАЛЬНЫЕ СЕГМЕНТЫ ЦВЕТОВ (Фоны, Рамки, Тексты)
 
-// Типографика
+// Синий (Бренд / Primary / Фокусы)
+$color-primary-light: #e7f5ff;  // Фон активных элементов (50)
+$color-primary-100:   #d0ebff;  // Выделение (100)
+$color-primary:       #1c7ed6;  // Основной бренд (500)
+$color-primary-hover: #1565c0;  // Темный ховер (700)
+$color-primary-dark:  #0b2e4f;  // Контрастный текст на синем (900)
+
+// Зеленый (Успех / Best-practices / Классы)
+$color-success-light: #ebfbee;  // Нежный зеленый фон плашек (50)
+$color-success-100:   #d3f9d8;  // Светлая граница (100)
+$color-success:       #2b8a3e;  // Основной зеленый (500)
+$color-success-hover: #217032;  // Темный зеленый (700)
+$color-success-dark:  #0f3d17;  // Контрастный зеленый текст (900)
+
+// Оранжевый (Предупреждения / Важное / ID селекторы)
+$color-warning-light: #fff9db;  // Нежный желтый/янтарный фон плашек (50)
+$color-warning-100:   #ffd8a8;  // Оранжевый фон средней плотности (100)
+$color-warning:       #e67e22;  // Основной оранжевый (500)
+$color-warning-dark:  #d9480f;  // Глубокий оранжевый для текста на светлом (700)
+$color-warning-deep:  #862e08;  // Контрастный темно-оранжевый (900)
+
+// Красный (Ошибки / Запреты / Inline-коды)
+$color-danger-light:  #fff5f5;  // Нежный красный фон плашек (50)
+$color-danger-100:    #ffe3e3;  // Светлая красная граница (100)
+$color-danger:        #c92a2a;  // Основной красный (500)
+$color-danger-hover:  #b01e1e;  // Темный красный (700)
+$color-danger-dark:   #491010;  // Контрастный бордовый текст (900)
+
+// Фиолетовый (Акценты / Продвинутые селекторы / Атрибуты)
+$color-accent-light:  #f3f0ff;  // Нежный фиолетовый фон (50)
+$color-accent-100:    #e5dbff;  // Светло-фиолетовая граница (100)
+$color-accent:        #7048e8;  // Основной фиолетовый (500)
+$color-accent-hover:  #5f3dc4;  // Темный фиолетовый (700)
+$color-accent-dark:   #2b137a;  // Контрастный фиолетовый текст (900)
+
+// Бирюзовый (Дополнительный / Единицы измерения / Математика)
+$color-teal-light:    #e6fffa;  // Нежный бирюзовый фон (50)
+$color-teal-100:      #b2f5ea;  // Бирюзовая граница (100)
+$color-teal:          #0ca678;  // Основной бирюзовый (500)
+$color-teal-hover:    #087f5b;  // Темный бирюзовый (700)
+$color-teal-dark:     #044b35;  // Контрастный темно-бирюзовый (900)
+
+// 6. ЦВЕТА ПОДСВЕТКИ КОДА (IDE Code Theme - VS Code Dark Style)
+$color-code-tag:      #569cd6;  // Теги HTML (голубой)
+$color-code-selector: #dcdcaa;  // Селекторы CSS (мягкий желтый)
+$color-code-property: #9cdcfe;  // Свойства CSS / атрибуты HTML (светло-голубой)
+$color-code-value:    #ce9178;  // Значения CSS / строки HTML (песочно-оранжевый)
+$color-code-variable: #4fc1ff;  // Переменные var() (бирюзово-циановый)
+
+
+// 3. ТИПОГРАФИКА
 $font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 $font-code: 'Fira Code', 'Courier New', Courier, monospace;
 
-// Размеры и тени
+
+// 4. ГЕОМЕТРИЯ И ТЕНИ
 $radius-sm: 4px;
 $radius-md: 8px;
 $radius-lg: 12px;
 
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-// Анимации и переходы
-$transition-fast: 0.15s ease-in-out;
+
+// 5. ТАЙМИНГИ АНИМАЦИИ И ПЕРЕХОДОВ
+$transition-fast:   0.15s ease-in-out;
 $transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow:   0.4s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,0 +1,197 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.2. Базовые селекторы</h1>
+    <p class="lead">Селекторы указывают браузеру, к каким элементам применить стили. Нажимай на компактные карточки слева, чтобы запустить интерактивный стенд без лишней прокрутки!</p>
+  </header>
+
+  <!-- Интерактивная зона в одну линию -->
+  <section class="topic-section">
+    <div class="sandbox-layout">
+      
+      <!-- Левая колонка: Выбор селектора (компактная колонка карточек) -->
+      <div class="sandbox-column selectors-sidebar">
+        <div class="sandbox-column-header">Выбор селектора:</div>
+        <div class="compact-selectors-list">
+          
+          <!-- Универсальный -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'universal'"
+            (click)="activeType.set('universal')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-universal">*</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>Универсальный</h3>
+            <p>Выбирает все элементы.</p>
+          </div>
+
+          <!-- По тегу -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'type'"
+            (click)="activeType.set('type')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-type">p</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>По тегу</h3>
+            <p>Находит элементы по имени.</p>
+          </div>
+
+          <!-- По классу -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'class'"
+            (click)="activeType.set('class')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-class">.text-highlight</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>По классу</h3>
+            <p>Стилизует по классу.</p>
+          </div>
+
+          <!-- По ID -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'id'"
+            (click)="activeType.set('id')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-id">#special-paragraph</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>По ID</h3>
+            <p>Находит уникальный элемент.</p>
+          </div>
+
+          <!-- По атрибуту -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'attribute'"
+            (click)="activeType.set('attribute')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-attr">[data-type="accent"]</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>По атрибуту</h3>
+            <p>Нацеливается на атрибуты.</p>
+          </div>
+
+          <!-- Группировка -->
+          <div 
+            class="selector-card compactclickable" 
+            [class.active]="activeType() === 'grouping'"
+            (click)="activeType.set('grouping')"
+          >
+            <div class="card-header-row">
+              <span class="selector-badge badge-group">h3, button</span>
+              <span class="active-indicator">OK</span>
+            </div>
+            <h3>Группировка</h3>
+            <p>Объединяет стили.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Центральная колонка: DOM-инспектор в одну строчку (Inline) -->
+      <div class="sandbox-column inspector-column">
+        <div class="sandbox-column-header">Интерактивный DOM-инспектор:</div>
+        
+        <div class="preview-container" [ngClass]="'active-' + activeType()">
+          
+          <!-- Элемент 1: H3 inline -->
+          <div class="dom-item h3-item">
+            <span class="dom-meta">&lt;<span class="tag-name">h3</span>&gt;</span>
+            <span class="dom-content"><h3 class="preview-title">Заголовок секции</h3></span>
+            <span class="dom-meta-closing">&lt;/<span class="tag-name">h3</span>&gt;</span>
+          </div>
+
+          <!-- Элемент 2: Обычный P inline -->
+          <div class="dom-item p-regular-item">
+            <span class="dom-meta">&lt;<span class="tag-name">p</span>&gt;</span>
+            <span class="dom-content"><p class="preview-text">Обычный абзац текста.</p></span>
+            <span class="dom-meta-closing">&lt;/<span class="tag-name">p</span>&gt;</span>
+          </div>
+
+          <!-- Элемент 3: P с классом inline -->
+          <div class="dom-item p-class-item">
+            <span class="dom-meta">
+              &lt;<span class="tag-name">p</span> <span class="attr-name">class</span>="<span class="attr-val">text-highlight</span>"&gt;
+            </span>
+            <span class="dom-content"><p class="preview-text text-highlight">Абзац с классом .text-highlight</p></span>
+            <span class="dom-meta-closing">&lt;/<span class="tag-name">p</span>&gt;</span>
+          </div>
+
+          <!-- Элемент 4: P с ID inline -->
+          <div class="dom-item p-id-item">
+            <span class="dom-meta">
+              &lt;<span class="tag-name">p</span> <span class="attr-name">id</span>="<span class="attr-val">special-paragraph</span>"&gt;
+            </span>
+            <span class="dom-content"><p class="preview-text" id="special-paragraph">Абзац с уникальным ID #special-paragraph</p></span>
+            <span class="dom-meta-closing">&lt;/<span class="tag-name">p</span>&gt;</span>
+          </div>
+
+          <!-- Элемент 5: Button с атрибутом inline -->
+          <div class="dom-item button-item">
+            <span class="dom-meta">
+              &lt;<span class="tag-name">button</span> <span class="attr-name">data-type</span>="<span class="attr-val">accent</span>"&gt;
+            </span>
+            <span class="dom-content"><button class="preview-btn" data-type="accent">Кнопка с атрибутом</button></span>
+            <span class="dom-meta-closing">&lt;/<span class="tag-name">button</span>&gt;</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Правая колонка: Применяемый CSS-код + Динамическая теория -->
+      <div class="sandbox-column code-column">
+        <div class="sandbox-column-header">Правила CSS браузера:</div>
+        <app-code-block 
+          [code]="selectorCssCode()" 
+          language="css" 
+          title="style.css"
+        ></app-code-block>
+
+        <!-- Карточка динамической теории селекторов -->
+        <div class="active-theory-card">
+          <h4 class="theory-title">{{ activeTheory().title }}</h4>
+          
+          <div class="theory-spec">
+            <span class="spec-label">Специфичность (вес):</span>
+            <code class="spec-value">{{ activeTheory().specificity }}</code>
+          </div>
+          
+          <p class="theory-desc">{{ activeTheory().description }}</p>
+          
+          <div class="theory-practice">
+            <span class="practice-label">Рекомендация:</span>
+            <p class="practice-text">{{ activeTheory().bestPractice }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Блок 3: Советы и частые ошибки -->
+  <section class="topic-section">
+    <h2>Бест-практики и частые ошибки</h2>
+
+    <app-info-block type="warning" title="Избыточность селектора ID">
+      <p>Старайся избегать использования селекторов идентификаторов (<code>#id</code>) для стилизации элементов. Они обладают чрезвычайно высоким «весом» специфичности, из-за чего их крайне сложно переопределить другими классами в будущем.</p>
+    </app-info-block>
+
+    <app-info-block type="tip" title="Оптимизация группировки">
+      <p>Группировка селекторов через запятую (например, <code>h1, h2, p</code>) позволяет сократить дублирование в кодовой базе и облегчает последующую поддержку стилей.</p>
+    </app-info-block>
+  </section>
+
+</div>

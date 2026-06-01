@@ -1,4 +1,4 @@
-@import "../../../styles/variables";
+@use "../../../styles/variables" as *;
 
 .color-selector {
   display: inline-flex;
@@ -31,14 +31,14 @@
     padding: 0;
   }
   &::-webkit-color-swatch {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba($color-white, 0.2);
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
   }
 
   // Оформление цветного кружка для Firefox
   &::-moz-color-swatch {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba($color-white, 0.2);
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
   }
@@ -52,7 +52,7 @@
   font-size: inherit;
   width: 80px;
   padding: 0 2px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  border-bottom: 1px dashed rgba($color-white, 0.3);
   outline: none;
   transition: border-bottom-color $transition-fast;
 
@@ -73,6 +73,6 @@
 
   &:hover {
     color: $color-white;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba($color-white, 0.1);
   }
 }

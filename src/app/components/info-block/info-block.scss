@@ -1,4 +1,4 @@
-@import "../../../styles/variables";
+@use "../../../styles/variables" as *;
 
 .info-block {
   display: flex;
@@ -18,7 +18,7 @@
   }
 
   &.tip {
-    background-color: #ebfbee;
+    background-color: $color-success-light;
     border-color: $color-success;
     
     .info-block-aside, .info-block-title {
@@ -27,7 +27,7 @@
   }
 
   &.warning {
-    background-color: #fff9db;
+    background-color: $color-warning-light;
     border-color: $color-warning;
     
     .info-block-aside, .info-block-title {
@@ -36,7 +36,7 @@
   }
 
   &.error {
-    background-color: #fff5f5;
+    background-color: $color-danger-light;
     border-color: $color-danger;
     
     .info-block-aside, .info-block-title {

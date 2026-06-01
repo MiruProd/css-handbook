@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layouts/main-layout/main-layout';
 import { Introduction } from './pages/introduction/introduction';
+import { Selectors } from './pages/selectors/selectors';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
       {
         path: 'introduction',
         component: Introduction,
+      },
+      {
+        path: 'selectors',
+        component: Selectors,
       },
     ],
   },

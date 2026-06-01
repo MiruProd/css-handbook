@@ -1,5 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
-import { NgStyle, NgIf, NgClass } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { ColorSelector } from '../../components/color-selector/color-selector';
 import { UnitSelector } from '../../components/unit-selector/unit-selector';
 import { CodeBlock } from '../../components/code-block/code-block';
@@ -8,7 +8,7 @@ import { InfoBlock } from '../../components/info-block/info-block';
 @Component({
   selector: 'app-introduction',
   standalone: true,
-  imports: [NgStyle, NgIf, NgClass, ColorSelector, UnitSelector, CodeBlock, InfoBlock],
+  imports: [NgStyle, ColorSelector, UnitSelector, CodeBlock, InfoBlock],
   templateUrl: './introduction.html',
   styleUrl: './introduction.scss',
 })

@@ -1,0 +1,413 @@
+@use "../../../styles/variables" as *;
+
+.topic-container {
+  max-width: 1100px; // Увеличено с 800px, чтобы дать свободу трехколоночной сетке
+  margin: 0 auto;
+}
+
+.topic-header {
+  margin-bottom: 2rem;
+
+  .lead {
+    font-size: 1.125rem;
+    color: $color-gray-700;
+    line-height: 1.6;
+  }
+}
+
+.topic-section {
+  margin-bottom: 3.5rem;
+
+  h2 {
+    border-bottom: 2px solid $color-gray-100;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+// 1. ТРЕХКОЛОНОЧНЫЙ МАКЕТ СТЕНДА
+.sandbox-layout {
+  display: grid;
+  grid-template-columns: 250px 1.2fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  align-items: stretch;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sandbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.sandbox-column-header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $color-gray-600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+// 2. ЛЕВАЯ КОЛОНКА: КОМПАКТНЫЕ КАРТОЧКИ
+.compact-selectors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.selector-card {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 0.75rem 1rem;
+  transition: all $transition-normal;
+  user-select: none;
+
+  &.compactclickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateX(3px);
+      border-color: $color-primary;
+      background-color: $color-white;
+    }
+  }
+
+  &.active {
+    background-color: $color-white;
+    border: 2px solid $color-primary;
+    box-shadow: $shadow-md;
+    transform: translateX(3px);
+
+    .active-indicator {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: $color-gray-600;
+    margin-bottom: 0;
+  }
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.active-indicator {
+  opacity: 0;
+  transform: scale(0.85);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: $color-white;
+  background-color: $color-success;
+  padding: 1px 6px;
+  border-radius: 10px;
+  transition: all $transition-fast;
+}
+
+// Бейджи
+.selector-badge {
+  display: inline-block;
+  font-family: $font-code;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: $radius-sm;
+  color: $color-white;
+
+  &.badge-universal { background-color: $color-primary; }
+  &.badge-type { background-color: $color-gray-600; }
+  &.badge-class { background-color: $color-success; }
+  &.badge-id { background-color: $color-warning; }
+  &.badge-attr { background-color: $color-accent; }
+  &.badge-group { background-color: $color-gray-900; }
+}
+
+
+// 3. ЦЕНТРАЛЬНАЯ КОЛОНКА: DOM-ИНСПЕКТОР (INLINE)
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #1e1e1e;
+  border: 1px solid $color-gray-900;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+// Элемент строки DOM-дерева
+.dom-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  padding: 0.35rem 0.6rem;
+  transition: all $transition-normal;
+}
+
+// Имитация тегов IDE
+.dom-meta, .dom-meta-closing {
+  font-family: $font-code;
+  font-size: 0.8rem;
+  color: #858585;
+  user-select: none;
+  display: inline-flex;
+  gap: 2px;
+
+  .tag-name {
+    color: #569cd6;
+    font-weight: 600;
+  }
+
+  .attr-name {
+    color: #9cdcfe;
+  }
+
+  .attr-val {
+    color: #ce9178;
+  }
+}
+
+// Контентный контейнер
+.dom-content {
+  display: inline-flex;
+  align-items: center;
+
+  // Нейтрализуем дефолтные блочные отступы
+  .preview-title {
+    color: $color-white;
+    font-size: 1.05rem;
+    margin: 0;
+    display: inline;
+    line-height: 1;
+    font-weight: 600;
+    transition: all $transition-normal;
+  }
+
+  .preview-text {
+    color: #d4d4d4;
+    font-size: 0.85rem;
+    margin: 0;
+    display: inline;
+    line-height: 1;
+    transition: all $transition-normal;
+  }
+
+  .preview-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: $radius-sm;
+    background-color: #333333;
+    border: 1px solid #555555;
+    color: $color-white;
+    margin: 0;
+    display: inline-block;
+    line-height: 1;
+    transition: all $transition-normal;
+  }
+}
+
+
+// 4. СИМУЛЯЦИЯ ПОДРОБНОЙ ПОДСВЕТКИ (GLOW EFFECTS)
+@mixin highlight-matched-line($bg-color, $border-color) {
+  background-color: rgba($bg-color, 0.08);
+  border: 1px dashed $border-color;
+  box-shadow: 0 0 10px rgba($bg-color, 0.08);
+}
+
+// 1. Универсальный (*)
+.preview-container.active-universal {
+  .dom-item {
+    @include highlight-matched-line($color-primary, $color-primary);
+  }
+}
+
+// 2. Селектор типа (p)
+.preview-container.active-type {
+  .p-regular-item, .p-class-item, .p-id-item {
+    @include highlight-matched-line($color-warning, $color-warning);
+    
+    .tag-name {
+      color: $color-warning;
+      text-shadow: 0 0 8px rgba($color-warning, 0.5);
+    }
+    
+    .preview-text {
+      color: $color-warning-light;
+    }
+  }
+}
+
+// 3. Селектор класса (.text-highlight)
+.preview-container.active-class {
+  .p-class-item {
+    @include highlight-matched-line($color-success, $color-success);
+
+    .attr-name, .attr-val {
+      color: $color-success;
+      text-shadow: 0 0 8px rgba($color-success, 0.5);
+      font-weight: 700;
+    }
+
+    .preview-text {
+      color: $color-success-light;
+      font-weight: 600;
+    }
+  }
+}
+
+// 4. Селектор ID (#special-paragraph)
+.preview-container.active-id {
+  .p-id-item {
+    @include highlight-matched-line($color-warning, $color-warning);
+
+    .attr-name, .attr-val {
+      color: $color-warning;
+      text-shadow: 0 0 8px rgba($color-warning, 0.5);
+      font-weight: 700;
+    }
+
+    .preview-text {
+      color: $color-warning-light;
+      font-style: italic;
+    }
+  }
+}
+
+// 5. Селектор атрибута ([data-type="accent"])
+.preview-container.active-attribute {
+  .button-item {
+    @include highlight-matched-line($color-accent, $color-accent);
+
+    .attr-name, .attr-val {
+      color: $color-accent;
+      text-shadow: 0 0 8px rgba($color-accent, 0.5);
+      font-weight: 700;
+    }
+
+    .preview-btn {
+      background-color: $color-accent;
+      border-color: $color-accent;
+      box-shadow: 0 0 10px rgba($color-accent, 0.4);
+    }
+  }
+}
+
+// 6. Группировка (h3, button)
+.preview-container.active-grouping {
+  .h3-item, .button-item {
+    @include highlight-matched-line($color-primary, $color-primary);
+
+    .tag-name {
+      color: $color-primary;
+      text-shadow: 0 0 8px rgba($color-primary, 0.5);
+      font-weight: 700;
+    }
+
+    .preview-title, .preview-btn {
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.css-output-wrapper {
+  margin-top: 1rem;
+}
+
+
+// 5. КАРТОЧКА ДИНАМИЧЕСКОЙ ТЕОРИИ СЕЛЕКТОРОВ
+.active-theory-card {
+  margin-top: 1rem;
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: $shadow-sm;
+  transition: all $transition-normal;
+  flex-grow: 1; // Заполняет оставшуюся высоту колонки
+}
+
+.theory-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.theory-spec {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+
+  .spec-label {
+    color: $color-gray-600;
+    font-weight: 500;
+  }
+
+  .spec-value {
+    font-family: $font-code;
+    font-weight: 700;
+    color: $color-danger;
+    background-color: $color-gray-100;
+    padding: 2px 6px;
+    border-radius: $radius-sm;
+  }
+}
+
+.theory-desc {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: $color-gray-700;
+  margin: 0;
+}
+
+.theory-practice {
+  border-top: 1px dashed $color-gray-300;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .practice-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $color-primary;
+  }
+
+  .practice-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: $color-gray-600;
+    margin: 0;
+  }
+}
