@@ -16,20 +16,16 @@ import { CSS_PROPERTIES_CONFIG } from '../../configs/css-properties';
 export class Introduction {
   protected readonly linkingMethod = signal<'inline' | 'internal' | 'external'>('external');
 
-  // Управление цветом
   protected readonly selectedColor = signal<string>('#1c7ed6');
 
-  // Управление скруглением углов
   protected readonly radiusValue = signal<number>(8);
   protected readonly radiusUnit = signal<string>('px');
   protected readonly borderRadius = computed(() => `${this.radiusValue()}${this.radiusUnit()}`);
 
-  // Управление внутренними отступами
   protected readonly paddingValue = signal<number>(1.5);
   protected readonly paddingUnit = signal<string>('rem');
   protected readonly padding = computed(() => `${this.paddingValue()}${this.paddingUnit()}`);
 
-  // Динамические ограничения и шаг ползунка для скругления углов
   protected readonly radiusMax = computed(() => {
     const config = CSS_PROPERTIES_CONFIG['border-radius'];
     return config?.limits[this.radiusUnit()]?.max ?? 100;
@@ -40,7 +36,6 @@ export class Introduction {
     return unit === 'px' || unit === '%' ? 1 : 0.1;
   });
 
-  // Динамические ограничения и шаг ползунка для внутренних отступов
   protected readonly paddingMax = computed(() => {
     const config = CSS_PROPERTIES_CONFIG['padding'];
     return config?.limits[this.paddingUnit()]?.max ?? 100;
@@ -51,38 +46,41 @@ export class Introduction {
     return unit === 'px' ? 1 : 0.1;
   });
 
-  // Динамические сниппеты кода для способов подключения
-  protected readonly inlineSnippet = computed(
-    () =>
-      `<div style="background-color: ${this.selectedColor()}; border-radius: ${this.borderRadius()}; padding: ${this.padding()};">CSS</div>`,
+  protected readonly inlineSnippet = signal(
+    `<div style="background-color: #1c7ed6; border-radius: 8px; padding: 24px;">CSS</div>`,
   );
 
-  protected readonly internalSnippet = computed(
-    () =>
-      `<style>
+  protected readonly internalSnippet = signal(
+    `<style>
   .box {
-    background-color: ${this.selectedColor()};
-    border-radius: ${this.borderRadius()};
-    padding: ${this.padding()};
+    background-color: #1c7ed6;
+    border-radius: 8px;
+    padding: 24px;
   }
 </style>`,
   );
 
-  protected readonly externalHtmlSnippet = computed(
-    () =>
-      `<!-- В HTML-файле внутри <head> -->
+  protected readonly externalHtmlSnippet = signal(
+    `<!-- В HTML-файле внутри <head> -->
 <link rel="stylesheet" href="styles.css">`,
   );
 
-  protected readonly externalCssSnippet = computed(
-    () =>
-      `/* В файле styles.css */
+  protected readonly externalCssSnippet = signal(
+    `/* В файле styles.css */
 .box {
+  background-color: #1c7ed6;
+  border-radius: 8px;
+  padding: 24px;
+}`,
+  );
+
+  protected readonly generatedCss = computed(() => {
+    return `.box {
   background-color: ${this.selectedColor()};
   border-radius: ${this.borderRadius()};
   padding: ${this.padding()};
-}`,
-  );
+}`;
+  });
 
   protected copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text);

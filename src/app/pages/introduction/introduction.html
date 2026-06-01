@@ -58,7 +58,6 @@
           <p><strong>Самый лучший и рекомендуемый способ.</strong> Стили пишутся в отдельном файле с расширением <code>.css</code> и подключаются в HTML через тег <code>&lt;link&gt;</code>.</p>
           
           <app-code-block language="html" [code]="externalHtmlSnippet()"></app-code-block>
-          <app-code-block language="css" [code]="externalCssSnippet()"></app-code-block>
         </div>
       }
     </div>
@@ -139,7 +138,7 @@
 
     <!-- Интерактивный код (чистый вывод CSS) -->
     <div class="code-wrapper">
-      <app-code-block [code]="externalCssSnippet()" language="css" title="style.css"></app-code-block>
+      <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
     </div>
   </section>
 
