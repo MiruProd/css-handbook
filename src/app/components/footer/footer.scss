@@ -1,0 +1,30 @@
+@import "../../../styles/variables";
+
+.main-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid $color-gray-200;
+  margin-top: 5rem; // Обеспечивает отступ от основного контента темы
+}
+
+.footer-copyright {
+  color: $color-gray-600;
+  font-size: 0.875rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+
+  .footer-link {
+    color: $color-gray-600;
+    font-size: 0.875rem;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}

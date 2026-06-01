@@ -1,0 +1,45 @@
+@import "../../../styles/variables";
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid $color-gray-200;
+  margin-bottom: 2.5rem;
+}
+
+.header-breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+
+  .breadcrumb-item {
+    color: $color-gray-600;
+    font-weight: 500;
+
+    &.active {
+      color: $color-gray-900;
+      font-weight: 600;
+    }
+  }
+
+  .breadcrumb-separator {
+    color: $color-gray-300;
+    margin: 0 0.5rem;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+
+  .github-link {
+    color: $color-gray-600;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-gray-900;
+    }
+  }
+}

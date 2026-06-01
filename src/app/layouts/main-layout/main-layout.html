@@ -16,7 +16,14 @@
   </aside>
 
   <main class="content-area">
+    <!-- Выводим шапку сверху контентной области -->
+    <app-header></app-header>
+
+    <!-- Сюда подгружается контент выбранной темы (например, Introduction) -->
     <router-outlet></router-outlet>
+
+    <!-- Выводим подвал в самом низу контентной области -->
+    <app-footer></app-footer>
   </main>
 
 </div>
