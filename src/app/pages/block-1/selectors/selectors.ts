@@ -1,7 +1,7 @@
 import { Component, signal, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { CodeBlock } from '../../components/code-block/code-block';
-import { InfoBlock } from '../../components/info-block/info-block';
+import { CodeBlock } from '../../../components/code-block/code-block';
+import { InfoBlock } from '../../../components/info-block/info-block';
 
 interface SelectorTheory {
   title: string;

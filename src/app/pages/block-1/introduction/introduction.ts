@@ -1,10 +1,10 @@
 import { Component, signal, computed } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { ColorSelector } from '../../components/color-selector/color-selector';
-import { UnitSelector } from '../../components/unit-selector/unit-selector';
-import { CodeBlock } from '../../components/code-block/code-block';
-import { InfoBlock } from '../../components/info-block/info-block';
-import { CSS_PROPERTIES_CONFIG } from '../../configs/css-properties';
+import { ColorSelector } from '../../../components/color-selector/color-selector';
+import { UnitSelector } from '../../../components/unit-selector/unit-selector';
+import { CodeBlock } from '../../../components/code-block/code-block';
+import { InfoBlock } from '../../../components/info-block/info-block';
+import { CSS_PROPERTIES_CONFIG } from '../../../configs/css-properties';
 
 @Component({
   selector: 'app-introduction',
