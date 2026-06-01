@@ -20,6 +20,8 @@
   display: flex;
   flex-direction: column;
   transition: width $transition-normal, height $transition-normal;
+  max-width: 100%; // КРИТИЧЕСКИЙ ФИКС: предотвращает горизонтальный вылет на смартфонах
+  box-sizing: border-box;
 
   // Динамическое окрашивание рамок под тему раздела
   &.theme-primary { border-color: $color-primary; }

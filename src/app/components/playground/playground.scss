@@ -11,12 +11,17 @@
 
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
 // Левая колонка: Пульт управления (берём из shared mixins)
 .controls-panel {
   @include controls-panel;
+
+  @media (max-width: 480px) {
+    padding: 1rem; // Компактные отступы пульта на смартфонах
+  }
 }
 
 .panel-section-title {
@@ -119,16 +124,21 @@
   padding: 1.5rem;
   box-sizing: border-box;
   overflow: auto;
+
+  @media (max-width: 480px) {
+    min-height: 320px; // Снижаем высоту холста, чтобы влез по вертикали
+    padding: 1rem;
+  }
 }
 
-// Обертка для проброшенного контента превью (теперь полностью нейтральная)
+// Обертка для проброшенного контента превью
 .playground-preview-content {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 0; // Обнулили паддинг, чтобы дать свободу вложенным превью
+  padding: 0;
   box-sizing: border-box;
   flex-grow: 1;
 }

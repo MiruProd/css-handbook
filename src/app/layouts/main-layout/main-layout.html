@@ -1,7 +1,33 @@
-<div class="layout-container">
+<div class="layout-container" [class.menu-open]="isSidebarOpen()">
   
-  <aside class="sidebar">
-    <div class="logo">CSS Handbook</div>
+  <!-- Мобильный полупрозрачный оверлей -->
+  @if (isSidebarOpen()) {
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+  }
+
+  <!-- Кнопка-бургер для мобильных устройств -->
+  <button 
+    class="mobile-menu-toggle" 
+    [class.active]="isSidebarOpen()" 
+    (click)="toggleSidebar()"
+    [attr.aria-label]="isSidebarOpen() ? 'Закрыть меню' : 'Открыть меню'"
+  >
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+  </button>
+
+  <aside class="sidebar" [class.open]="isSidebarOpen()">
+    <div class="logo-wrapper">
+      <div class="logo">CSS Handbook</div>
+      
+      <!-- Кнопка закрытия сайдбара на мобильных -->
+      <button class="sidebar-close-btn" (click)="closeSidebar()" aria-label="Закрыть меню">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+          <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+        </svg>
+      </button>
+    </div>
     
     <div class="search-box">
       <input 
