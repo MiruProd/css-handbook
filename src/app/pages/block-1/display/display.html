@@ -1,0 +1,142 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.4. Display и Поток документа</h1>
+    <p class="lead">Свойство <code>display</code> определяет тип рендеринга элемента в нормальном потоке документа (Normal Flow) [1] и характер его взаимодействия со смежными блоками.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница</h2>
+    <p>Переключай режимы отображения для <strong>Второго элемента (Target)</strong> и наблюдай, как ведут себя соседние блоки в потоке.</p>
+
+    <div class="sandbox-grid">
+      <!-- Левая колонка: Управление -->
+      <div class="controls-panel">
+        <!-- Display Mode -->
+        <div class="control-group">
+          <span class="control-label">Свойство display:</span>
+          <div class="display-toggles">
+            <button 
+              (click)="displayMode.set('block')" 
+              [class.active]="displayMode() === 'block'"
+              class="toggle-btn"
+            >
+              block
+            </button>
+            <button 
+              (click)="displayMode.set('inline')" 
+              [class.active]="displayMode() === 'inline'"
+              class="toggle-btn"
+            >
+              inline
+            </button>
+            <button 
+              (click)="displayMode.set('inline-block')" 
+              [class.active]="displayMode() === 'inline-block'"
+              class="toggle-btn"
+            >
+              inline-block
+            </button>
+            <button 
+              (click)="displayMode.set('none')" 
+              [class.active]="displayMode() === 'none'"
+              class="toggle-btn"
+            >
+              none
+            </button>
+          </div>
+        </div>
+
+        <!-- Visibility Mode -->
+        <div class="control-group" [class.disabled]="displayMode() === 'none'">
+          <span class="control-label">Свойство visibility:</span>
+          <div class="toggle-buttons">
+            <button 
+              (click)="visibilityMode.set('visible')" 
+              [class.active]="visibilityMode() === 'visible' && displayMode() !== 'none'"
+              [disabled]="displayMode() === 'none'"
+              class="toggle-btn"
+            >
+              visible
+            </button>
+            <button 
+              (click)="visibilityMode.set('hidden')" 
+              [class.active]="visibilityMode() === 'hidden' && displayMode() !== 'none'"
+              [disabled]="displayMode() === 'none'"
+              class="toggle-btn"
+            >
+              hidden
+            </button>
+          </div>
+        </div>
+
+        <!-- Информационная сводка текущего поведения -->
+        <div class="behavior-summary">
+          <div class="summary-title">Текущее поведение элемента:</div>
+          @switch (displayMode()) {
+            @case ('block') {
+              <p class="summary-text"><strong>Блочный (block):</strong> Элемент занимает всю ширину контейнера и всегда переносится на новую строку. К нему можно применять любые размеры и отступы.</p>
+            }
+            @case ('inline') {
+              <p class="summary-text"><strong>Строчный (inline):</strong> Элемент встраивается в строку текста. Ему <strong>нельзя</strong> задать ширину и высоту, а вертикальные padding/margin не раздвигают окружающий поток.</p>
+            }
+            @case ('inline-block') {
+              <p class="summary-text"><strong>Строчно-блочный (inline-block):</strong> Элемент располагается в строке, но ведет себя как блок: принимает свойства ширины, высоты и все виды отступов.</p>
+            }
+            @case ('none') {
+              <p class="summary-text"><strong>Убран из потока (none):</strong> Элемент полностью удаляется из макета, а его соседи схлопываются, моментально занимая освободившуюся площадь.</p>
+            }
+          }
+          @if (displayMode() !== 'none' && visibilityMode() === 'hidden') {
+            <p class="summary-text warning-text"><strong>Обратите внимание:</strong> При <code>visibility: hidden</code> элемент скрывается визуально, но его физическое место в потоке <strong>сохраняется</strong>.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Правая колонка: Визуализация потока -->
+      <div class="visual-panel">
+        <div class="flow-container">
+          
+          <!-- Элемент 1 (Статичный) -->
+          <div class="flow-box box-first">
+            <span class="box-label">Элемент 1</span>
+          </div>
+
+          <!-- Элемент 2 (Таргет) -->
+          <div class="flow-box box-target" [ngStyle]="targetStyles()" [class.is-hidden]="visibilityMode() === 'hidden' && displayMode() !== 'none'">
+            <span class="box-label">Target (2)</span>
+          </div>
+
+          <!-- Элемент 3 (Статичный) -->
+          <div class="flow-box box-third">
+            <span class="box-label">Элемент 3</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="code-wrapper">
+      <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
+    </div>
+  </section>
+
+  <!-- Теория и Бест-практики -->
+  <section class="topic-section">
+    <h2>Сравнительный анализ и правила потока</h2>
+    
+    <app-info-block type="warning" title="Классическая ошибка со строчными элементами">
+      <p>Попытка задать ширину (<code>width</code>), высоту (<code>height</code>) или вертикальные внешние отступы (<code>margin-top</code> / <code>margin-bottom</code>) для строчных элементов вроде <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code> или <code>&lt;strong&gt;</code> ни к чему не приведет. Чтобы размеры применились, измените их режим на <code>inline-block</code> или <code>block</code>.</p>
+    </app-info-block>
+
+    <app-info-block type="tip" title="Разница: display: none против visibility: hidden">
+      <p>Это классический вопрос на технических собеседованиях:</p>
+      <ul>
+        <li><code>display: none</code> — элемент полностью вырезается из дерева рендеринга. Браузер не выделяет под него место, соседние элементы сдвигаются (схлопывание потока).</li>
+        <li><code>visibility: hidden</code> — элемент становится полностью невидимым (как прозрачный), но его геометрические размеры и место в потоке остаются нетронутыми. Элементы вокруг не сдвигаются.</li>
+      </ul>
+    </app-info-block>
+  </section>
+
+</div>

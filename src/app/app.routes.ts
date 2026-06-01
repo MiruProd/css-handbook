@@ -3,6 +3,7 @@ import { MainLayout } from './layouts/main-layout/main-layout';
 import { Introduction } from './pages/block-1/introduction/introduction';
 import { Selectors } from './pages/block-1/selectors/selectors';
 import { BoxModel } from './pages/block-1/box-model/box-model';
+import { Display } from './pages/block-1/display/display';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
       {
         path: 'box-model',
         component: BoxModel,
+      },
+      {
+        path: 'display',
+        component: Display,
       },
     ],
   },

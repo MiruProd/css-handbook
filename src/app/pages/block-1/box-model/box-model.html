@@ -38,24 +38,15 @@
           <div class="control-item">
             <div class="control-row">
               <span class="control-label">Ширина (width):</span>
-              <div class="selector-wrapper">
-                <input 
-                  type="number" 
-                  [value]="widthValue()" 
-                  (input)="widthValue.set(+$any($event.target).value)" 
-                  min="50" 
-                  max="400" 
-                  class="num-input"
-                >
-                <span class="unit-badge">px</span>
-              </div>
+              <app-unit-selector property="width" [(value)]="widthValue" [(unit)]="widthUnit"></app-unit-selector>
             </div>
             <input 
               type="range" 
               [value]="widthValue()" 
               (input)="widthValue.set(+$any($event.target).value)" 
-              min="50" 
-              max="400" 
+              [min]="widthUnit() === 'px' ? 50 : (widthUnit() === '%' ? 10 : 3)" 
+              [max]="widthMax()" 
+              [step]="widthStep()" 
               class="range-slider"
             >
           </div>
@@ -64,24 +55,15 @@
           <div class="control-item">
             <div class="control-row">
               <span class="control-label">Высота (height):</span>
-              <div class="selector-wrapper">
-                <input 
-                  type="number" 
-                  [value]="heightValue()" 
-                  (input)="heightValue.set(+$any($event.target).value)" 
-                  min="50" 
-                  max="300" 
-                  class="num-input"
-                >
-                <span class="unit-badge">px</span>
-              </div>
+              <app-unit-selector property="height" [(value)]="heightValue" [(unit)]="heightUnit"></app-unit-selector>
             </div>
             <input 
               type="range" 
               [value]="heightValue()" 
               (input)="heightValue.set(+$any($event.target).value)" 
-              min="50" 
-              max="300" 
+              [min]="heightUnit() === 'px' ? 50 : (heightUnit() === '%' ? 10 : 3)" 
+              [max]="heightMax()" 
+              [step]="heightStep()" 
               class="range-slider"
             >
           </div>
@@ -97,8 +79,8 @@
               [value]="paddingValue()" 
               (input)="paddingValue.set(+$any($event.target).value)" 
               min="0" 
-              [max]="paddingUnit() === 'px' ? 120 : 8" 
-              [step]="paddingUnit() === 'px' ? 1 : 0.1" 
+              [max]="paddingMax()" 
+              [step]="paddingStep()" 
               class="range-slider"
             >
           </div>
@@ -107,15 +89,15 @@
           <div class="control-item">
             <div class="control-row">
               <span class="control-label">Border (толщина):</span>
-              <app-unit-selector property="padding" [(value)]="borderWidthValue" [(unit)]="borderWidthUnit"></app-unit-selector>
+              <app-unit-selector property="border-width" [(value)]="borderWidthValue" [(unit)]="borderWidthUnit"></app-unit-selector>
             </div>
             <input 
               type="range" 
               [value]="borderWidthValue()" 
               (input)="borderWidthValue.set(+$any($event.target).value)" 
               min="0" 
-              [max]="borderWidthUnit() === 'px' ? 30 : 2" 
-              [step]="borderWidthUnit() === 'px' ? 1 : 0.1" 
+              [max]="borderWidthMax()" 
+              [step]="borderWidthStep()" 
               class="range-slider"
             >
           </div>
@@ -124,15 +106,15 @@
           <div class="control-item">
             <div class="control-row">
               <span class="control-label">Margin (отступ):</span>
-              <app-unit-selector property="padding" [(value)]="marginValue" [(unit)]="marginUnit"></app-unit-selector>
+              <app-unit-selector property="margin" [(value)]="marginValue" [(unit)]="marginUnit"></app-unit-selector>
             </div>
             <input 
               type="range" 
               [value]="marginValue()" 
               (input)="marginValue.set(+$any($event.target).value)" 
               min="0" 
-              [max]="marginUnit() === 'px' ? 100 : 6" 
-              [step]="marginUnit() === 'px' ? 1 : 0.1" 
+              [max]="marginMax()" 
+              [step]="marginStep()" 
               class="range-slider"
             >
           </div>
@@ -151,9 +133,9 @@
           </div>
           <div class="math-formula">
             @if (boxSizing() === 'content-box') {
-              <span>Физическая ширина = {{ widthValue() }} (width) + {{ paddingPx() * 2 }} (2 × padding) + {{ borderPx() * 2 }} (2 × border) = {{ totalWidth() }}px</span>
+              <span>Физическая ширина = {{ totalWidth() }}px ({{ widthValue() }}{{ widthUnit() }} + 2 × {{ paddingValue() }}{{ paddingUnit() }} + 2 × {{ borderWidthValue() }}{{ borderWidthUnit() }})</span>
             } @else {
-              <span>Внутренний контент = {{ widthValue() }} (width) - {{ paddingPx() * 2 }} (2 × padding) - {{ borderPx() * 2 }} (2 × border) = {{ contentWidth() }}px</span>
+              <span>Внутренний контент = {{ contentWidth() }}px ({{ widthValue() }}{{ widthUnit() }} - 2 × {{ paddingValue() }}{{ paddingUnit() }} - 2 × {{ borderWidthValue() }}{{ borderWidthUnit() }})</span>
             }
           </div>
         </div>

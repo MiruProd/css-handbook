@@ -20,6 +20,26 @@ export const CSS_PROPERTIES_CONFIG: Record<string, PropertyConfig> = {
       '%': { min: 0, max: 50 },
     },
   },
+  width: {
+    units: ['px', 'rem', 'em', '%'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 50, max: 400 },
+      rem: { min: 3, max: 25 },
+      em: { min: 3, max: 25 },
+      '%': { min: 10, max: 100 },
+    },
+  },
+  height: {
+    units: ['px', 'rem', 'em', '%'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 50, max: 300 },
+      rem: { min: 3, max: 18 },
+      em: { min: 3, max: 18 },
+      '%': { min: 10, max: 100 },
+    },
+  },
   padding: {
     units: ['px', 'rem', 'em'],
     defaultUnit: 'px',
@@ -27,6 +47,24 @@ export const CSS_PROPERTIES_CONFIG: Record<string, PropertyConfig> = {
       px: { min: 0, max: 120 },
       rem: { min: 0, max: 8 },
       em: { min: 0, max: 8 },
+    },
+  },
+  'border-width': {
+    units: ['px', 'rem', 'em'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 0, max: 30 },
+      rem: { min: 0, max: 2 },
+      em: { min: 0, max: 2 },
+    },
+  },
+  margin: {
+    units: ['px', 'rem', 'em'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 0, max: 100 },
+      rem: { min: 0, max: 6 },
+      em: { min: 0, max: 6 },
     },
   },
 };

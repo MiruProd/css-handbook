@@ -1,0 +1,220 @@
+@use "../../../../styles/variables" as *;
+
+.topic-header {
+  margin-bottom: 2.5rem;
+
+  .lead {
+    font-size: 1.125rem;
+    color: $color-gray-700;
+    line-height: 1.6;
+  }
+}
+
+.topic-section {
+  margin-bottom: 3.5rem;
+
+  h2 {
+    border-bottom: 2px solid $color-gray-100;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+// Сетка интерактивного стенда
+.sandbox-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: stretch;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Левая колонка: Панель управления
+.controls-panel {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-lg;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: $shadow-sm;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: opacity $transition-fast;
+
+  &.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.control-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $color-gray-600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.display-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 0.25rem;
+  background-color: $color-gray-100;
+  padding: 2px;
+  border-radius: $radius-sm;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: $radius-sm;
+  color: $color-gray-600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not([disabled]) {
+    color: $color-gray-900;
+  }
+
+  &.active {
+    background-color: $color-white;
+    color: $color-primary;
+    box-shadow: $shadow-sm;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+// Блок анализа текущего поведения
+.behavior-summary {
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $color-gray-900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-text {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: $color-gray-700;
+  margin: 0;
+
+  &.warning-text {
+    color: $color-warning-dark;
+    border-top: 1px dashed $color-gray-200;
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+  }
+}
+
+// Правая колонка: Визуализация рендеринга потока (Page Canvas)
+.visual-panel {
+  background-color: $color-gray-50;
+  border: 1px dashed $color-gray-300;
+  border-radius: $radius-lg;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 380px;
+}
+
+// Эмуляция чистого браузерного потока (Normal Flow)
+.flow-container {
+  width: 100%;
+  max-width: 450px;
+  min-height: 250px;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  
+  // Строго block, чтобы браузер рассчитывал перенос строк естественным путем
+  display: block; 
+}
+
+// Базовые элементы макета в потоке
+.flow-box {
+  width: 100px;
+  height: 55px;
+  margin: 10px;
+  display: inline-block; // По умолчанию inline-block, чтобы стоять в ряд при inline-цели
+  border-radius: $radius-md;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: $shadow-sm;
+  transition: all $transition-normal;
+  line-height: 55px; 
+
+  .box-label {
+    font-family: $font-main;
+    font-weight: 700;
+    font-size: 0.85rem;
+    user-select: none;
+  }
+
+  &.box-first {
+    background-color: $color-primary;
+    color: $color-white;
+  }
+
+  &.box-target {
+    background-color: $color-accent;
+    color: $color-white;
+    border: 2px solid $color-accent-hover;
+    
+    // Плавное сжатие строчного контента
+    padding: 0 1rem;
+    
+    // Динамический сброс размеров при inline-сжатии (эмуляция браузера)
+    &[style*="display: inline"] {
+      line-height: 1.5;
+      padding: 6px 12px;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  &.box-third {
+    background-color: $color-success;
+    color: $color-white;
+  }
+}
+
+.code-wrapper {
+  margin-top: 1.5rem;
+}
