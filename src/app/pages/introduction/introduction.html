@@ -24,7 +24,6 @@
       <p><strong>Значение</strong> (<code>blue</code>) — новое значение для этого свойства.</p>
     </div>
 
-    <!-- Пример использования InfoBlock для частой ошибки -->
     <app-info-block type="error" title="Забытая точка с запятой">
       <p>Всегда ставьте точку с запятой (<code>;</code>) в конце каждой декларации свойства. Если её пропустить, браузер проигнорирует не только это свойство, но и все последующие правила внутри блока.</p>
     </app-info-block>
@@ -64,7 +63,6 @@
       }
     </div>
 
-    <!-- Пример использования InfoBlock для полезного совета -->
     <app-info-block type="tip" title="Почему внешние стили лучше?">
       <p>Внешний CSS-файл кэшируется браузером после первого обращения. При переходе на другие страницы сайта стили загружаются мгновенно, экономя трафик пользователя и ускоряя рендеринг.</p>
     </app-info-block>
@@ -73,32 +71,75 @@
   <!-- Блок 3: Интерактивная песочница -->
   <section class="topic-section">
     <h2>Интерактивная песочница</h2>
-    <p>Редактируй значения свойств прямо в окне CSS-кода ниже! Результат мгновенно отобразится на демонстрационном элементе:</p>
+    <p>Настраивай стили демонстрационного бокса с помощью ползунков на пульте управления. Сгенерированный чистый CSS-код отобразится ниже:</p>
 
-    <!-- Демонстрационный бокс -->
-    <div class="preview-container-wrapper">
-      <div class="preview-container">
-        <div class="preview-box" [ngStyle]="{
-          'background-color': selectedColor(),
-          'border-radius': borderRadius(),
-          'padding': padding()
-        }">
-          <span class="preview-text">CSS</span>
+    <div class="intro-sandbox">
+      <!-- Левая часть: Демонстрационный бокс -->
+      <div class="preview-panel">
+        <div class="preview-container">
+          <div class="preview-box" [ngStyle]="{
+            'background-color': selectedColor(),
+            'border-radius': borderRadius(),
+            'padding': padding()
+          }">
+            <span class="preview-text">CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая часть: Пульт управления -->
+      <div class="controls-panel">
+        <div class="panel-title">Пульт управления</div>
+        
+        <div class="control-grid">
+          <!-- Цвет фона -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Цвет фона:</span>
+              <app-color-selector [(color)]="selectedColor"></app-color-selector>
+            </div>
+          </div>
+
+          <!-- Скругление углов -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Скругление (border-radius):</span>
+              <app-unit-selector property="border-radius" [(value)]="radiusValue" [(unit)]="radiusUnit"></app-unit-selector>
+            </div>
+            <input 
+              type="range" 
+              [value]="radiusValue()" 
+              (input)="radiusValue.set(+$any($event.target).value)" 
+              min="0" 
+              [max]="radiusMax()" 
+              [step]="radiusStep()" 
+              class="range-slider"
+            >
+          </div>
+
+          <!-- Внутренние отступы -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Внутренний отступ (padding):</span>
+              <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>
+            </div>
+            <input 
+              type="range" 
+              [value]="paddingValue()" 
+              (input)="paddingValue.set(+$any($event.target).value)" 
+              min="0" 
+              [max]="paddingMax()" 
+              [step]="paddingStep()" 
+              class="range-slider"
+            >
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Интерактивный код (он же пульт управления) -->
-    <div class="code-output">
-      <div class="code-output-header">
-        <span>Интерактивный CSS-код (редактируй прямо здесь):</span>
-        <button class="copy-btn" (click)="copyToClipboard('.box {\n  background-color: ' + selectedColor() + ';\n  border-radius: ' + borderRadius() + ';\n  padding: ' + padding() + ';\n}')">Копировать код</button>
-      </div>
-      <pre><code>.box {{ '{' }}
-  background-color: <app-color-selector [(color)]="selectedColor"></app-color-selector>;
-  border-radius: <app-unit-selector property="border-radius" [(value)]="radiusValue" [(unit)]="radiusUnit"></app-unit-selector>;
-  padding: <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>;
-{{ '}' }}</code></pre>
+    <!-- Интерактивный код (чистый вывод CSS) -->
+    <div class="code-wrapper">
+      <app-code-block [code]="externalCssSnippet()" language="css" title="style.css"></app-code-block>
     </div>
   </section>
 

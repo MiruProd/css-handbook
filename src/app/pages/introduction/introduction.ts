@@ -4,6 +4,7 @@ import { ColorSelector } from '../../components/color-selector/color-selector';
 import { UnitSelector } from '../../components/unit-selector/unit-selector';
 import { CodeBlock } from '../../components/code-block/code-block';
 import { InfoBlock } from '../../components/info-block/info-block';
+import { CSS_PROPERTIES_CONFIG } from '../../configs/css-properties';
 
 @Component({
   selector: 'app-introduction',
@@ -27,6 +28,28 @@ export class Introduction {
   protected readonly paddingValue = signal<number>(1.5);
   protected readonly paddingUnit = signal<string>('rem');
   protected readonly padding = computed(() => `${this.paddingValue()}${this.paddingUnit()}`);
+
+  // Динамические ограничения и шаг ползунка для скругления углов
+  protected readonly radiusMax = computed(() => {
+    const config = CSS_PROPERTIES_CONFIG['border-radius'];
+    return config?.limits[this.radiusUnit()]?.max ?? 100;
+  });
+
+  protected readonly radiusStep = computed(() => {
+    const unit = this.radiusUnit();
+    return unit === 'px' || unit === '%' ? 1 : 0.1;
+  });
+
+  // Динамические ограничения и шаг ползунка для внутренних отступов
+  protected readonly paddingMax = computed(() => {
+    const config = CSS_PROPERTIES_CONFIG['padding'];
+    return config?.limits[this.paddingUnit()]?.max ?? 100;
+  });
+
+  protected readonly paddingStep = computed(() => {
+    const unit = this.paddingUnit();
+    return unit === 'px' ? 1 : 0.1;
+  });
 
   // Динамические сниппеты кода для способов подключения
   protected readonly inlineSnippet = computed(
