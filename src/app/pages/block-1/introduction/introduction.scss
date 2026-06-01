@@ -1,25 +1,5 @@
 @use "../../../../styles/variables" as *;
 
-.topic-header {
-  margin-bottom: 2.5rem;
-
-  .lead {
-    font-size: 1.125rem;
-    color: $color-gray-700;
-    line-height: 1.6;
-  }
-}
-
-.topic-section {
-  margin-bottom: 3.5rem;
-
-  h2 {
-    border-bottom: 2px solid $color-gray-100;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-}
-
 // Стенд: Анатомия правила
 .anatomy-visual {
   display: flex;
@@ -237,7 +217,7 @@
     border-radius: 50%;
     background: $color-primary;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: $shadow-sm;
     transition: transform $transition-fast, background-color $transition-fast;
 
     &:hover {
@@ -253,7 +233,7 @@
     border-radius: 50%;
     background: $color-primary;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: $shadow-sm;
     transition: transform $transition-fast, background-color $transition-fast;
 
     &:hover {

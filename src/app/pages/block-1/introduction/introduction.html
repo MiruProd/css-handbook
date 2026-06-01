@@ -62,7 +62,7 @@
       }
     </div>
 
-    <app-info-block type="tip" title="Почему внешние стили лучше?">
+    <app-info-block type="tip" title="Why external styles are better?">
       <p>Внешний CSS-файл кэшируется браузером после первого обращения. При переходе на другие страницы сайта стили загружаются мгновенно, экономя трафик пользователя и ускоряя рендеринг.</p>
     </app-info-block>
   </section>
@@ -103,7 +103,12 @@
           <div class="control-item">
             <div class="control-row">
               <span class="control-label">Скругление (border-radius):</span>
-              <app-unit-selector property="border-radius" [(value)]="radiusValue" [(unit)]="radiusUnit"></app-unit-selector>
+              <app-unit-selector 
+                property="border-radius" 
+                [max]="radiusMax()"
+                [(value)]="radiusValue" 
+                [(unit)]="radiusUnit"
+              ></app-unit-selector>
             </div>
             <input 
               type="range" 

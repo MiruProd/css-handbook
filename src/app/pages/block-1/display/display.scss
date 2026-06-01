@@ -1,35 +1,9 @@
 @use "../../../../styles/variables" as *;
-
-.topic-header {
-  margin-bottom: 2.5rem;
-
-  .lead {
-    font-size: 1.125rem;
-    color: $color-gray-700;
-    line-height: 1.6;
-  }
-}
-
-.topic-section {
-  margin-bottom: 3.5rem;
-
-  h2 {
-    border-bottom: 2px solid $color-gray-100;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-}
+@use "../../../../styles/shared" as *;
 
 // Блок анализа текущего поведения (проецируется внутрь controls-панели)
 .behavior-summary {
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: $radius-md;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  @include info-summary-card;
 }
 
 .summary-title {

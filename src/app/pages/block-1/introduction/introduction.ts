@@ -26,9 +26,13 @@ export class Introduction {
   protected readonly paddingUnit = signal<string>('rem');
   protected readonly padding = computed(() => `${this.paddingValue()}${this.paddingUnit()}`);
 
+  // Ограничиваем максимальный радиус скругления под габариты конкретного демонстрационного бокса,
+  // чтобы избежать "мертвой зоны" ползунка, когда элемент уже стал полностью круглым.
   protected readonly radiusMax = computed(() => {
-    const config = CSS_PROPERTIES_CONFIG['border-radius'];
-    return config?.limits[this.radiusUnit()]?.max ?? 100;
+    const unit = this.radiusUnit();
+    if (unit === 'px') return 40;
+    if (unit === '%') return 50;
+    return 2.5; // rem / em
   });
 
   protected readonly radiusStep = computed(() => {

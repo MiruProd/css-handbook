@@ -1,6 +1,92 @@
 @use './variables' as *;
 
-// Панель управления (пульт)
+// 1. МАКЕТЫ ТЕМ И СТАТЕЙ (Глобальный каркас для всех страниц)
+@mixin topic-layout {
+  .topic-header {
+    margin-bottom: 2.5rem;
+
+    .lead {
+      font-size: 1.125rem;
+      color: $color-gray-700;
+      line-height: 1.6;
+    }
+  }
+
+  .topic-section {
+    margin-bottom: 3.5rem;
+
+    h2 {
+      border-bottom: 2px solid $color-gray-100;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+}
+
+// 2. СТАНДАРТНАЯ СЕРЕБРЯНАЯ КАРТОЧКА АНАЛИТИКИ/ТЕОРИИ ВНУТРИ ПУЛЬТА
+// (Унифицирует .math-panel, .active-theory-card, .behavior-summary)
+@mixin info-summary-card {
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  box-shadow: $shadow-sm;
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $color-gray-900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: $color-gray-700;
+  }
+}
+
+// 3. ПАНЕЛЬ ВЫЧИСЛЕННЫХ МЕТРИК ДЛЯ СТЕНДОВ (DevTools стиль)
+@mixin metrics-panel {
+  background-color: rgba($color-gray-900, 0.95);
+  border-radius: $radius-sm;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  box-shadow: $shadow-sm;
+
+  .metric-line {
+    font-family: $font-code;
+    font-size: 0.725rem;
+    color: $color-gray-300;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+
+    strong {
+      color: $color-white;
+      font-weight: 700;
+    }
+
+    .formula {
+      color: $color-gray-500;
+      font-size: 0.65rem;
+    }
+  }
+}
+
+// 4. ПУЛЬТ УПРАВЛЕНИЯ ПЕСОЧНИЦЕЙ
 @mixin controls-panel {
   background-color: $color-gray-50;
   border: 1px solid $color-gray-200;
@@ -42,7 +128,7 @@
   }
 }
 
-// Слайдер (ползунок range) с возможностью кастомизации акцентных цветов
+// Слайдер (ползунок range)
 @mixin range-slider($thumb-color: $color-primary, $hover-color: $color-primary-hover) {
   -webkit-appearance: none;
   appearance: none;
@@ -65,7 +151,7 @@
     border-radius: 50%;
     background: $thumb-color;
     cursor: pointer;
-    box-shadow: $shadow-sm; // Заменено на переменную тени из _variables.scss
+    box-shadow: $shadow-sm;
     transition: transform $transition-fast, background-color $transition-fast;
 
     &:hover {
@@ -81,7 +167,7 @@
     border-radius: 50%;
     background: $thumb-color;
     cursor: pointer;
-    box-shadow: $shadow-sm; // Заменено на переменную тени из _variables.scss
+    box-shadow: $shadow-sm;
     transition: transform $transition-fast, background-color $transition-fast;
 
     &:hover {

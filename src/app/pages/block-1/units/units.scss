@@ -1,39 +1,5 @@
 @use '../../../../styles/variables' as *;
 
-.topic-header {
-  margin-bottom: 2.5rem;
-
-  .lead {
-    font-size: 1.125rem;
-    color: $color-gray-700;
-    line-height: 1.6;
-  }
-}
-
-.topic-section {
-  margin-bottom: 4rem;
-
-  h2 {
-    border-bottom: 2px solid $color-gray-100;
-    padding-bottom: 0.5rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1.25rem;
-    font-size: 1.5rem;
-    color: $color-gray-900;
-
-    &:first-of-type {
-      margin-top: 0;
-    }
-  }
-
-  p {
-    font-size: 0.975rem;
-    line-height: 1.6;
-    color: $color-gray-700;
-    margin-bottom: 1.25rem;
-  }
-}
-
 // Оформление списков теоретического раздела
 .theory-section {
   ul {

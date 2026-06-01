@@ -1,57 +1,31 @@
 @use "../../../../styles/variables" as *;
-
-.topic-header {
-  margin-bottom: 2.5rem;
-
-  .lead {
-    font-size: 1.125rem;
-    color: $color-gray-700;
-    line-height: 1.6;
-  }
-}
-
-.topic-section {
-  margin-bottom: 3.5rem;
-
-  h2 {
-    border-bottom: 2px solid $color-gray-100;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-}
+@use "../../../../styles/shared" as *;
 
 // Специфичный для Блочной модели блок аналитики на пульте
 .math-panel {
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: $radius-md;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
+  @include info-summary-card;
 
-.math-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: $color-gray-900;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
-}
-
-.math-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: $color-gray-700;
-
-  .highlight-total {
-    color: $color-primary;
+  .math-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $color-gray-900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
   }
-  .highlight-content {
-    color: $color-success;
+
+  .math-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: $color-gray-700;
+
+    .highlight-total {
+      color: $color-primary;
+    }
+    .highlight-content {
+      color: $color-success;
+    }
   }
 }
 
