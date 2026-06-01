@@ -1,0 +1,262 @@
+@import "../../../styles/variables";
+
+.topic-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.topic-header {
+  margin-bottom: 2.5rem;
+
+  .lead {
+    font-size: 1.125rem;
+    color: $color-gray-700;
+    line-height: 1.6;
+  }
+}
+
+.topic-section {
+  margin-bottom: 3.5rem;
+
+  h2 {
+    border-bottom: 2px solid $color-gray-100;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+// Стенд: Анатомия правила
+.anatomy-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: $color-gray-900;
+  color: $color-white;
+  padding: 1.5rem;
+  border-radius: $radius-md;
+  font-family: $font-code;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: $shadow-sm;
+
+  .anatomy-part {
+    padding: 2px 8px;
+    border-radius: $radius-sm;
+    font-weight: 700;
+
+    &.selector {
+      background-color: rgba($color-success, 0.2);
+      color: #8ce99a;
+    }
+
+    &.property {
+      background-color: rgba($color-primary, 0.2);
+      color: #a5d8ff;
+    }
+
+    &.value {
+      background-color: rgba($color-warning, 0.2);
+      color: #ffd8a8;
+    }
+  }
+
+  .anatomy-brace {
+    color: $color-gray-600;
+  }
+}
+
+.anatomy-legend {
+  background-color: $color-gray-50;
+  padding: 1.25rem;
+  border-radius: $radius-md;
+  border: 1px solid $color-gray-200;
+
+  p {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Табы управления (Способы подключения)
+.tabs-control {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid $color-gray-200;
+  padding-bottom: 0.5rem;
+
+  button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $color-gray-600;
+    border-radius: $radius-sm;
+    transition: background-color $transition-fast, color $transition-fast;
+
+    &:hover {
+      background-color: $color-gray-100;
+      color: $color-gray-900;
+    }
+
+    &.active {
+      background-color: $color-primary-light;
+      color: $color-primary;
+    }
+  }
+}
+
+.tab-content {
+  margin-bottom: 1.5rem;
+}
+
+// Песочница (Sandbox)
+.sandbox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background-color: $color-gray-50;
+  padding: 1.5rem;
+  border-radius: $radius-md;
+  border: 1px solid $color-gray-200;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sandbox-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $color-gray-600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 0.4rem;
+
+    button {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: $color-gray-700;
+      border: 1px solid $color-gray-300;
+      background-color: $color-white;
+      border-radius: $radius-sm;
+      transition: all $transition-fast;
+
+      &:hover {
+        background-color: $color-gray-100;
+        border-color: $color-gray-300;
+      }
+
+      &.active {
+        background-color: $color-primary;
+        border-color: $color-primary;
+        color: $color-white;
+      }
+    }
+  }
+}
+
+.sandbox-preview-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $color-gray-600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.preview-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-white;
+  border: 1px dashed $color-gray-300;
+  border-radius: $radius-sm;
+  min-height: 200px;
+}
+
+.preview-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-white;
+  font-family: $font-main;
+  font-weight: 700;
+  font-size: 1.25rem;
+  transition: all $transition-normal;
+  box-shadow: $shadow-md;
+
+  .preview-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Блок вывода кода (Сгенерированный CSS)
+.code-output {
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+
+  .code-output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-gray-100;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid $color-gray-200;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-gray-700;
+
+    .copy-btn {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: $color-primary;
+      background-color: $color-white;
+      border: 1px solid $color-gray-300;
+      border-radius: $radius-sm;
+      transition: all $transition-fast;
+
+      &:hover {
+        border-color: $color-primary;
+        background-color: $color-primary-light;
+      }
+    }
+  }
+
+  pre {
+    margin-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

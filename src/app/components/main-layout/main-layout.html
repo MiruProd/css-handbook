@@ -1,10 +1,7 @@
 <div class="layout-container">
   
-  <!-- Сайдбар слева -->
   <aside class="sidebar">
-    <div class="logo">
-      CSS Handbook
-    </div>
+    <div class="logo">CSS Handbook</div>
     
     <div class="search-box">
       <input type="text" placeholder="Поиск темы..." class="search-input">
@@ -12,16 +9,13 @@
 
     <nav class="navigation">
       <div class="nav-section">Блок 1: Основы</div>
-      <!-- Пока временные ссылки-заглушки для примера -->
-      <a routerLink="/basics" routerLinkActive="active" class="nav-link">1.1. Введение в CSS</a>
+      <a routerLink="/introduction" routerLinkActive="active" class="nav-link">1.1. Введение в CSS</a>
       <a routerLink="/selectors" routerLinkActive="active" class="nav-link">1.2. Базовые селекторы</a>
       <a routerLink="/box-model" routerLinkActive="active" class="nav-link">1.3. Блочная модель</a>
     </nav>
   </aside>
 
-  <!-- Область контента справа -->
   <main class="content-area">
-    <!-- Сюда будут подгружаться компоненты каждой конкретной темы -->
     <router-outlet></router-outlet>
   </main>
 

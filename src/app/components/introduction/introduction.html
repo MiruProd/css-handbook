@@ -1,0 +1,138 @@
+<div class="topic-container">
+  
+  <header class="topic-header">
+    <h1>1.1. Введение в CSS</h1>
+    <p class="lead">CSS (Cascading Style Sheets) — это язык стилей, который отвечает за внешний вид веб-страниц: цвета, шрифты, расположение элементов и адаптивность.</p>
+  </header>
+
+  <!-- Блок 1: Анатомия правила -->
+  <section class="topic-section">
+    <h2>Анатомия CSS-правила</h2>
+    <p>CSS состоит из правил. Каждое правило указывает браузеру, к какому элементу применить стили и какие именно свойства изменить.</p>
+    
+    <div class="anatomy-visual">
+      <span class="anatomy-part selector">.box</span> 
+      <span class="anatomy-brace">{{ '{' }}</span>
+      <span class="anatomy-part property">background-color</span>: 
+      <span class="anatomy-part value">blue</span>;
+      <span class="anatomy-brace">{{ '}' }}</span>
+    </div>
+
+    <div class="anatomy-legend">
+      <p><strong>Селектор</strong> (<code>.box</code>) — указывает, какой элемент (или элементы) на странице нужно стилизовать.</p>
+      <p><strong>Свойство</strong> (<code>background-color</code>) — какую именно характеристику элемента мы хотим изменить.</p>
+      <p><strong>Значение</strong> (<code>blue</code>) — новое значение для этого свойства.</p>
+    </div>
+  </section>
+
+  <!-- Блок 2: Способы подключения (Интерактивный переключатель) -->
+  <section class="topic-section">
+    <h2>Способы подключения CSS</h2>
+    <p>Существует три способа добавить стили на страницу. Нажми на вкладки, чтобы увидеть синтаксис для каждого метода:</p>
+
+    <div class="tabs-control">
+      <button (click)="linkingMethod.set('inline')" [class.active]="linkingMethod() === 'inline'">Инлайновые стили (Inline)</button>
+      <button (click)="linkingMethod.set('internal')" [class.active]="linkingMethod() === 'internal'">Внутренние стили (Internal)</button>
+      <button (click)="linkingMethod.set('external')" [class.active]="linkingMethod() === 'external'">Внешние стили (External)</button>
+    </div>
+
+    <div class="tab-content">
+      @if (linkingMethod() === 'inline') {
+        <div>
+          <p>Стили пишутся прямо в HTML-теге через атрибут <code>style</code>. Метод применяется только к одному конкретному элементу на странице.</p>
+          <pre><code>&lt;div style="background-color: {{ selectedColor() }}; border-radius: {{ selectedRadius() }}; padding: {{ selectedPadding() }};"&gt;CSS&lt;/div&gt;</code></pre>
+        </div>
+      }
+      @if (linkingMethod() === 'internal') {
+        <div>
+          <p>Стили пишутся внутри HTML-файла в специальном теге <code>&lt;style&gt;</code> (обычно внутри тега <code>&lt;head&gt;</code>).</p>
+          <pre><code>&lt;style&gt;
+  .box {{ '{' }}
+    background-color: {{ selectedColor() }};
+    border-radius: {{ selectedRadius() }};
+    padding: {{ selectedPadding() }};
+  {{ '}' }}
+&lt;/style&gt;</code></pre>
+        </div>
+      }
+      @if (linkingMethod() === 'external') {
+        <div>
+          <p><strong>Самый лучший и рекомендуемый способ.</strong> Стили пишутся в отдельном файле с расширением <code>.css</code> и подключаются в HTML через тег <code>&lt;link&gt;</code>.</p>
+          <pre><code>&lt;!-- В HTML-файле внутри &lt;head&gt; --&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;
+
+&lt;!-- В файле styles.css --&gt;
+.box {{ '{' }}
+  background-color: {{ selectedColor() }};
+  border-radius: {{ selectedRadius() }};
+  padding: {{ selectedPadding() }};
+{{ '}' }}</code></pre>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Блок 3: Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница</h2>
+    <p>Изменяй свойства ниже, чтобы увидеть, как CSS-код и внешний вид элемента меняются в реальном времени:</p>
+
+    <div class="sandbox">
+      <div class="sandbox-controls">
+        <div class="control-group">
+          <label>Цвет фона (background-color):</label>
+          <div class="button-row">
+            <button (click)="selectedColor.set('#1c7ed6')" [class.active]="selectedColor() === '#1c7ed6'">Синий</button>
+            <button (click)="selectedColor.set('#c92a2a')" [class.active]="selectedColor() === '#c92a2a'">Красный</button>
+            <button (click)="selectedColor.set('#2b8a3e')" [class.active]="selectedColor() === '#2b8a3e'">Зеленый</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Скругление углов (border-radius):</label>
+          <div class="button-row">
+            <button (click)="selectedRadius.set('0px')" [class.active]="selectedRadius() === '0px'">Острые</button>
+            <button (click)="selectedRadius.set('8px')" [class.active]="selectedRadius() === '8px'">Мягкие</button>
+            <button (click)="selectedRadius.set('50%')" [class.active]="selectedRadius() === '50%'">Круг</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Внутренние отступы (padding):</label>
+          <div class="button-row">
+            <button (click)="selectedPadding.set('0.5rem')" [class.active]="selectedPadding() === '0.5rem'">Маленькие</button>
+            <button (click)="selectedPadding.set('1.5rem')" [class.active]="selectedPadding() === '1.5rem'">Средние</button>
+            <button (click)="selectedPadding.set('3rem')" [class.active]="selectedPadding() === '3rem'">Большие</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sandbox-preview-area">
+        <label>Живой просмотр (Live Preview):</label>
+        <div class="preview-container">
+          <div class="preview-box" [ngStyle]="{
+            'background-color': selectedColor(),
+            'border-radius': selectedRadius(),
+            'padding': selectedPadding()
+          }">
+            <span class="preview-text">CSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Результирующий код -->
+    <div class="code-output">
+      <div class="code-output-header">
+        <span>Результат компиляции:</span>
+        <button class="copy-btn" (click)="copyToClipboard('.box {\n  background-color: ' + selectedColor() + ';\n  border-radius: ' + selectedRadius() + ';\n  padding: ' + selectedPadding() + ';\n}')">Копировать код</button>
+      </div>
+      <pre><code>.box {{ '{' }}
+  background-color: {{ selectedColor() }};
+  border-radius: {{ selectedRadius() }};
+  padding: {{ selectedPadding() }};
+{{ '}' }}</code></pre>
+    </div>
+  </section>
+
+</div>
