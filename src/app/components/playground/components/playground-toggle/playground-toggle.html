@@ -1,0 +1,14 @@
+<div class="control-item">
+  <span class="control-label">{{ label() }}:</span>
+  <div class="toggle-buttons" [class.grid-layout]="options().length > 2">
+    @for (opt of options(); track opt) {
+      <button 
+        (click)="value.set(opt)" 
+        [class.active]="value() === opt" 
+        class="toggle-btn"
+      >
+        {{ opt }}
+      </button>
+    }
+  </div>
+</div>

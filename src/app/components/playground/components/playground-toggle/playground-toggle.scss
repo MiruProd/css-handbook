@@ -1,0 +1,79 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/shared" as *;
+
+.control-item {
+  @include control-item;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $color-gray-700;
+}
+
+// Контейнер группы кнопок-переключателей
+.toggle-buttons {
+  display: flex;
+  gap: 0.25rem;
+  background-color: $color-gray-100;
+  padding: 2px;
+  border-radius: $radius-sm;
+  width: 100%;
+  box-sizing: border-box;
+
+  // Автоматическая сетка для большого количества опций (более двух)
+  &.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+
+    .toggle-btn {
+      border: 1px solid $color-gray-200;
+      background-color: $color-gray-50;
+      border-radius: $radius-sm;
+
+      &:hover:not(.active) {
+        background-color: $color-gray-100;
+        border-color: $color-gray-300;
+      }
+
+      &.active {
+        background-color: $color-white;
+        border-color: $color-primary;
+        color: $color-primary;
+        box-shadow: $shadow-sm;
+      }
+    }
+  }
+}
+
+// Базовые стили кнопок-переключателей
+.toggle-btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: $radius-sm;
+  color: $color-gray-600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $color-gray-900;
+  }
+
+  &.active {
+    background-color: $color-white;
+    color: $color-primary;
+    box-shadow: $shadow-sm;
+  }
+}

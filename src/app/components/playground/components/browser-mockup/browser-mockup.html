@@ -1,0 +1,17 @@
+<div class="browser-mockup" [ngClass]="'theme-' + theme()" [ngStyle]="{ 'width': width(), 'height': height() }">
+  <div class="browser-header">
+    <div class="window-controls">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    
+    <div class="address-bar" [title]="address()">
+      {{ address() }}
+    </div>
+  </div>
+
+  <div class="browser-body">
+    <ng-content></ng-content>
+  </div>
+</div>

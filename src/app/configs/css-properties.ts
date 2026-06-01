@@ -70,4 +70,34 @@ export const CSS_PROPERTIES_CONFIG: Record<string, PropertyConfig> = {
       em: { min: 0, max: 6 },
     },
   },
+
+  // ПАРАМЕТРЫ СИМУЛЯЦИИ ОКРУЖЕНИЯ (VIEWPORT & CONTAINER CONTEXTS)
+  'viewport-width': {
+    units: ['px'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 280, max: 650 },
+    },
+  },
+  'viewport-height': {
+    units: ['px'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 150, max: 400 },
+    },
+  },
+  'parent-width': {
+    units: ['%'],
+    defaultUnit: '%',
+    limits: {
+      '%': { min: 40, max: 100 },
+    },
+  },
+  'parent-height': {
+    units: ['px'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 100, max: 300 },
+    },
+  },
 };

@@ -1,54 +1,52 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { NgStyle, NgClass } from '@angular/common';
-import { UnitSelector } from '../../../../../components/unit-selector/unit-selector';
-import { CodeBlock } from '../../../../../components/code-block/code-block';
+import { Playground } from '../../../../../components/playground/playground';
+import { PlaygroundSlider } from '../../../../../components/playground/components/playground-slider/playground-slider';
 
 @Component({
   selector: 'app-viewport-sandbox',
   standalone: true,
-  imports: [NgStyle, NgClass, UnitSelector, CodeBlock],
+  imports: [NgStyle, NgClass, Playground, PlaygroundSlider],
   templateUrl: './viewport-sandbox.html',
   styleUrl: './viewport-sandbox.scss',
 })
 export class ViewportSandbox {
-  // Параметры симулируемого браузерного вьюпорта
-  protected readonly viewportWidth = signal<number>(360); // Симулируемая ширина экрана (240px - 400px)
-  protected readonly parentPercent = signal<number>(80); // Симулируемая ширина родительского контейнера в %
+  // Связанные реактивные параметры вьюпорта и родителя (синхронизируются с Playground)
+  protected readonly viewportWidth = signal<number>(450);
+  protected readonly viewportHeight = signal<number>(260);
+  protected readonly parentPercent = signal<number>(80);
+  protected readonly parentHeight = signal<number>(160);
 
-  // Свойства тестируемого элемента внутри вьюпорта
+  // Свойства тестируемого элемента
   protected readonly targetValue = signal<number>(60);
-  protected readonly targetUnit = signal<string>('%'); // По умолчанию %
+  protected readonly targetUnit = signal<string>('%');
 
-  // Расчет физической ширины родителя внутри симулятора
+  // Расчет физической ширины родителя внутри симулятора для вывода метки
   protected readonly parentWidthPx = computed(() => {
     return Math.round((this.viewportWidth() * this.parentPercent()) / 100);
   });
 
-  // Расчет фактической ширины элемента в пикселях для рендеринга на стенде
+  // Расчет фактической ширины элемента в пикселях для вывода метки
   protected readonly targetWidthPx = computed(() => {
     const val = this.targetValue();
     const unit = this.targetUnit();
     const parentPx = this.parentWidthPx();
     const viewPx = this.viewportWidth();
+    const viewPy = this.viewportHeight();
 
     switch (unit) {
       case 'px':
         return Math.round(val);
       case '%':
-        // Считается строго от РАЗМЕРА РОДИТЕЛЯ!
         return Math.round((val / 100) * parentPx);
       case 'vw':
-        // Считается строго от РАЗМЕРА ВЬЮПОРТА, полностью игнорируя ширину родителя!
         return Math.round((val / 100) * viewPx);
       case 'vh':
-        // Имитируем высоту виртуального вьюпорта равной 200px
-        return Math.round((val / 100) * 200);
+        return Math.round((val / 100) * viewPy);
       case 'ch':
-        // Моноширинный символ '0' в среднем равен 8.5px
         return Math.round(val * 8.5);
       case 'rem':
       case 'em':
-        // Базовые шрифты в этой песочнице считаем равными 16px
         return Math.round(val * 16);
       default:
         return Math.round(val);
@@ -58,21 +56,16 @@ export class ViewportSandbox {
   // Динамические безопасные лимиты для слайдера ширины
   protected readonly targetMax = computed(() => {
     const unit = this.targetUnit();
-    const parentPx = this.parentWidthPx();
-    const viewPx = this.viewportWidth();
-
     switch (unit) {
       case 'px':
         return 340;
       case '%':
         return 100;
       case 'vw':
-        // Ограничиваем vw, чтобы элемент не уходил за пределы симулируемого вьюпорта
         return 100;
       case 'vh':
         return 100;
       case 'ch':
-        // Считаем максимально комфортное количество символов
         return Math.floor(340 / 8.5);
       case 'rem':
       case 'em':
@@ -85,11 +78,6 @@ export class ViewportSandbox {
   protected readonly targetMin = computed(() => {
     const unit = this.targetUnit();
     return unit === 'px' ? 30 : 5;
-  });
-
-  protected readonly targetStep = computed(() => {
-    const unit = this.targetUnit();
-    return unit === 'px' || unit === '%' || unit === 'vw' || unit === 'vh' ? 1 : 0.1;
   });
 
   constructor() {
@@ -109,6 +97,7 @@ export class ViewportSandbox {
   // Стили для родительского бокса-имитатора
   protected readonly parentStyles = computed(() => ({
     width: `${this.parentWidthPx()}px`,
+    height: `${this.parentHeight()}px`,
   }));
 
   // Стили для самого элемента
@@ -116,15 +105,17 @@ export class ViewportSandbox {
     width: `${this.targetWidthPx()}px`,
   }));
 
-  // Генерация CSS-кода с отображением реального расчетного значения в комментариях
+  // Генерация CSS-кода шпаргалки
   protected readonly generatedCss = computed(() => {
     return `/* Симулируемое окружение */
 .viewport-window {
   width: ${this.viewportWidth()}px;
+  height: ${this.viewportHeight()}px;
 }
 
 .parent-container {
   width: ${this.parentPercent()}%; /* = ${this.parentWidthPx()}px */
+  height: ${this.parentHeight()}px;
 }
 
 /* Настройки элемента */

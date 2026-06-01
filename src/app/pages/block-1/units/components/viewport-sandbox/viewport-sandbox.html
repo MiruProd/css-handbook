@@ -5,116 +5,69 @@
     Обрати внимание: элемент шириной <code>50%</code> сжимается при уменьшении родителя, а элемент в <code>50vw</code> остаётся неизменным, так как зависит строго от ширины виртуального экрана!
   </p>
 
-  <div class="sandbox-grid">
-    <!-- Левая колонка: Пульт управления -->
-    <div class="controls-panel">
-      
-      <!-- Секция: Симулируемое окружение -->
+  <app-playground 
+    [code]="generatedCss()" 
+    theme="accent"
+    [(viewportWidth)]="viewportWidth"
+    [(viewportHeight)]="viewportHeight"
+    [(parentPercent)]="parentPercent"
+    [(parentHeight)]="parentHeight"
+  >
+    <!-- СЛОТ ДЛЯ ПУЛЬТА УПРАВЛЕНИЯ -->
+    <div controls>
       <div class="panel-section-title">Окружение (Симулятор):</div>
       
-      <div class="control-item">
-        <div class="control-row">
-          <span class="control-label font-bold">Ширина вьюпорта (экрана):</span>
-          <span class="unit-badge">{{ viewportWidth() }}px</span>
-        </div>
-        <input 
-          type="range" 
-          [value]="viewportWidth()" 
-          (input)="viewportWidth.set(+$any($event.target).value)" 
-          min="240" 
-          max="400" 
-          step="10" 
-          class="range-slider"
-        >
-        <span class="control-subtext">Имитирует ширину экрана устройства от мобильного телефона до узкого планшета.</span>
-      </div>
+      <app-playground-slider 
+        label="Ширина вьюпорта (экрана)" 
+        property="viewport-width" 
+        [(value)]="viewportWidth"
+      ></app-playground-slider>
 
-      <div class="control-item">
-        <div class="control-row">
-          <span class="control-label font-bold">Ширина родителя (.parent):</span>
-          <span class="unit-badge">{{ parentPercent() }}%</span>
-        </div>
-        <input 
-          type="range" 
-          [value]="parentPercent()" 
-          (input)="parentPercent.set(+$any($event.target).value)" 
-          min="40" 
-          max="100" 
-          step="5" 
-          class="range-slider"
-        >
-        <span class="control-subtext">Ширина родительского контейнера в процентах от симулируемого экрана.</span>
-      </div>
+      <app-playground-slider 
+        label="Высота вьюпорта (экрана)" 
+        property="viewport-height" 
+        [(value)]="viewportHeight"
+      ></app-playground-slider>
 
-      <!-- Секция: Настройки самого элемента -->
+      <app-playground-slider 
+        label="Ширина родителя (.parent)" 
+        property="parent-width" 
+        [(value)]="parentPercent"
+      ></app-playground-slider>
+
+      <app-playground-slider 
+        label="Высота родителя (.parent)" 
+        property="parent-height" 
+        [(value)]="parentHeight"
+      ></app-playground-slider>
+
       <div class="panel-section-title">Свойства элемента:</div>
 
-      <div class="control-item">
-        <div class="control-row">
-          <span class="control-label">width (ширина):</span>
-          <app-unit-selector property="width" [(value)]="targetValue" [(unit)]="targetUnit"></app-unit-selector>
-        </div>
-        <input 
-          type="range" 
-          [value]="targetValue()" 
-          (input)="targetValue.set(+$any($event.target).value)" 
-          [min]="targetMin()" 
-          [max]="targetMax()" 
-          [step]="targetStep()" 
-          class="range-slider"
-        >
-      </div>
-
+      <app-playground-slider 
+        label="Ширина элемента (width)" 
+        property="width" 
+        [(value)]="targetValue" 
+        [(unit)]="targetUnit"
+      ></app-playground-slider>
     </div>
 
-    <!-- Правая колонка: Визуализация симулятора браузера -->
-    <div class="visual-panel">
+    <!-- СЛОТ ДЛЯ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+    <div preview class="parent-box" [ngStyle]="parentStyles()">
+      <span class="parent-box-label">Родитель (.parent) [{{ parentPercent() }}% = {{ parentWidthPx() }}px]</span>
       
-      <!-- Симулируемый браузер -->
-      <div class="browser-mock" [style.width]="viewportWidth() + 'px'">
+      <!-- Тестируемый элемент -->
+      <div class="target-box" [ngStyle]="targetStyles()">
+        <span class="target-text">Элемент</span>
         
-        <!-- Шапка браузера -->
-        <div class="browser-header">
-          <div class="window-controls">
-            <span class="dot dot-red"></span>
-            <span class="dot dot-yellow"></span>
-            <span class="dot dot-green"></span>
-          </div>
-          <div class="address-bar">
-            viewport: {{ viewportWidth() }}px × 200px
+        <!-- Информационная панель вычисленного размера -->
+        <div class="metrics-overlay">
+          <div class="metric-line">
+            width: <strong>{{ targetWidthPx() }}px</strong>
+            <span class="formula">({{ targetValue() }}{{ targetUnit() }})</span>
           </div>
         </div>
-
-        <!-- Тело вьюпорта -->
-        <div class="browser-body">
-          
-          <!-- Симулируемый родитель -->
-          <div class="parent-box" [ngStyle]="parentStyles()">
-            <span class="parent-box-label">Родитель (.parent) [{{ parentPercent() }}% = {{ parentWidthPx() }}px]</span>
-            
-            <!-- Тестируемый элемент -->
-            <div class="target-box" [ngStyle]="targetStyles()">
-              <span class="target-text">Элемент</span>
-              
-              <!-- Информационная панель вычисленного размера -->
-              <div class="metrics-overlay">
-                <div class="metric-line">
-                  width: <strong>{{ targetWidthPx() }}px</strong>
-                  <span class="formula">({{ targetValue() }}{{ targetUnit() }})</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
       </div>
-
     </div>
-  </div>
 
-  <div class="code-wrapper">
-    <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
-  </div>
+  </app-playground>
 </div>

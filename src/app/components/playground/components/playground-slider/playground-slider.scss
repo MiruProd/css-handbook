@@ -1,0 +1,24 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/shared" as *;
+
+.control-item {
+  @include control-item;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $color-gray-700;
+}
+
+// Применяем переиспользуемый стиль ползунка
+.range-slider {
+  @include range-slider($color-primary, $color-primary-hover);
+}

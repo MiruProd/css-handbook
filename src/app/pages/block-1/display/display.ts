@@ -1,12 +1,13 @@
 import { Component, signal, computed } from '@angular/core';
 import { NgStyle, NgClass } from '@angular/common';
-import { CodeBlock } from '../../../components/code-block/code-block';
+import { Playground } from '../../../components/playground/playground';
+import { PlaygroundToggle } from '../../../components/playground/components/playground-toggle/playground-toggle';
 import { InfoBlock } from '../../../components/info-block/info-block';
 
 @Component({
   selector: 'app-display',
   standalone: true,
-  imports: [NgStyle, NgClass, CodeBlock, InfoBlock],
+  imports: [NgStyle, NgClass, Playground, PlaygroundToggle, InfoBlock],
   templateUrl: './display.html',
   styleUrl: './display.scss',
 })

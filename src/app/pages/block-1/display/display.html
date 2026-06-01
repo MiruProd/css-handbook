@@ -5,71 +5,28 @@
     <p class="lead">Свойство <code>display</code> определяет тип рендеринга элемента в нормальном потоке документа (Normal Flow) [1] и характер его взаимодействия со смежными блоками.</p>
   </header>
 
-  <!-- Интерактивная песочница -->
+  <!-- Интерактивная песочница нового поколения -->
   <section class="topic-section">
     <h2>Интерактивная песочница</h2>
     <p>Переключай режимы отображения для <strong>Второго элемента (Target)</strong> и наблюдай, как ведут себя соседние блоки в потоке.</p>
 
-    <div class="sandbox-grid">
-      <!-- Левая колонка: Управление -->
-      <div class="controls-panel">
-        <!-- Display Mode -->
-        <div class="control-group">
-          <span class="control-label">Свойство display:</span>
-          <div class="display-toggles">
-            <button 
-              (click)="displayMode.set('block')" 
-              [class.active]="displayMode() === 'block'"
-              class="toggle-btn"
-            >
-              block
-            </button>
-            <button 
-              (click)="displayMode.set('inline')" 
-              [class.active]="displayMode() === 'inline'"
-              class="toggle-btn"
-            >
-              inline
-            </button>
-            <button 
-              (click)="displayMode.set('inline-block')" 
-              [class.active]="displayMode() === 'inline-block'"
-              class="toggle-btn"
-            >
-              inline-block
-            </button>
-            <button 
-              (click)="displayMode.set('none')" 
-              [class.active]="displayMode() === 'none'"
-              class="toggle-btn"
-            >
-              none
-            </button>
-          </div>
-        </div>
+    <!-- Убрали [viewportWidth]="450" и [viewportHeight]="250". Окно теперь просторное по умолчанию! -->
+    <app-playground [code]="generatedCss()" theme="accent">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ -->
+      <div controls>
+        <app-playground-toggle 
+          label="Свойство display" 
+          [(value)]="displayMode" 
+          [options]="['block', 'inline', 'inline-block', 'none']"
+        ></app-playground-toggle>
 
-        <!-- Visibility Mode -->
-        <div class="control-group" [class.disabled]="displayMode() === 'none'">
-          <span class="control-label">Свойство visibility:</span>
-          <div class="toggle-buttons">
-            <button 
-              (click)="visibilityMode.set('visible')" 
-              [class.active]="visibilityMode() === 'visible' && displayMode() !== 'none'"
-              [disabled]="displayMode() === 'none'"
-              class="toggle-btn"
-            >
-              visible
-            </button>
-            <button 
-              (click)="visibilityMode.set('hidden')" 
-              [class.active]="visibilityMode() === 'hidden' && displayMode() !== 'none'"
-              [disabled]="displayMode() === 'none'"
-              class="toggle-btn"
-            >
-              hidden
-            </button>
-          </div>
-        </div>
+        <app-playground-toggle 
+          label="Свойство visibility" 
+          [(value)]="visibilityMode" 
+          [options]="['visible', 'hidden']"
+          [class.disabled]="displayMode() === 'none'"
+        ></app-playground-toggle>
 
         <!-- Информационная сводка текущего поведения -->
         <div class="behavior-summary">
@@ -94,32 +51,31 @@
         </div>
       </div>
 
-      <!-- Правая колонка: Визуализация потока -->
-      <div class="visual-panel">
-        <div class="flow-container">
-          
-          <!-- Элемент 1 (Статичный) -->
-          <div class="flow-box box-first">
-            <span class="box-label">Элемент 1</span>
-          </div>
-
-          <!-- Элемент 2 (Таргет) -->
-          <div class="flow-box box-target" [ngStyle]="targetStyles()" [class.is-hidden]="visibilityMode() === 'hidden' && displayMode() !== 'none'">
-            <span class="box-label">Target (2)</span>
-          </div>
-
-          <!-- Элемент 3 (Статичный) -->
-          <div class="flow-box box-third">
-            <span class="box-label">Элемент 3</span>
-          </div>
-
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview class="flow-container">
+        
+        <!-- Элемент 1 (Статичный) -->
+        <div class="flow-box box-first">
+          <span class="box-label">Элемент 1</span>
         </div>
-      </div>
-    </div>
 
-    <div class="code-wrapper">
-      <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
-    </div>
+        <!-- Элемент 2 (Таргет) -->
+        <div 
+          class="flow-box box-target" 
+          [ngStyle]="targetStyles()" 
+          [class.is-hidden]="visibilityMode() === 'hidden' && displayMode() !== 'none'"
+        >
+          <span class="box-label">Target (2)</span>
+        </div>
+
+        <!-- Элемент 3 (Статичный) -->
+        <div class="flow-box box-third">
+          <span class="box-label">Элемент 3</span>
+        </div>
+
+      </div>
+
+    </app-playground>
   </section>
 
   <!-- Теория и Бест-практики -->

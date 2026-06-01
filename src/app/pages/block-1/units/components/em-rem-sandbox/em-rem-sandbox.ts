@@ -1,17 +1,17 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { NgStyle, NgClass } from '@angular/common';
-import { UnitSelector } from '../../../../../components/unit-selector/unit-selector';
-import { CodeBlock } from '../../../../../components/code-block/code-block';
+import { Playground } from '../../../../../components/playground/playground';
+import { PlaygroundSlider } from '../../../../../components/playground/components/playground-slider/playground-slider';
 
 @Component({
   selector: 'app-em-rem-sandbox',
   standalone: true,
-  imports: [NgStyle, NgClass, UnitSelector, CodeBlock],
+  imports: [NgStyle, NgClass, Playground, PlaygroundSlider],
   templateUrl: './em-rem-sandbox.html',
   styleUrl: './em-rem-sandbox.scss',
 })
 export class EmRemSandbox {
-  // Базовые шрифты для демонстрации em/rem
+  // Базовые шрифты для демонстрации em/rem (синхронизируются с Playground)
   protected readonly rootFontSize = signal<number>(16);
   protected readonly parentFontSize = signal<number>(20);
 
@@ -52,9 +52,9 @@ export class EmRemSandbox {
     if (unit === '%') {
       return Math.round((val / 100) * 350);
     }
-    // Защитные фоллбеки для единиц вьюпорта, если пользователь выберет их в выпадающем списке
+    // Защитные фоллбеки для единиц вьюпорта, если пользователь выберет их в списке
     if (unit === 'vw' || unit === 'vh') {
-      return Math.round(val * 2.5); // безопасная имитация
+      return Math.round(val * 2.5);
     }
     if (unit === 'ch') {
       return Math.round(val * 8); // средняя ширина нуля ~ 8px
@@ -107,11 +107,6 @@ export class EmRemSandbox {
     return +(340 / this.calculatedFontSizePx()).toFixed(1);
   });
 
-  protected readonly widthStep = computed(() => {
-    const unit = this.widthUnit();
-    return unit === 'px' || unit === '%' ? 1 : 0.1;
-  });
-
   // ДИНАМИЧЕСКИЕ ЛИМИТЫ ДЛЯ PADDING (целевой диапазон на экране: 0px - 40px)
   protected readonly paddingMin = computed(() => 0);
 
@@ -122,12 +117,8 @@ export class EmRemSandbox {
     return +(40 / this.calculatedFontSizePx()).toFixed(1);
   });
 
-  protected readonly paddingStep = computed(() => {
-    return this.paddingUnit() === 'px' ? 1 : 0.1;
-  });
-
   constructor() {
-    // Корректировка значений при изменении внешнего контекста
+    // Корректировка значений при изменении внешнего контекста (шрифтов окружения)
     effect(() => {
       const minFS = this.fontSizeMin();
       const maxFS = this.fontSizeMax();

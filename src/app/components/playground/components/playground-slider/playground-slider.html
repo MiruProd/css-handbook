@@ -1,0 +1,19 @@
+<div class="control-item">
+  <div class="control-row">
+    <span class="control-label">{{ label() }}:</span>
+    <app-unit-selector 
+      [property]="property()" 
+      [(value)]="value" 
+      [(unit)]="unit"
+    ></app-unit-selector>
+  </div>
+  <input 
+    type="range" 
+    [value]="value()" 
+    (input)="value.set(+$any($event.target).value)" 
+    [min]="currentMin()" 
+    [max]="currentMax()" 
+    [step]="currentStep()" 
+    class="range-slider"
+  >
+</div>

@@ -20,93 +20,7 @@
   }
 }
 
-// Сетка интерактивного стенда
-.sandbox-grid {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  align-items: stretch;
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-// Левая колонка: Панель управления
-.controls-panel {
-  background-color: $color-gray-50;
-  border: 1px solid $color-gray-200;
-  border-radius: $radius-lg;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  box-shadow: $shadow-sm;
-}
-
-.control-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: opacity $transition-fast;
-
-  &.disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-}
-
-.control-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: $color-gray-600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.display-toggles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.35rem;
-}
-
-.toggle-buttons {
-  display: flex;
-  gap: 0.25rem;
-  background-color: $color-gray-100;
-  padding: 2px;
-  border-radius: $radius-sm;
-}
-
-.toggle-btn {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: $radius-sm;
-  color: $color-gray-600;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all $transition-fast;
-
-  &:hover:not([disabled]) {
-    color: $color-gray-900;
-  }
-
-  &.active {
-    background-color: $color-white;
-    color: $color-primary;
-    box-shadow: $shadow-sm;
-  }
-
-  &[disabled] {
-    cursor: not-allowed;
-  }
-}
-
-// Блок анализа текущего поведения
+// Блок анализа текущего поведения (проецируется внутрь controls-панели)
 .behavior-summary {
   background-color: $color-white;
   border: 1px solid $color-gray-200;
@@ -115,6 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .summary-title {
@@ -139,32 +54,21 @@
   }
 }
 
-// Правая колонка: Визуализация рендеринга потока (Page Canvas)
-.visual-panel {
-  background-color: $color-gray-50;
-  border: 1px dashed $color-gray-300;
-  border-radius: $radius-lg;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 380px;
-}
+// ==========================================================================
+// ЭМУЛЯЦИЯ ЧИСТОГО БРАУЗЕРНОГО ПОТОКА (NORMAL FLOW PREVIEW)
+// ==========================================================================
 
-// Эмуляция чистого браузерного потока (Normal Flow)
 .flow-container {
   width: 100%;
-  max-width: 450px;
-  min-height: 250px;
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: $radius-md;
   padding: 1.5rem;
   box-sizing: border-box;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-  
-  // Строго block, чтобы браузер рассчитывал перенос строк естественным путем
   display: block; 
+  
+  // Полностью убираем вложенный белый фон, серые рамки и тени,
+  // так как холстом теперь служит само белоснежное окно нашего симулятора
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 // Базовые элементы макета в потоке
@@ -213,8 +117,4 @@
     background-color: $color-success;
     color: $color-white;
   }
-}
-
-.code-wrapper {
-  margin-top: 1.5rem;
 }

@@ -1,0 +1,103 @@
+@use './variables' as *;
+
+// Панель управления (пульт)
+@mixin controls-panel {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-lg;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: $shadow-sm;
+}
+
+// Заголовок секций внутри пульта управления
+@mixin panel-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $color-gray-900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid $color-gray-200;
+  padding-bottom: 0.5rem;
+  margin-top: 0.5rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// Контейнер для отдельного интерактивного параметра
+@mixin control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed $color-gray-200;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+// Слайдер (ползунок range) с возможностью кастомизации акцентных цветов
+@mixin range-slider($thumb-color: $color-primary, $hover-color: $color-primary-hover) {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: $color-gray-200;
+  border-radius: $radius-sm;
+  outline: none;
+  margin: 0.25rem 0;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($thumb-color, 0.15);
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: $thumb-color;
+    cursor: pointer;
+    box-shadow: $shadow-sm; // Заменено на переменную тени из _variables.scss
+    transition: transform $transition-fast, background-color $transition-fast;
+
+    &:hover {
+      transform: scale(1.25);
+      background-color: $hover-color;
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: $thumb-color;
+    cursor: pointer;
+    box-shadow: $shadow-sm; // Заменено на переменную тени из _variables.scss
+    transition: transform $transition-fast, background-color $transition-fast;
+
+    &:hover {
+      transform: scale(1.25);
+      background-color: $hover-color;
+    }
+  }
+}
+
+// Бейдж для вывода текущей величины
+@mixin unit-badge($bg-color: $color-primary-light, $text-color: $color-primary) {
+  font-family: $font-code;
+  font-weight: 700;
+  color: $text-color;
+  background-color: $bg-color;
+  padding: 2px 6px;
+  border-radius: $radius-sm;
+  font-size: 0.8rem;
+}

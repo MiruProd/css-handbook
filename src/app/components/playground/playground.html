@@ -1,0 +1,25 @@
+<div class="sandbox-grid">
+  <!-- 1. ЛЕВАЯ КОЛОНКА: СЛОТ ДЛЯ ПУЛЬТА УПРАВЛЕНИЯ -->
+  <div class="controls-panel">
+    <ng-content select="[controls]"></ng-content>
+  </div>
+
+  <!-- 2. ПРАВАЯ КОЛОНКА: СЛОТ ДЛЯ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+  <div class="visual-panel">
+    <app-browser-mockup 
+      [width]="viewportWidth() ? viewportWidth() + 'px' : '100%'" 
+      [height]="viewportHeight() ? viewportHeight() + 'px' : '100%'"
+      [address]="browserAddress()"
+      [theme]="theme()"
+    >
+      <div class="playground-preview-content">
+        <ng-content select="[preview]"></ng-content>
+      </div>
+    </app-browser-mockup>
+  </div>
+</div>
+
+<!-- Результирующий CSS-код шпаргалки -->
+<div class="code-wrapper">
+  <app-code-block [code]="code()" language="css" title="style.css"></app-code-block>
+</div>
