@@ -1,0 +1,202 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.3. Блочная модель (Box Model)</h1>
+    <p class="lead">Каждый элемент в CSS представляется в виде прямоугольного бокса, состоящего из четырех слоев: контента, внутренних отступов (padding), рамки (border) и внешних полей (margin).</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница</h2>
+    <p>Настраивай значения слоев и переключай свойство <code>box-sizing</code>. На схеме ниже ты увидишь, как меняются реальные физические габариты элемента.</p>
+
+    <div class="sandbox-grid">
+      <!-- Левая колонка: Пульт управления -->
+      <div class="controls-panel">
+        <div class="control-group">
+          <span class="control-label">Режим расчета (box-sizing):</span>
+          <div class="toggle-buttons">
+            <button 
+              (click)="boxSizing.set('content-box')" 
+              [class.active]="boxSizing() === 'content-box'"
+              class="toggle-btn"
+            >
+              content-box
+            </button>
+            <button 
+              (click)="boxSizing.set('border-box')" 
+              [class.active]="boxSizing() === 'border-box'"
+              class="toggle-btn"
+            >
+              border-box
+            </button>
+          </div>
+        </div>
+
+        <div class="control-grid">
+          <!-- Ширина -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Ширина (width):</span>
+              <div class="selector-wrapper">
+                <input 
+                  type="number" 
+                  [value]="widthValue()" 
+                  (input)="widthValue.set(+$any($event.target).value)" 
+                  min="50" 
+                  max="400" 
+                  class="num-input"
+                >
+                <span class="unit-badge">px</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              [value]="widthValue()" 
+              (input)="widthValue.set(+$any($event.target).value)" 
+              min="50" 
+              max="400" 
+              class="range-slider"
+            >
+          </div>
+
+          <!-- Высота -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Высота (height):</span>
+              <div class="selector-wrapper">
+                <input 
+                  type="number" 
+                  [value]="heightValue()" 
+                  (input)="heightValue.set(+$any($event.target).value)" 
+                  min="50" 
+                  max="300" 
+                  class="num-input"
+                >
+                <span class="unit-badge">px</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              [value]="heightValue()" 
+              (input)="heightValue.set(+$any($event.target).value)" 
+              min="50" 
+              max="300" 
+              class="range-slider"
+            >
+          </div>
+
+          <!-- Padding -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Padding:</span>
+              <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>
+            </div>
+            <input 
+              type="range" 
+              [value]="paddingValue()" 
+              (input)="paddingValue.set(+$any($event.target).value)" 
+              min="0" 
+              [max]="paddingUnit() === 'px' ? 120 : 8" 
+              [step]="paddingUnit() === 'px' ? 1 : 0.1" 
+              class="range-slider"
+            >
+          </div>
+
+          <!-- Border -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Border (толщина):</span>
+              <app-unit-selector property="padding" [(value)]="borderWidthValue" [(unit)]="borderWidthUnit"></app-unit-selector>
+            </div>
+            <input 
+              type="range" 
+              [value]="borderWidthValue()" 
+              (input)="borderWidthValue.set(+$any($event.target).value)" 
+              min="0" 
+              [max]="borderWidthUnit() === 'px' ? 30 : 2" 
+              [step]="borderWidthUnit() === 'px' ? 1 : 0.1" 
+              class="range-slider"
+            >
+          </div>
+
+          <!-- Margin -->
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Margin (отступ):</span>
+              <app-unit-selector property="padding" [(value)]="marginValue" [(unit)]="marginUnit"></app-unit-selector>
+            </div>
+            <input 
+              type="range" 
+              [value]="marginValue()" 
+              (input)="marginValue.set(+$any($event.target).value)" 
+              min="0" 
+              [max]="marginUnit() === 'px' ? 100 : 6" 
+              [step]="marginUnit() === 'px' ? 1 : 0.1" 
+              class="range-slider"
+            >
+          </div>
+        </div>
+
+        <!-- Анализ размеров в реальном времени -->
+        <div class="math-panel">
+          <div class="math-title">Анализ габаритов элемента:</div>
+          <div class="math-row">
+            <span>Общий физ. размер:</span>
+            <strong class="highlight-total">{{ totalWidth() }}px × {{ totalHeight() }}px</strong>
+          </div>
+          <div class="math-row">
+            <span>Область контента:</span>
+            <strong class="highlight-content">{{ contentWidth() }}px × {{ contentHeight() }}px</strong>
+          </div>
+          <div class="math-formula">
+            @if (boxSizing() === 'content-box') {
+              <span>Физическая ширина = {{ widthValue() }} (width) + {{ paddingPx() * 2 }} (2 × padding) + {{ borderPx() * 2 }} (2 × border) = {{ totalWidth() }}px</span>
+            } @else {
+              <span>Внутренний контент = {{ widthValue() }} (width) - {{ paddingPx() * 2 }} (2 × padding) - {{ borderPx() * 2 }} (2 × border) = {{ contentWidth() }}px</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая колонка: Визуальная интерактивная схема -->
+      <div class="visual-panel">
+        <div class="margin-container" [style.padding]="marginPx() + 'px'">
+          <div class="margin-label-overlay">margin: {{ marginValue() }}{{ marginUnit() }}</div>
+          
+          <div class="box-element" [ngStyle]="boxStyles()">
+            <div class="content-overlay">
+              <span class="box-inner-text">
+                {{ contentWidth() }}px × {{ contentHeight() }}px
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-wrapper">
+      <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
+    </div>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section">
+    <h2>Понимание Box-Sizing</h2>
+    <p>По умолчанию браузеры используют значение <code>content-box</code>. Это означает, что свойства <code>width</code> и <code>height</code> задают габариты только для области контента, а рамки (border) и внутренние отступы (padding) приплюсовываются сверху, физически увеличивая итоговый размер элемента на странице.</p>
+    
+    <p>Свойство <code>box-sizing: border-box</code> заставляет браузер включать внутренние отступы и рамки в общую ширину и высоту. Если элементу задана ширина 200px, он останется ровно 200px, а размер внутренней области автоматически ужмется.</p>
+
+    <app-info-block type="tip" title="Глобальный сброс box-sizing">
+      <p>В профессиональной верстке хорошим тоном является переопределение box-sizing для всех элементов на странице с помощью универсального селектора:</p>
+      <pre><code>*, *::before, *::after {{ '{' }}
+  box-sizing: border-box;
+{{ '}' }}</code></pre>
+    </app-info-block>
+
+    <app-info-block type="warning" title="Схлопывание внешних отступов (Margin Collapse)">
+      <p>Вертикальные внешние отступы (<code>margin-top</code> и <code>margin-bottom</code>) двух соседних блоков в обычном потоке документа могут схлопываться в один общий отступ. Вместо суммы двух полей применится только один — максимальный из них.</p>
+    </app-info-block>
+  </section>
+
+</div>

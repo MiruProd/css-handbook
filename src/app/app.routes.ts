@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayout } from './layouts/main-layout/main-layout';
 import { Introduction } from './pages/introduction/introduction';
 import { Selectors } from './pages/selectors/selectors';
+import { BoxModel } from './pages/box-model/box-model';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,10 @@ export const routes: Routes = [
       {
         path: 'selectors',
         component: Selectors,
+      },
+      {
+        path: 'box-model',
+        component: BoxModel,
       },
     ],
   },
