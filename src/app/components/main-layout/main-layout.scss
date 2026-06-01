@@ -1,0 +1,108 @@
+@import "../../../styles/variables";
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: $color-white;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: $color-gray-50;
+  border-right: 1px solid $color-gray-200;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $color-gray-900;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  .search-box {
+    margin-bottom: 1.5rem;
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid $color-gray-300;
+      border-radius: $radius-sm;
+      font-size: 0.875rem;
+      background-color: $color-white;
+      color: $color-gray-900;
+      transition: border-color $transition-fast, box-shadow $transition-fast;
+      outline: none;
+
+      &::placeholder {
+        color: $color-gray-600;
+      }
+
+      &:focus {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px $color-primary-light;
+      }
+    }
+  }
+
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow-y: auto;
+    flex-grow: 1;
+
+    // Тонкий скроллбар для меню навигации
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-gray-200;
+      border-radius: $radius-sm;
+    }
+
+    .nav-section {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: $color-gray-600;
+      font-weight: 700;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: $color-gray-700;
+      border-radius: $radius-sm;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color $transition-fast, color $transition-fast;
+
+      &:hover {
+        background-color: $color-gray-100;
+        color: $color-gray-900;
+      }
+
+      &.active {
+        background-color: $color-primary-light;
+        color: $color-primary;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.content-area {
+  flex-grow: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+  background-color: $color-white;
+}
