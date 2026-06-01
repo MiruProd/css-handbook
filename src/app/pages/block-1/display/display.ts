@@ -1,5 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
-import { NgStyle, NgClass } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { Playground } from '../../../components/playground/playground';
 import { PlaygroundToggle } from '../../../components/playground/components/playground-toggle/playground-toggle';
 import { InfoBlock } from '../../../components/info-block/info-block';
@@ -7,7 +7,7 @@ import { InfoBlock } from '../../../components/info-block/info-block';
 @Component({
   selector: 'app-display',
   standalone: true,
-  imports: [NgStyle, NgClass, Playground, PlaygroundToggle, InfoBlock],
+  imports: [NgStyle, Playground, PlaygroundToggle, InfoBlock],
   templateUrl: './display.html',
   styleUrl: './display.scss',
 })

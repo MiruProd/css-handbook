@@ -62,7 +62,7 @@
       }
     </div>
 
-    <app-info-block type="tip" title="Why external styles are better?">
+    <app-info-block type="tip" title="Почему внешние стили лучше?">
       <p>Внешний CSS-файл кэшируется браузером после первого обращения. При переходе на другие страницы сайта стили загружаются мгновенно, экономя трафик пользователя и ускоряя рендеринг.</p>
     </app-info-block>
   </section>
@@ -72,79 +72,48 @@
     <h2>Интерактивная песочница</h2>
     <p>Настраивай стили демонстрационного бокса с помощью ползунков на пульте управления. Сгенерированный чистый CSS-код отобразится ниже:</p>
 
-    <div class="intro-sandbox">
-      <!-- Левая часть: Демонстрационный бокс -->
-      <div class="preview-panel">
-        <div class="preview-container">
-          <div class="preview-box" [ngStyle]="{
-            'background-color': selectedColor(),
-            'border-radius': borderRadius(),
-            'padding': padding()
-          }">
-            <span class="preview-text">CSS</span>
+    <app-playground [code]="generatedCss()" theme="primary">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ -->
+      <div controls>
+        <div class="control-item">
+          <div class="control-row">
+            <span class="control-label font-bold">Цвет фона:</span>
+            <app-color-selector [(color)]="selectedColor"></app-color-selector>
           </div>
+        </div>
+
+        <app-playground-slider 
+          label="Скругление (border-radius)" 
+          property="border-radius"
+          [(value)]="radiusValue" 
+          [(unit)]="radiusUnit"
+          [min]="0"
+          [max]="radiusMax()"
+        ></app-playground-slider>
+
+        <app-playground-slider 
+          label="Внутренний отступ (padding)" 
+          property="padding"
+          [(value)]="paddingValue" 
+          [(unit)]="paddingUnit"
+          [min]="0"
+          [max]="paddingMax()"
+        ></app-playground-slider>
+      </div>
+
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview>
+        <div class="preview-box" [ngStyle]="{
+          'background-color': selectedColor(),
+          'border-radius': borderRadius(),
+          'padding': padding()
+        }">
+          <span class="preview-text">CSS</span>
         </div>
       </div>
 
-      <!-- Правая часть: Пульт управления -->
-      <div class="controls-panel">
-        <div class="panel-title">Пульт управления</div>
-        
-        <div class="control-grid">
-          <!-- Цвет фона -->
-          <div class="control-item">
-            <div class="control-row">
-              <span class="control-label">Цвет фона:</span>
-              <app-color-selector [(color)]="selectedColor"></app-color-selector>
-            </div>
-          </div>
-
-          <!-- Скругление углов -->
-          <div class="control-item">
-            <div class="control-row">
-              <span class="control-label">Скругление (border-radius):</span>
-              <app-unit-selector 
-                property="border-radius" 
-                [max]="radiusMax()"
-                [(value)]="radiusValue" 
-                [(unit)]="radiusUnit"
-              ></app-unit-selector>
-            </div>
-            <input 
-              type="range" 
-              [value]="radiusValue()" 
-              (input)="radiusValue.set(+$any($event.target).value)" 
-              min="0" 
-              [max]="radiusMax()" 
-              [step]="radiusStep()" 
-              class="range-slider"
-            >
-          </div>
-
-          <!-- Внутренние отступы -->
-          <div class="control-item">
-            <div class="control-row">
-              <span class="control-label">Внутренний отступ (padding):</span>
-              <app-unit-selector property="padding" [(value)]="paddingValue" [(unit)]="paddingUnit"></app-unit-selector>
-            </div>
-            <input 
-              type="range" 
-              [value]="paddingValue()" 
-              (input)="paddingValue.set(+$any($event.target).value)" 
-              min="0" 
-              [max]="paddingMax()" 
-              [step]="paddingStep()" 
-              class="range-slider"
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Интерактивный код (чистый вывод CSS) -->
-    <div class="code-wrapper">
-      <app-code-block [code]="generatedCss()" language="css" title="style.css"></app-code-block>
-    </div>
+    </app-playground>
   </section>
 
 </div>

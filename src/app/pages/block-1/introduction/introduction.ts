@@ -1,15 +1,16 @@
 import { Component, signal, computed } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { ColorSelector } from '../../../components/color-selector/color-selector';
-import { UnitSelector } from '../../../components/unit-selector/unit-selector';
 import { CodeBlock } from '../../../components/code-block/code-block';
 import { InfoBlock } from '../../../components/info-block/info-block';
+import { Playground } from '../../../components/playground/playground';
+import { PlaygroundSlider } from '../../../components/playground/components/playground-slider/playground-slider';
 import { CSS_PROPERTIES_CONFIG } from '../../../configs/css-properties';
 
 @Component({
   selector: 'app-introduction',
   standalone: true,
-  imports: [NgStyle, ColorSelector, UnitSelector, CodeBlock, InfoBlock],
+  imports: [NgStyle, ColorSelector, CodeBlock, InfoBlock, Playground, PlaygroundSlider],
   templateUrl: './introduction.html',
   styleUrl: './introduction.scss',
 })
@@ -26,13 +27,37 @@ export class Introduction {
   protected readonly paddingUnit = signal<string>('rem');
   protected readonly padding = computed(() => `${this.paddingValue()}${this.paddingUnit()}`);
 
-  // Ограничиваем максимальный радиус скругления под габариты конкретного демонстрационного бокса,
-  // чтобы избежать "мертвой зоны" ползунка, когда элемент уже стал полностью круглым.
+  // Перевод величины паддинга в пиксели для точных геометрических расчетов
+  private readonly paddingPx = computed(() => {
+    return this.toPx(this.paddingValue(), this.paddingUnit());
+  });
+
+  // Расчет физической высоты бокса: высота текста (~24px) + 2 * padding
+  private readonly calculatedHeightPx = computed(() => {
+    return 24 + this.paddingPx() * 2;
+  });
+
+  // Расчет физической ширины бокса: ширина текста "CSS" (~42px) + 2 * padding
+  private readonly calculatedWidthPx = computed(() => {
+    return 42 + this.paddingPx() * 2;
+  });
+
+  // Физический лимит скругления в пикселях (половина от меньшей стороны элемента)
+  private readonly maxRadiusPx = computed(() => {
+    return Math.min(this.calculatedWidthPx(), this.calculatedHeightPx()) / 2;
+  });
+
+  // Динамический расчет максимального значения слайдера на основе физических размеров бокса
   protected readonly radiusMax = computed(() => {
     const unit = this.radiusUnit();
-    if (unit === 'px') return 40;
-    if (unit === '%') return 50;
-    return 2.5; // rem / em
+    if (unit === 'px') {
+      return Math.round(this.maxRadiusPx());
+    }
+    if (unit === '%') {
+      return 50; // 50% — физический предел скругления для любого прямоугольника
+    }
+    // Для rem/em переводим пиксельный лимит в относительные единицы (базовый шрифт 16px)
+    return +(this.maxRadiusPx() / 16).toFixed(1);
   });
 
   protected readonly radiusStep = computed(() => {
@@ -85,6 +110,16 @@ export class Introduction {
   padding: ${this.padding()};
 }`;
   });
+
+  private toPx(value: number, unit: string): number {
+    if (unit === 'rem' || unit === 'em') {
+      return value * 16;
+    }
+    if (unit === '%') {
+      return (value / 100) * 100;
+    }
+    return value;
+  }
 
   protected copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text);

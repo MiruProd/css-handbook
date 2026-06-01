@@ -23,9 +23,9 @@ export class PlaygroundSlider {
   value = model.required<number>();
   unit = model<string>('px');
 
-  // Дефолтные ограничения на случай, если свойство отсутствует в конфиге
-  min = input<number>(0);
-  max = input<number>(100);
+  // Кастомные границы, если нужно переопределить настройки из конфига
+  min = input<number | null>(null);
+  max = input<number | null>(null);
 
   // Получаем конфигурацию для переданного свойства
   private readonly config = computed(() => {
@@ -35,26 +35,32 @@ export class PlaygroundSlider {
 
   // Вычисляем минимальный лимит на основе текущей единицы измерения
   readonly currentMin = computed(() => {
+    const customMin = this.min();
+    if (customMin !== null) return customMin;
+
     const cfg = this.config();
-    if (!cfg) return this.min();
+    if (!cfg) return 0;
 
     const activeUnit = this.unit();
     if (activeUnit && activeUnit in cfg.limits) {
       return (cfg.limits as Record<string, UnitLimit>)[activeUnit].min;
     }
-    return this.min();
+    return 0;
   });
 
   // Вычисляем максимальный лимит на основе текущей единицы измерения
   readonly currentMax = computed(() => {
+    const customMax = this.max();
+    if (customMax !== null) return customMax;
+
     const cfg = this.config();
-    if (!cfg) return this.max();
+    if (!cfg) return 100;
 
     const activeUnit = this.unit();
     if (activeUnit && activeUnit in cfg.limits) {
       return (cfg.limits as Record<string, UnitLimit>)[activeUnit].max;
     }
-    return this.max();
+    return 100;
   });
 
   // Вычисляем шаг ползунка: для пикселей и процентов — целые числа, для rem/em — десятые

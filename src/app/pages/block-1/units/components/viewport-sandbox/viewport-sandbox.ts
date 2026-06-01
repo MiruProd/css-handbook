@@ -1,12 +1,12 @@
 import { Component, signal, computed, effect } from '@angular/core';
-import { NgStyle, NgClass } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { Playground } from '../../../../../components/playground/playground';
 import { PlaygroundSlider } from '../../../../../components/playground/components/playground-slider/playground-slider';
 
 @Component({
   selector: 'app-viewport-sandbox',
   standalone: true,
-  imports: [NgStyle, NgClass, Playground, PlaygroundSlider],
+  imports: [NgStyle, Playground, PlaygroundSlider],
   templateUrl: './viewport-sandbox.html',
   styleUrl: './viewport-sandbox.scss',
 })

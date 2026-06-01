@@ -4,6 +4,8 @@
     <app-unit-selector 
       [property]="property()" 
       [customUnits]="customUnits()"
+      [min]="currentMin()"
+      [max]="currentMax()"
       [(value)]="value" 
       [(unit)]="unit"
     ></app-unit-selector>

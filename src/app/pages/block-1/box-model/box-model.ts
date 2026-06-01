@@ -1,5 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
-import { NgStyle, NgClass } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { Playground } from '../../../components/playground/playground';
 import { PlaygroundSlider } from '../../../components/playground/components/playground-slider/playground-slider';
 import { PlaygroundToggle } from '../../../components/playground/components/playground-toggle/playground-toggle';
@@ -8,7 +8,7 @@ import { InfoBlock } from '../../../components/info-block/info-block';
 @Component({
   selector: 'app-box-model',
   standalone: true,
-  imports: [NgStyle, NgClass, Playground, PlaygroundSlider, PlaygroundToggle, InfoBlock],
+  imports: [NgStyle, Playground, PlaygroundSlider, PlaygroundToggle, InfoBlock],
   templateUrl: './box-model.html',
   styleUrl: './box-model.scss',
 })
