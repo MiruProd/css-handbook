@@ -23,6 +23,11 @@
       <p><strong>Свойство</strong> (<code>background-color</code>) — какую именно характеристику элемента мы хотим изменить.</p>
       <p><strong>Значение</strong> (<code>blue</code>) — новое значение для этого свойства.</p>
     </div>
+
+    <!-- Пример использования InfoBlock для частой ошибки -->
+    <app-info-block type="error" title="Забытая точка с запятой">
+      <p>Всегда ставьте точку с запятой (<code>;</code>) в конце каждой декларации свойства. Если её пропустить, браузер проигнорирует не только это свойство, но и все последующие правила внутри блока.</p>
+    </app-info-block>
   </section>
 
   <!-- Блок 2: Способы подключения -->
@@ -40,36 +45,29 @@
       @if (linkingMethod() === 'inline') {
         <div>
           <p>Стили пишутся прямо в HTML-теге через атрибут <code>style</code>. Метод применяется только к одному конкретному элементу на странице.</p>
-          <pre><code>&lt;div style="background-color: {{ selectedColor() }}; border-radius: {{ borderRadius() }}; padding: {{ padding() }};"&gt;CSS&lt;/div&gt;</code></pre>
+          <app-code-block language="html" [code]="inlineSnippet()"></app-code-block>
         </div>
       }
       @if (linkingMethod() === 'internal') {
         <div>
           <p>Стили пишутся внутри HTML-файла в специальном теге <code>&lt;style&gt;</code> (обычно внутри тега <code>&lt;head&gt;</code>).</p>
-          <pre><code>&lt;style&gt;
-  .box {{ '{' }}
-    background-color: {{ selectedColor() }};
-    border-radius: {{ borderRadius() }};
-    padding: {{ padding() }};
-  {{ '}' }}
-&lt;/style&gt;</code></pre>
+          <app-code-block language="html" [code]="internalSnippet()"></app-code-block>
         </div>
       }
       @if (linkingMethod() === 'external') {
         <div>
           <p><strong>Самый лучший и рекомендуемый способ.</strong> Стили пишутся в отдельном файле с расширением <code>.css</code> и подключаются в HTML через тег <code>&lt;link&gt;</code>.</p>
-          <pre><code>&lt;!-- В HTML-файле внутри &lt;head&gt; --&gt;
-&lt;link rel="stylesheet" href="styles.css"&gt;
-
-&lt;!-- В файле styles.css --&gt;
-.box {{ '{' }}
-  background-color: {{ selectedColor() }};
-  border-radius: {{ borderRadius() }};
-  padding: {{ padding() }};
-{{ '}' }}</code></pre>
+          
+          <app-code-block language="html" [code]="externalHtmlSnippet()"></app-code-block>
+          <app-code-block language="css" [code]="externalCssSnippet()"></app-code-block>
         </div>
       }
     </div>
+
+    <!-- Пример использования InfoBlock для полезного совета -->
+    <app-info-block type="tip" title="Почему внешние стили лучше?">
+      <p>Внешний CSS-файл кэшируется браузером после первого обращения. При переходе на другие страницы сайта стили загружаются мгновенно, экономя трафик пользователя и ускоряя рендеринг.</p>
+    </app-info-block>
   </section>
 
   <!-- Блок 3: Интерактивная песочница -->

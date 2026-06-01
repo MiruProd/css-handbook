@@ -1,0 +1,78 @@
+@import "../../../styles/variables";
+
+.info-block {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: $radius-md;
+  margin-bottom: 2rem;
+  border-left: 4px solid transparent;
+
+  &.note {
+    background-color: $color-gray-50;
+    border-color: $color-gray-300;
+    
+    .info-block-aside {
+      color: $color-gray-600;
+    }
+  }
+
+  &.tip {
+    background-color: #ebfbee;
+    border-color: $color-success;
+    
+    .info-block-aside, .info-block-title {
+      color: $color-success;
+    }
+  }
+
+  &.warning {
+    background-color: #fff9db;
+    border-color: $color-warning;
+    
+    .info-block-aside, .info-block-title {
+      color: $color-warning;
+    }
+  }
+
+  &.error {
+    background-color: #fff5f5;
+    border-color: $color-danger;
+    
+    .info-block-aside, .info-block-title {
+      color: $color-danger;
+    }
+  }
+}
+
+.info-block-aside {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.info-block-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.info-block-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: $color-gray-900;
+}
+
+.info-block-body {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: $color-gray-700;
+
+  p {
+    margin-bottom: 0.5rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

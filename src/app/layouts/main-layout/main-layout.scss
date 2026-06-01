@@ -58,7 +58,6 @@
     overflow-y: auto;
     flex-grow: 1;
 
-    // Тонкий скроллбар для меню навигации
     &::-webkit-scrollbar {
       width: 4px;
     }
@@ -75,6 +74,10 @@
       margin-top: 1.25rem;
       margin-bottom: 0.5rem;
       letter-spacing: 0.5px;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
 
     .nav-link {
@@ -96,6 +99,14 @@
         color: $color-primary;
         font-weight: 600;
       }
+    }
+
+    .search-empty {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: $color-gray-600;
+      font-size: 0.875rem;
+      font-style: italic;
     }
   }
 }

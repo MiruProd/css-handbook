@@ -4,25 +4,42 @@
     <div class="logo">CSS Handbook</div>
     
     <div class="search-box">
-      <input type="text" placeholder="Поиск темы..." class="search-input">
+      <input 
+        type="text" 
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+        placeholder="Поиск темы..." 
+        class="search-input"
+        aria-label="Поиск учебных тем"
+      >
     </div>
 
     <nav class="navigation">
-      <div class="nav-section">Блок 1: Основы</div>
-      <a routerLink="/introduction" routerLinkActive="active" class="nav-link">1.1. Введение в CSS</a>
-      <a routerLink="/selectors" routerLinkActive="active" class="nav-link">1.2. Базовые селекторы</a>
-      <a routerLink="/box-model" routerLinkActive="active" class="nav-link">1.3. Блочная модель</a>
+      @for (section of filteredMenu(); track section.title) {
+        <div class="nav-section">{{ section.title }}</div>
+        
+        @for (item of section.items; track item.id) {
+          <a 
+            [routerLink]="['/' + item.route]" 
+            routerLinkActive="active" 
+            class="nav-link"
+          >
+            {{ item.id }}. {{ item.title }}
+          </a>
+        }
+      } @empty {
+        <div class="search-empty">
+          <span>Ничего не найдено</span>
+        </div>
+      }
     </nav>
   </aside>
 
   <main class="content-area">
-    <!-- Выводим шапку сверху контентной области -->
     <app-header></app-header>
 
-    <!-- Сюда подгружается контент выбранной темы (например, Introduction) -->
     <router-outlet></router-outlet>
 
-    <!-- Выводим подвал в самом низу контентной области -->
     <app-footer></app-footer>
   </main>
 
