@@ -3,6 +3,7 @@
     <span class="control-label">{{ label() }}:</span>
     <app-unit-selector 
       [property]="property()" 
+      [customUnits]="customUnits()"
       [(value)]="value" 
       [(unit)]="unit"
     ></app-unit-selector>

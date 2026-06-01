@@ -17,10 +17,8 @@
       <!-- Слайдер для шрифта корня (px) -->
       <app-playground-slider 
         label="Корень (:root) font-size" 
-        [(value)]="rootFontSize" 
-        [min]="10" 
-        [max]="24"
-        unit="px"
+        property="root-font-size"
+        [(value)]="rootFontSize"
       ></app-playground-slider>
       <span class="control-subtext" style="display: block; margin-top: -0.4rem; margin-bottom: 0.8rem; font-size: 0.725rem; color: #868e96; line-height: 1.3;">
         База для вычисления всех значений <code>rem</code> на странице.
@@ -29,10 +27,8 @@
       <!-- Слайдер для шрифта родителя (px) -->
       <app-playground-slider 
         label="Родитель (.parent) font-size" 
-        [(value)]="parentFontSize" 
-        [min]="10" 
-        [max]="36"
-        unit="px"
+        property="parent-font-size"
+        [(value)]="parentFontSize"
       ></app-playground-slider>
       <span class="control-subtext" style="display: block; margin-top: -0.4rem; margin-bottom: 0.8rem; font-size: 0.725rem; color: #868e96; line-height: 1.3;">
         База для значений <code>em</code> у шрифта прямого наследника.
@@ -43,6 +39,7 @@
       <!-- Слайдер шрифта элемента с динамическими вычисляемыми лимитами -->
       <app-playground-slider 
         label="font-size (размер шрифта)" 
+        property="font-size"
         [(value)]="fontSizeValue" 
         [(unit)]="fontSizeUnit"
         [min]="fontSizeMin()"

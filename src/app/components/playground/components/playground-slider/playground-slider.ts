@@ -16,6 +16,9 @@ export class PlaygroundSlider {
   // Имя CSS-свойства для сопоставления со словарем (например, "width")
   property = input<string>('');
 
+  // Кастомный список единиц измерения для передачи в UnitSelector
+  customUnits = input<string[]>([]);
+
   // Двусторонние модели значения и единицы измерения для полной синхронизации с родительской страницей
   value = model.required<number>();
   unit = model<string>('px');

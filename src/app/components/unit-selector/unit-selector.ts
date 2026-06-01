@@ -18,6 +18,9 @@ export class UnitSelector {
   // Название CSS-свойства для сопоставления со словарем (например, "padding")
   property = input<string>('');
 
+  // Альтернативный список единиц, если свойство отсутствует в глобальном конфиге
+  customUnits = input<string[]>([]);
+
   // Дефолтные ограничения (используются как резервные, если свойства нет в конфиге)
   min = input<number>(0);
   max = input<number>(100);
@@ -28,10 +31,11 @@ export class UnitSelector {
     return CSS_PROPERTIES_CONFIG[propName] || null;
   });
 
-  // Вычисляем разрешенные единицы измерения (если конфига нет - массив пуст)
+  // Вычисляем разрешенные единицы измерения
   readonly allowedUnits = computed(() => {
     const cfg = this.config();
-    return cfg ? cfg.units : [];
+    if (cfg) return cfg.units;
+    return this.customUnits();
   });
 
   // Вычисляем минимальный лимит на основе текущей единицы измерения
@@ -59,7 +63,7 @@ export class UnitSelector {
   });
 
   constructor() {
-    // Сбрасываем единицу измерения на дефолтную из конфига при несоответствии списка
+    // Сбрасываем единицу измерения на дефолтную при несоответствии списка разрешенных
     effect(() => {
       const cfg = this.config();
       const allowed = this.allowedUnits();
@@ -67,6 +71,8 @@ export class UnitSelector {
 
       if (cfg && !allowed.includes(currentUnit)) {
         this.unit.set(cfg.defaultUnit);
+      } else if (!cfg && allowed.length > 0 && !allowed.includes(currentUnit)) {
+        this.unit.set(allowed[0]);
       }
     });
 

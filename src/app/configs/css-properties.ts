@@ -70,8 +70,31 @@ export const CSS_PROPERTIES_CONFIG: Record<string, PropertyConfig> = {
       em: { min: 0, max: 6 },
     },
   },
+  'font-size': {
+    units: ['px', 'rem', 'em'],
+    defaultUnit: 'rem',
+    limits: {
+      px: { min: 12, max: 36 },
+      rem: { min: 0.5, max: 3 },
+      em: { min: 0.5, max: 3 },
+    },
+  },
 
   // ПАРАМЕТРЫ СИМУЛЯЦИИ ОКРУЖЕНИЯ (VIEWPORT & CONTAINER CONTEXTS)
+  'root-font-size': {
+    units: ['px'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 10, max: 24 },
+    },
+  },
+  'parent-font-size': {
+    units: ['px'],
+    defaultUnit: 'px',
+    limits: {
+      px: { min: 10, max: 36 },
+    },
+  },
   'viewport-width': {
     units: ['px'],
     defaultUnit: 'px',
