@@ -1,20 +1,47 @@
-// 1. Импортируем дизайн-систему (переменные)
 @use './styles/variables' as *;
-
-// 2. Импортируем сброс стилей браузера
 @use './styles/reset';
-
-// 3. Импортируем правила глобальной типографики
 @use './styles/typography';
-
-// 4. Импортируем общие переиспользуемые миксины и стили
 @use './styles/shared' as *;
 
-// Глобальный ограничитель ширины для всех тем/статей учебника
 .topic-container {
   max-width: 1100px;
   margin: 0 auto;
 
-  // Автоматически применяем общую стилизацию структуры статей на всех страницах
+  // Базовая стилизация структуры статей
   @include topic-layout;
+
+  // Адаптация отступов для планшетов
+  @include tablet {
+    .topic-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .topic-section {
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  // Адаптация для мобильных телефонов
+  @include phone {
+    .topic-header {
+      margin-bottom: 1.25rem;
+      
+      h1 {
+        font-size: 1.5rem; // Уменьшаем заголовок на смартфонах
+      }
+
+      .lead {
+        font-size: 1rem;
+      }
+    }
+
+    .topic-section {
+      margin-bottom: 2rem;
+      
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
 }

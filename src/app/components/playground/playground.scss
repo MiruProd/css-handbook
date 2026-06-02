@@ -1,7 +1,6 @@
 @use "../../../styles/variables" as *;
 @use "../../../styles/shared" as *;
 
-// Двухколоночная сетка песочницы
 .sandbox-grid {
   display: grid;
   grid-template-columns: 400px 1fr;
@@ -9,18 +8,19 @@
   margin-bottom: 2rem;
   align-items: stretch;
 
-  @media (max-width: 960px) {
+  // Перестраиваем сетку в одну колонку на планшетах и ноутбуках
+  @include laptop {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 }
 
-// Левая колонка: Пульт управления (берём из shared mixins)
 .controls-panel {
   @include controls-panel;
 
-  @media (max-width: 480px) {
-    padding: 1rem; // Компактные отступы пульта на смартфонах
+  // Уплотняем пульт управления на мобильных телефонах
+  @include phone {
+    padding: 1rem;
   }
 }
 
@@ -65,12 +65,10 @@
   @include unit-badge($color-primary-light, $color-primary);
 }
 
-// Ползунки (range inputs)
 .range-slider {
   @include range-slider($color-primary, $color-primary-hover);
 }
 
-// Переключатели режимов (toggles)
 .toggle-buttons {
   display: flex;
   gap: 0.25rem;
@@ -112,7 +110,6 @@
   }
 }
 
-// Правая колонка: Светлый холст-контейнер для превью
 .visual-panel {
   display: flex;
   justify-content: center;
@@ -125,13 +122,13 @@
   box-sizing: border-box;
   overflow: auto;
 
-  @media (max-width: 480px) {
-    min-height: 320px; // Снижаем высоту холста, чтобы влез по вертикали
+  // Адаптируем холст на телефонах
+  @include phone {
+    min-height: 320px;
     padding: 1rem;
   }
 }
 
-// Обертка для проброшенного контента превью
 .playground-preview-content {
   display: flex;
   justify-content: center;

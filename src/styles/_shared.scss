@@ -1,6 +1,33 @@
 @use './variables' as *;
 
-// 1. МАКЕТЫ ТЕМ И СТАТЕЙ (Глобальный каркас для всех страниц)
+// Адаптивная сетка
+$breakpoint-phone: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-laptop: 960px;
+$breakpoint-desktop: 1200px;
+
+// Стили для мобильных телефонов
+@mixin phone {
+  @media (max-width: $breakpoint-phone) {
+    @content;
+  }
+}
+
+// Стили для планшетов
+@mixin tablet {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+// Стили для экранов ноутбуков
+@mixin laptop {
+  @media (max-width: $breakpoint-laptop) {
+    @content;
+  }
+}
+
+// Общая структура тем и статей учебника
 @mixin topic-layout {
   .topic-header {
     margin-bottom: 2.5rem;
@@ -23,8 +50,7 @@
   }
 }
 
-// 2. СТАНДАРТНАЯ СЕРЕБРЯНАЯ КАРТОЧКА АНАЛИТИКИ/ТЕОРИИ ВНУТРИ ПУЛЬТА
-// (Унифицирует .math-panel, .active-theory-card, .behavior-summary)
+// Карточка аналитики или краткой теории в пульте управления
 @mixin info-summary-card {
   background-color: $color-white;
   border: 1px solid $color-gray-200;
@@ -54,7 +80,7 @@
   }
 }
 
-// 3. ПАНЕЛЬ ВЫЧИСЛЕННЫХ МЕТРИК ДЛЯ СТЕНДОВ (DevTools стиль)
+// Панель вычисленных метрик для стендов (DevTools-style)
 @mixin metrics-panel {
   background-color: rgba($color-gray-900, 0.95);
   border-radius: $radius-sm;
@@ -86,7 +112,7 @@
   }
 }
 
-// 4. ПУЛЬТ УПРАВЛЕНИЯ ПЕСОЧНИЦЕЙ
+// Контейнер пульта управления песочницей
 @mixin controls-panel {
   background-color: $color-gray-50;
   border: 1px solid $color-gray-200;
@@ -98,7 +124,7 @@
   box-shadow: $shadow-sm;
 }
 
-// Заголовок секций внутри пульта управления
+// Заголовок разделов внутри пульта управления
 @mixin panel-section-title {
   font-size: 0.8rem;
   font-weight: 700;
@@ -114,7 +140,7 @@
   }
 }
 
-// Контейнер для отдельного интерактивного параметра
+// Обертка для одного интерактивного параметра
 @mixin control-item {
   display: flex;
   flex-direction: column;
@@ -128,7 +154,7 @@
   }
 }
 
-// Слайдер (ползунок range)
+// Кастомный ползунок range
 @mixin range-slider($thumb-color: $color-primary, $hover-color: $color-primary-hover) {
   -webkit-appearance: none;
   appearance: none;
@@ -177,7 +203,7 @@
   }
 }
 
-// Бейдж для вывода текущей величины
+// Индикатор текущей единицы измерения
 @mixin unit-badge($bg-color: $color-primary-light, $text-color: $color-primary) {
   font-family: $font-code;
   font-weight: 700;

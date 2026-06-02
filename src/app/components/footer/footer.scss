@@ -7,6 +7,13 @@
   padding-top: 1.5rem;
   border-top: 1px solid $color-gray-200;
   margin-top: 5rem; // Обеспечивает отступ от основного контента темы
+
+  // Перестраиваем структуру на маленьких экранах в вертикальную колонку
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
 }
 
 .footer-copyright {
@@ -17,6 +24,10 @@
 .footer-links {
   display: flex;
   gap: 1.5rem;
+
+  @media (max-width: 576px) {
+    justify-content: center;
+  }
 
   .footer-link {
     color: $color-gray-600;

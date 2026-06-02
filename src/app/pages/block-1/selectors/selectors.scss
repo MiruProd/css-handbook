@@ -1,7 +1,6 @@
 @use "../../../../styles/variables" as *;
 @use "../../../../styles/shared" as *;
 
-// 1. ТРЕХКОЛОНОЧНЫЙ МАКЕТ СТЕНДА
 .sandbox-layout {
   display: grid;
   grid-template-columns: 250px 1.2fr 1fr;
@@ -9,7 +8,8 @@
   margin-bottom: 2rem;
   align-items: stretch;
 
-  @media (max-width: 1024px) {
+  // Переход в одну колонку на планшетах и ниже
+  @include tablet {
     grid-template-columns: 1fr;
   }
 }
@@ -28,12 +28,16 @@
   letter-spacing: 0.5px;
 }
 
-
-// 2. ЛЕВАЯ КОЛОНКА: КОМПАКТНЫЕ КАРТОЧКИ
 .compact-selectors-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  // На мобильных выстраиваем карточки в ряд со скроллом или в 2 колонки
+  @include phone {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .selector-card {
@@ -98,7 +102,6 @@
   transition: all $transition-fast;
 }
 
-// Бейджи
 .selector-badge {
   display: inline-block;
   font-family: $font-code;
@@ -116,8 +119,6 @@
   &.badge-group { background-color: $color-gray-900; }
 }
 
-
-// 3. ЦЕНТРАЛЬНАЯ КОЛОНКА: DOM-ИНСПЕКТОР (INLINE)
 .preview-container {
   display: flex;
   flex-direction: column;
@@ -128,22 +129,26 @@
   padding: 1.25rem;
   height: 100%;
   box-sizing: border-box;
+  overflow-x: auto; // Защита от вылета длинных строк кода на мобильных
+
+  @include phone {
+    padding: 0.75rem;
+  }
 }
 
-// Элемент строки DOM-дерева
 .dom-item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; // Код в инспекторе не должен рваться
   gap: 0.4rem;
   border-radius: $radius-sm;
   border: 1px solid transparent;
   padding: 0.35rem 0.6rem;
   transition: all $transition-normal;
+  white-space: nowrap;
 }
 
-// Имитация тегов IDE
 .dom-meta, .dom-meta-closing {
   font-family: $font-code;
   font-size: 0.8rem;
@@ -166,12 +171,10 @@
   }
 }
 
-// Контентный контейнер
 .dom-content {
   display: inline-flex;
   align-items: center;
 
-  // Нейтрализуем дефолтные блочные отступы
   .preview-title {
     color: $color-white;
     font-size: 1.05rem;
@@ -206,121 +209,76 @@
   }
 }
 
-
-// 4. СИМУЛЯЦИЯ ПОДРОБНОЙ ПОДСВЕТКИ (GLOW EFFECTS)
 @mixin highlight-matched-line($bg-color, $border-color) {
   background-color: rgba($bg-color, 0.08);
   border: 1px dashed $border-color;
   box-shadow: 0 0 10px rgba($bg-color, 0.08);
 }
 
-// 1. Универсальный (*)
-.preview-container.active-universal {
-  .dom-item {
-    @include highlight-matched-line($color-primary, $color-primary);
-  }
+.preview-container.active-universal .dom-item {
+  @include highlight-matched-line($color-primary, $color-primary);
 }
 
-// 2. Селектор типа (p)
 .preview-container.active-type {
   .p-regular-item, .p-class-item, .p-id-item {
     @include highlight-matched-line($color-warning, $color-warning);
-    
     .tag-name {
       color: $color-warning;
       text-shadow: 0 0 8px rgba($color-warning, 0.5);
     }
-    
-    .preview-text {
-      color: $color-warning-light;
-    }
+    .preview-text { color: $color-warning-light; }
   }
 }
 
-// 3. Селектор класса (.text-highlight)
-.preview-container.active-class {
-  .p-class-item {
-    @include highlight-matched-line($color-success, $color-success);
+.preview-container.active-class .p-class-item {
+  @include highlight-matched-line($color-success, $color-success);
+  .attr-name, .attr-val {
+    color: $color-success;
+    text-shadow: 0 0 8px rgba($color-success, 0.5);
+    font-weight: 700;
+  }
+  .preview-text { color: $color-success-light; font-weight: 600; }
+}
 
-    .attr-name, .attr-val {
-      color: $color-success;
-      text-shadow: 0 0 8px rgba($color-success, 0.5);
-      font-weight: 700;
-    }
+.preview-container.active-id .p-id-item {
+  @include highlight-matched-line($color-warning, $color-warning);
+  .attr-name, .attr-val {
+    color: $color-warning;
+    text-shadow: 0 0 8px rgba($color-warning, 0.5);
+    font-weight: 700;
+  }
+  .preview-text { color: $color-warning-light; font-style: italic; }
+}
 
-    .preview-text {
-      color: $color-success-light;
-      font-weight: 600;
-    }
+.preview-container.active-attribute .button-item {
+  @include highlight-matched-line($color-accent, $color-accent);
+  .attr-name, .attr-val {
+    color: $color-accent;
+    text-shadow: 0 0 8px rgba($color-accent, 0.5);
+    font-weight: 700;
+  }
+  .preview-btn {
+    background-color: $color-accent;
+    border-color: $color-accent;
+    box-shadow: 0 0 10px rgba($color-accent, 0.4);
   }
 }
 
-// 4. Селектор ID (#special-paragraph)
-.preview-container.active-id {
-  .p-id-item {
-    @include highlight-matched-line($color-warning, $color-warning);
-
-    .attr-name, .attr-val {
-      color: $color-warning;
-      text-shadow: 0 0 8px rgba($color-warning, 0.5);
-      font-weight: 700;
-    }
-
-    .preview-text {
-      color: $color-warning-light;
-      font-style: italic;
-    }
+.preview-container.active-grouping .h3-item, .preview-container.active-grouping .button-item {
+  @include highlight-matched-line($color-primary, $color-primary);
+  .tag-name {
+    color: $color-primary;
+    text-shadow: 0 0 8px rgba($color-primary, 0.5);
+    font-weight: 700;
   }
+  .preview-title, .preview-btn { text-transform: uppercase; letter-spacing: 0.5px; }
 }
 
-// 5. Селектор атрибута ([data-type="accent"])
-.preview-container.active-attribute {
-  .button-item {
-    @include highlight-matched-line($color-accent, $color-accent);
-
-    .attr-name, .attr-val {
-      color: $color-accent;
-      text-shadow: 0 0 8px rgba($color-accent, 0.5);
-      font-weight: 700;
-    }
-
-    .preview-btn {
-      background-color: $color-accent;
-      border-color: $color-accent;
-      box-shadow: 0 0 10px rgba($color-accent, 0.4);
-    }
-  }
-}
-
-// 6. Группировка (h3, button)
-.preview-container.active-grouping {
-  .h3-item, .button-item {
-    @include highlight-matched-line($color-primary, $color-primary);
-
-    .tag-name {
-      color: $color-primary;
-      text-shadow: 0 0 8px rgba($color-primary, 0.5);
-      font-weight: 700;
-    }
-
-    .preview-title, .preview-btn {
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-  }
-}
-
-.css-output-wrapper {
-  margin-top: 1rem;
-}
-
-
-// 5. КАРТОЧКА ДИНАМИЧЕСКОЙ ТЕОРИИ СЕЛЕКТОРОВ
 .active-theory-card {
   @include info-summary-card;
   gap: 0.75rem;
   transition: all $transition-normal;
-  flex-grow: 1; // Заполняет оставшуюся высоту колонки
+  flex-grow: 1;
 }
 
 .theory-title {
@@ -336,11 +294,7 @@
   gap: 0.5rem;
   font-size: 0.85rem;
 
-  .spec-label {
-    color: $color-gray-600;
-    font-weight: 500;
-  }
-
+  .spec-label { color: $color-gray-600; font-weight: 500; }
   .spec-value {
     font-family: $font-code;
     font-weight: 700;
@@ -372,11 +326,5 @@
     letter-spacing: 0.5px;
     color: $color-primary;
   }
-
-  .practice-text {
-    font-size: 0.8rem;
-    line-height: 1.4;
-    color: $color-gray-600;
-    margin: 0;
-  }
+  .practice-text { font-size: 0.8rem; line-height: 1.4; color: $color-gray-600; margin: 0; }
 }
