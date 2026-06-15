@@ -328,3 +328,176 @@
   }
   .practice-text { font-size: 0.8rem; line-height: 1.4; color: $color-gray-600; margin: 0; }
 }
+
+// ==========================================================================
+// ШПАРАГАЛКА ПО СЛОЖНЫМ КОМБИНАТОРАМ
+// ==========================================================================
+
+.combinators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include phone {
+    grid-template-columns: 1fr;
+  }
+}
+
+.combinator-item {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-sizing: border-box;
+
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+    color: $color-gray-900;
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: $color-gray-700;
+    margin-bottom: 0;
+  }
+
+  pre {
+    margin-bottom: 0;
+    padding: 0.75rem;
+  }
+
+  .comment {
+    font-family: $font-code;
+    font-size: 0.725rem;
+    color: $color-gray-500;
+    margin-top: -0.25rem;
+  }
+}
+
+// ==========================================================================
+// СРАВНЕНИЕ CSS NESTING
+// ==========================================================================
+
+.nesting-example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.nesting-card {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+
+  h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    color: $color-gray-800;
+  }
+
+  pre {
+    margin-bottom: 0;
+    padding: 1rem;
+  }
+
+  &.success-card {
+    border-color: $color-success-100;
+    background-color: rgba($color-success, 0.02);
+
+    h4 {
+      color: $color-success-hover;
+    }
+  }
+}
+
+// ==========================================================================
+// ТАБЛИЦА СПЕЦИФИЧНОСТИ (ПРИОРИТЕТА)
+// ==========================================================================
+
+.specificity-table-wrapper {
+  width: 100%;
+  overflow-x: auto; // Позволяет скроллить таблицу вбок на смартфонах
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-sm;
+}
+
+.specificity-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+  background-color: $color-white;
+
+  th, td {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid $color-gray-200;
+  }
+
+  th {
+    background-color: $color-gray-50;
+    font-weight: 700;
+    color: $color-gray-900;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  tbody tr {
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: $color-gray-50;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  code {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+  }
+
+  // Подсветка строки !important как абсолютного перекрытия
+  .row-important {
+    background-color: rgba($color-warning, 0.05);
+    
+    td {
+      border-bottom-color: rgba($color-warning, 0.2);
+    }
+
+    &:hover {
+      background-color: rgba($color-warning, 0.08);
+    }
+
+    code {
+      background-color: $color-warning-light;
+      color: $color-warning-dark;
+      border: 1px solid $color-warning-100;
+    }
+  }
+}

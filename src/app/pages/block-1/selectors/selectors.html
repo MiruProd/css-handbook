@@ -1,7 +1,7 @@
 <div class="topic-container">
 
   <header class="topic-header">
-    <h1>1.2. Базовые селекторы</h1>
+    <h1>1.2. Селекторы, приоритет и CSS Nesting</h1>
     <p class="lead">Селекторы указывают браузеру, к каким элементам применить стили. Нажимай на компактные карточки слева, чтобы запустить интерактивный стенд без лишней прокрутки!</p>
   </header>
 
@@ -181,16 +181,134 @@
     </div>
   </section>
 
-  <!-- Блок 3: Советы и частые ошибки -->
-  <section class="topic-section">
-    <h2>Бест-практики и частые ошибки</h2>
+  <!-- Шпаргалка по сложным комбинаторам -->
+  <section class="topic-section theory-section">
+    <h2>Шпаргалка: Сложные селекторы и комбинаторы</h2>
+    <p>Комбинаторы связывают селекторы между собой, описывая точные отношения между ними внутри структуры HTML-страницы.</p>
 
-    <app-info-block type="warning" title="Избыточность селектора ID">
-      <p>Старайся избегать использования селекторов идентификаторов (<code>#id</code>) для стилизации элементов. Они обладают чрезвычайно высоким «весом» специфичности, из-за чего их крайне сложно переопределить другими классами в будущем.</p>
-    </app-info-block>
+    <div class="combinators-grid">
+      <div class="combinator-item">
+        <h3>1. Потомок (Пробел) <code>A B</code></h3>
+        <p>Выбирает элемент <code>B</code> на <strong>любом</strong> уровне вложенности внутри родителя <code>A</code>.</p>
+        <pre><code>.card span {{ '{' }} color: red; {{ '}' }}</code></pre>
+        <span class="comment">/* Выберет span даже внутри вложенных блоков */</span>
+      </div>
 
-    <app-info-block type="tip" title="Оптимизация группировки">
-      <p>Группировка селекторов через запятую (например, <code>h1, h2, p</code>) позволяет сократить дублирование в кодовой базе и облегчает последующую поддержку стилей.</p>
+      <div class="combinator-item">
+        <h3>2. Прямой потомок (Дочерний) <code>A > B</code></h3>
+        <p>Выбирает элемент <code>B</code>, только если он является <strong>непосредственным (первым)</strong> наследником <code>A</code>.</p>
+        <pre><code>.card > span {{ '{' }} color: green; {{ '}' }}</code></pre>
+        <span class="comment">/* Не затронет span, если он обернут в другой тег внутри .card */</span>
+      </div>
+
+      <div class="combinator-item">
+        <h3>3. Соседний селектор <code>A + B</code></h3>
+        <p>Находит элемент <code>B</code>, если он идет <strong>сразу же после</strong> <code>A</code> на одном уровне вложенности.</p>
+        <pre><code>h2 + p {{ '{' }} font-weight: bold; {{ '}' }}</code></pre>
+        <span class="comment">/* Идеально для выделения первого вводного абзаца статьи */</span>
+      </div>
+
+      <div class="combinator-item">
+        <h3>4. Родственный селектор <code>A ~ B</code></h3>
+        <p>Выбирает <strong>все</strong> элементы <code>B</code>, идущие после <code>A</code> на одном уровне, не обязательно вплотную.</p>
+        <pre><code>h2 ~ p {{ '{' }} color: gray; {{ '}' }}</code></pre>
+        <span class="comment">/* Выберет все последующие абзацы в пределах секции */</span>
+      </div>
+    </div>
+
+    <!-- Раздел про нативную вложенность CSS Nesting -->
+    <h2>Нативная вложенность (CSS Nesting)</h2>
+    <p>Начиная с 2023–2024 годов, нативная вложенность поддерживается всеми современными браузерами [2]. Это позволяет писать чистые вложенные правила, группируя стили компонента в одном месте.</p>
+
+    <div class="nesting-example-grid">
+      <div class="nesting-card">
+        <h4>Как писали раньше (Традиционный CSS)</h4>
+        <pre><code>.menu {{ '{' }}
+  background-color: #333;
+{{ '}' }}
+.menu .menu-item {{ '{' }}
+  color: #fff;
+{{ '}' }}
+.menu .menu-item:hover {{ '{' }}
+  color: #ffcc00;
+{{ '}' }}</code></pre>
+      </div>
+
+      <div class="nesting-card success-card">
+        <h4>Как пишем сейчас (Современный CSS Nesting)</h4>
+        <pre><code>.menu {{ '{' }}
+  background-color: #333;
+
+  .menu-item {{ '{' }}
+    color: #fff;
+
+    &:hover {{ '{' }}
+      color: #ffcc00;
+    {{ '}' }}
+  {{ '}' }}
+{{ '}' }}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Таблица специфичности -->
+  <section class="topic-section theory-section">
+    <h2>Таблица расчета специфичности (приоритета)</h2>
+    <p>Когда к одному элементу применяются разные стили, браузер рассчитывает «вес» (специфичность) каждого селектора. Побеждает правило с наибольшим весом.</p>
+
+    <div class="specificity-table-wrapper">
+      <table class="specificity-table">
+        <thead>
+          <tr>
+            <th>Селектор / Конструкция</th>
+            <th>Пример</th>
+            <th>Очки специфичности (Вес)</th>
+            <th>Приоритет</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-important">
+            <td>Директива <code>!important</code></td>
+            <td><code>color: red !important;</code></td>
+            <td>Перебивает всё (Абсолютный)</td>
+            <td>Высший 🏆</td>
+          </tr>
+          <tr>
+            <td>Инлайновые стили (атрибут <code>style</code>)</td>
+            <td><code>&lt;div style="color: red;"&gt;</code></td>
+            <td><code>[1, 0, 0, 0]</code></td>
+            <td>Очень высокий</td>
+          </tr>
+          <tr>
+            <td>Идентификаторы (ID)</td>
+            <td><code>#special-paragraph</code></td>
+            <td><code>[0, 1, 0, 0]</code></td>
+            <td>Высокий</td>
+          </tr>
+          <tr>
+            <td>Классы, псевдоклассы, атрибуты</td>
+            <td><code>.text-highlight</code>, <code>:hover</code>, <code>[type]</code></td>
+            <td><code>[0, 0, 1, 0]</code></td>
+            <td>Средний</td>
+          </tr>
+          <tr>
+            <td>Теги и псевдоэлементы</td>
+            <td><code>p</code>, <code>h3</code>, <code>::before</code></td>
+            <td><code>[0, 0, 0, 1]</code></td>
+            <td>Низкий</td>
+          </tr>
+          <tr>
+            <td>Универсальный селектор / комбинаторы</td>
+            <td><code>*</code>, <code>+</code>, <code>&gt;</code>, <code>~</code></td>
+            <td><code>[0, 0, 0, 0]</code></td>
+            <td>Нулевой</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-info-block type="warning" title="Избегайте войн специфичности">
+      <p>Частая ошибка новичков — использование ID (<code>#header</code>) для стилизации элементов или злоупотребление <code>!important</code>. Из-за этого «вес» селектора становится огромным, и когда вам понадобится изменить цвет кнопки на одной конкретной странице, вам придется писать ещё более сложные селекторы. Стройте верстку преимущественно на <strong>классах (очки 0,0,1,0)</strong> — их вес сбалансирован и предсказуем.</p>
     </app-info-block>
   </section>
 
