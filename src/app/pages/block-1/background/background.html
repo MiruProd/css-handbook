@@ -1,0 +1,154 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.8. Фоновые изображения и градиенты</h1>
+    <p class="lead">Свойства фонового оформления позволяют оживить интерфейс: от простой заливки сплошным цветом до сложных многослойных градиентов и адаптивных фоновых изображений.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница</h2>
+    <p>Переключайте режимы фона. Для градиентов настраивайте угол наклона и цвета, а для изображений поэкспериментируйте с режимами повторения (repeat) и масштабирования (size).</p>
+
+    <app-playground [code]="generatedCss()" theme="teal">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ (ПУЛЬТ УПРАВЛЕНИЯ) -->
+      <div controls>
+        <app-playground-toggle 
+          label="Режим фона (background)" 
+          [(value)]="bgMode" 
+          [options]="['color', 'gradient', 'image']"
+        ></app-playground-toggle>
+
+        <!-- Контроллеры для режима: Сплошной цвет -->
+        @if (bgMode() === 'color') {
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label font-bold">Цвет заливки:</span>
+              <app-color-selector [(color)]="solidColor"></app-color-selector>
+            </div>
+          </div>
+        }
+
+        <!-- Контроллеры для режима: Градиент -->
+        @if (bgMode() === 'gradient') {
+          <app-playground-toggle 
+            label="Тип градиента" 
+            [(value)]="gradientType" 
+            [options]="['linear', 'radial']"
+          ></app-playground-toggle>
+
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label font-bold">Начальный цвет:</span>
+              <app-color-selector [(color)]="gradientColor1"></app-color-selector>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label font-bold">Конечный цвет:</span>
+              <app-color-selector [(color)]="gradientColor2"></app-color-selector>
+            </div>
+          </div>
+
+          @if (gradientType() === 'linear') {
+            <app-playground-slider 
+              label="Угол наклона градиента" 
+              [(value)]="gradientAngle"
+              [customUnits]="['deg']"
+              [min]="0"
+              [max]="360"
+            ></app-playground-slider>
+          }
+        }
+
+        <!-- Контроллеры для режима: Изображение -->
+        @if (bgMode() === 'image') {
+          <app-playground-toggle 
+            label="Заполнение (background-size)" 
+            [value]="bgSize()" 
+            (valueChange)="onSizeChange($event)"
+            [options]="['cover', 'contain', 'auto']"
+          ></app-playground-toggle>
+
+          <app-playground-toggle 
+            label="Повторение (background-repeat)" 
+            [value]="bgRepeat()" 
+            (valueChange)="onRepeatChange($event)"
+            [options]="['no-repeat', 'repeat', 'repeat-x', 'repeat-y']"
+          ></app-playground-toggle>
+
+          <app-playground-toggle 
+            label="Выравнивание (background-position)" 
+            [(value)]="bgPosition" 
+            [options]="['center', 'top left', 'bottom right']"
+          ></app-playground-toggle>
+
+          <app-playground-toggle 
+            label="Поведение (background-attachment)" 
+            [(value)]="bgAttachment" 
+            [options]="['scroll', 'fixed', 'local']"
+          ></app-playground-toggle>
+        }
+      </div>
+
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview class="background-preview-wrapper">
+        <div class="bg-demo-canvas" [ngStyle]="targetStyles()">
+          <!-- Полупрозрачная карточка поверх фона для читаемости текста -->
+          <div class="preview-overlay-card">
+            <h3 class="card-title">Visual preview</h3>
+            <p class="card-text">Так выбранное фоновое оформление будет выглядеть на реальной веб-странице.</p>
+          </div>
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Основные свойства фона</h2>
+    <p>В CSS фон элемента можно задать как отдельными свойствами, так и объединенным универсальным свойством <code>background</code>.</p>
+
+    <ul>
+      <li><strong><code>background-color</code></strong> — задает сплошную заливку цветом. Принимает любые форматы цвета (HEX, RGB, HSL) или ключевое слово <code>transparent</code> (прозрачный).</li>
+      <li><strong><code>background-image</code></strong> — принимает путь к изображению через функцию <code>url('путь')</code> или CSS-градиенты (<code>linear-gradient</code>, <code>radial-gradient</code>).</li>
+      <li><strong><code>background-repeat</code></strong> — управляет повторением картинки, если она меньше размеров элемента. Значение <code>no-repeat</code> отключает дублирование, а <code>repeat-x</code> и <code>repeat-y</code> заставляют картинку размножаться только по горизонтали или вертикали.</li>
+      <li><strong><code>background-size</code></strong> — одно из ключевых свойств адаптивности:
+        <ul>
+          <li><code>cover</code> — масштабирует изображение так, чтобы оно полностью закрыло площадь контейнера (часть картинки может обрезаться).</li>
+          <li><code>contain</code> — вписывает картинку целиком в контейнер без искажений и обрезки (могут остаться пустые поля по бокам).</li>
+        </ul>
+      </li>
+      <li><strong><code>background-position</code></strong> — смещает фоновое изображение. Можно задавать ключевыми словами (<code>center</code>, <code>top right</code>) или точными значениями в процентах и пикселях.</li>
+      <li><strong><code>background-attachment</code></strong> — определяет поведение фона при прокрутке. Значение <code>fixed</code> фиксирует картинку относительно экрана, создавая классический эффект параллакса.</li>
+    </ul>
+
+    <h2>Почему свойства повторения (repeat) и размера (size) влияют друг на друга?</h2>
+    <p>Это важнейший аспект верстки, который часто вызывает путаницу у начинающих разработчиков. Понимание физического рендеринга помогает избежать распространенных ошибок:</p>
+
+    <div class="warning-explanation-block" style="background-color: #f1f3f5; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid #0ca678;">
+      <h3 style="margin-top: 0; font-size: 1.1rem; color: #212529;">1. Конфликт с масштабированием cover и contain</h3>
+      <p style="font-size: 0.9rem; line-height: 1.5; color: #495057; margin-bottom: 1rem;">
+        Когда свойство <code>background-size</code> установлено в значение <code>cover</code> или <code>contain</code>, браузер принудительно рассчитывает новые габариты изображения, чтобы оно полностью заполнило элемент или поместилось в него. При значении <code>cover</code> единственная копия изображения гарантированно закрывает 100% площади. В этом состоянии свойство <code>background-repeat</code> математически не имеет эффекта — свободному месту просто неоткуда взяться, поэтому картинке негде размножаться.
+      </p>
+      
+      <h3 style="font-size: 1.1rem; color: #212529;">2. Конфликт с исходным размером картинки (auto)</h3>
+      <p style="font-size: 0.9rem; line-height: 1.5; color: #495057; margin-bottom: 1rem;">
+        По умолчанию свойство <code>background-size</code> равно значению <code>auto</code>, то есть браузер отображает фоновую картинку в её оригинальном (физическом) разрешении. Если исходный файл имеет большие габариты (например, фотография 1000px и более), а сам блок на веб-странице относительно небольшой, картинка физически заполнит весь блок своей частью. Вы не увидите повторения плитки и не сможете оценить сдвиг позиций, потому что картинка банально "не поместилась", чтобы начать дублироваться.
+      </p>
+
+      <h3 style="font-size: 1.1rem; color: #212529;">3. Правильная демонстрация повторения</h3>
+      <p style="font-size: 0.9rem; line-height: 1.5; color: #495057; margin-bottom: 0;">
+        Для того чтобы повторение (repeat) и смещение позиций (position) были видны, фоновое изображение должно быть физически меньше самого блока. В нашей песочнице при включении повторения система автоматически переключает размер в <code>auto</code> и динамически подгружает уменьшенную версию фотографии (шириной 150px), чтобы плитка сразу стала наглядно видна.
+      </p>
+    </div>
+
+    <app-info-block type="tip" title="Оптимизация фоновых изображений">
+      <p>Фоновые изображения высокого разрешения — частая причина медленной загрузки сайтов. Всегда оптимизируйте файлы перед публикацией: используйте современные форматы (WebP или AVIF) и сжимайте их вес.</p>
+    </app-info-block>
+  </section>
+
+</div>
