@@ -5,6 +5,7 @@ import { Selectors } from './pages/block-1/selectors/selectors';
 import { BoxModel } from './pages/block-1/box-model/box-model';
 import { Display } from './pages/block-1/display/display';
 import { Units } from './pages/block-1/units/units';
+import { Colors } from './pages/block-1/colors/colors';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
       {
         path: 'units',
         component: Units,
+      },
+      {
+        path: 'colors',
+        component: Colors,
       },
     ],
   },

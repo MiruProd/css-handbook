@@ -1,0 +1,104 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.6. Цвета в CSS</h1>
+    <p class="lead">От классических шестнадцатеричных HEX-кодов до современных функций управления прозрачностью и цветовым тоном (HSL). Понимание цветовых моделей — ключ к созданию гибких дизайн-систем.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница HSL</h2>
+    <p>Модель HSL (Hue, Saturation, Lightness) является наиболее интуитивной для человеческого восприятия. Настрой параметры цвета ниже и посмотри, как он конвертируется в разные форматы браузером.</p>
+
+    <app-playground [code]="generatedCss()" theme="success">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ -->
+      <div controls>
+        <app-playground-toggle 
+          label="Формат вывода CSS" 
+          [(value)]="colorFormat" 
+          [options]="['hsl', 'rgb', 'hex']"
+        ></app-playground-toggle>
+
+        <app-playground-slider 
+          label="Оттенок (Hue) — тон цвета" 
+          [(value)]="hue" 
+          [customUnits]="['deg']"
+          [min]="0"
+          [max]="360"
+        ></app-playground-slider>
+
+        <app-playground-slider 
+          label="Насыщенность (Saturation)" 
+          [(value)]="saturation" 
+          [customUnits]="['%']"
+          [min]="0"
+          [max]="100"
+        ></app-playground-slider>
+
+        <app-playground-slider 
+          label="Яркость (Lightness)" 
+          [(value)]="lightness" 
+          [customUnits]="['%']"
+          [min]="0"
+          [max]="100"
+        ></app-playground-slider>
+
+        <app-playground-slider 
+          label="Прозрачность (Alpha)" 
+          [(value)]="alpha" 
+          [customUnits]="['']"
+          [min]="0"
+          [max]="1"
+        ></app-playground-slider>
+      </div>
+
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview class="transparency-grid">
+        <div class="color-box" [ngStyle]="targetStyles()">
+          <span 
+            class="color-value" 
+            [class.dark-text]="lightness() > 65 || (alpha() < 0.5 && lightness() > 40)"
+          >
+            {{ finalColor() }}
+          </span>
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section">
+    <h2>Популярные форматы цвета</h2>
+
+    <app-info-block type="tip" title="Ключевое слово currentColor">
+      <p>Специальное значение <code>currentColor</code> берет текущее значение свойства <code>color</code> (цвет текста) и применяет его к другим свойствам (например, к рамкам, теням или заливке SVG). Это невероятно удобно для создания элементов, меняющих цвет при наведении (<code>:hover</code>) без дублирования кода.</p>
+    </app-info-block>
+
+    <div class="color-formats-list">
+      <!-- HEX -->
+      <div class="format-card">
+        <h3>HEX (Шестнадцатеричный код)</h3>
+        <p>Самый старый и распространенный формат. Начинается с решетки (<code>#</code>), за которой следуют три пары символов (от 00 до FF), обозначающие интенсивность красного (R), зеленого (G) и синего (B) каналов.</p>
+        <code>color: #1c7ed6;</code>
+        <p class="format-note">Современные браузеры также поддерживают 8-значный HEX, где последние два символа отвечают за прозрачность (например: <code>#1c7ed680</code> — 50% прозрачности).</p>
+      </div>
+
+      <!-- RGB -->
+      <div class="format-card">
+        <h3>RGB / RGBA</h3>
+        <p>Функция <code>rgb(red, green, blue)</code> принимает интенсивность каналов от 0 до 255. Функция <code>rgba()</code> (или просто добавление четвертого параметра в новых стандартах) позволяет указать альфа-канал от 0.0 до 1.0.</p>
+        <code>background-color: rgba(28, 126, 214, 0.5);</code>
+      </div>
+
+      <!-- HSL -->
+      <div class="format-card">
+        <h3>HSL / HSLA</h3>
+        <p>Идеальный выбор для создания тем (Dark/Light mode). Первый параметр — Оттенок (0-360 градусов на цветовом круге), Насыщенность (0-100%) и Яркость (0-100%). Позволяет легко получать более темные или светлые оттенки одного базового цвета простым изменением значения яркости.</p>
+        <code>border-color: hsl(212, 85%, 45%);</code>
+      </div>
+    </div>
+  </section>
+
+</div>
