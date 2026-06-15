@@ -1,0 +1,125 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.5. Обнуляющие стили (Reset и Normalize)</h1>
+    <p class="lead">Каждый браузер имеет свой встроенный набор стилей по умолчанию (User Agent Stylesheet). Из-за этого одна и та же страница без настройки может выглядеть по-разному в Chrome, Safari и Firefox. Обнуление стилей решает эту проблему, создавая чистый холст для верстки.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивное сравнение сбросов</h2>
+    <p>Переключай тумблеры на пульте управления. Наблюдай за тем, как дефолтные браузерные отступы, маркеры списков и рамки кнопок превращаются в предсказуемые и чистые базовые элементы.</p>
+
+    <app-playground [code]="generatedCss()" theme="teal">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ -->
+      <div controls>
+        <app-playground-toggle 
+          label="Расчет размеров (box-sizing)" 
+          [(value)]="boxSizing" 
+          [options]="['border-box', 'content-box']"
+        ></app-playground-toggle>
+
+        <app-playground-toggle 
+          label="Отступы заголовков и текста" 
+          [(value)]="bodyMargin" 
+          [options]="['0', 'default']"
+        ></app-playground-toggle>
+
+        <app-playground-toggle 
+          label="Стилизация списков (ul / ol)" 
+          [(value)]="listStyle" 
+          [options]="['none', 'default']"
+        ></app-playground-toggle>
+
+        <app-playground-toggle 
+          label="Оформление кнопок (button)" 
+          [(value)]="buttonStyle" 
+          [options]="['reset', 'default']"
+        ></app-playground-toggle>
+
+        <app-playground-toggle 
+          label="Поведение изображений (img)" 
+          [(value)]="imgBehavior" 
+          [options]="['block', 'inline']"
+        ></app-playground-toggle>
+      </div>
+
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview class="reset-preview-wrapper">
+        <div class="preview-document" [ngStyle]="previewContainerStyles()">
+          
+          <h3 [ngStyle]="headingStyles()" class="preview-heading">Заголовок статьи (h3)</h3>
+          
+          <p [ngStyle]="paragraphStyles()" class="preview-text">
+            Этот абзац текста (p) показывает базовое поведение параграфов в браузере.
+          </p>
+          
+          <ul [ngStyle]="listStyles()" class="preview-list">
+            <li>Элемент списка с маркером</li>
+            <li>Второй элемент с текстом</li>
+          </ul>
+          
+          <div class="preview-actions">
+            <button [ngStyle]="buttonStyles()" class="preview-btn">
+              Нативная кнопка
+            </button>
+          </div>
+
+          <!-- Имитация изображения с целью показать "baseline gap" при inline отображении -->
+          <div class="preview-image-section">
+            <div class="preview-image-box" [ngStyle]="imgStyles()">
+              <span>Изображение (img)</span>
+            </div>
+            <span class="baseline-dot">.</span>
+            <span class="baseline-text">Текст на базовой линии строки</span>
+          </div>
+
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Разница подходов: Reset vs Normalize</h2>
+    <p>Исторически в веб-разработке сложилось два основных подхода к выравниванию стилей между браузерами:</p>
+
+    <div class="resets-comparison-grid">
+      <div class="comparison-card">
+        <h3>Reset CSS (Жесткий сброс)</h3>
+        <p>Идея, популяризированная Эриком Мейером (Eric Meyer). Этот подход полностью <strong>стирает</strong> все дефолтные стили. Он превращает заголовки в обычный текст без жирности и размеров, полностью убирает отступы у всех элементов и стирает маркеры списков.</p>
+        <span class="badge danger-badge">Wipe out everything</span>
+      </div>
+
+      <div class="comparison-card">
+        <h3>Normalize.css (Нормализация)</h3>
+        <p>Подход Николаса Галлахера (Nicolas Gallagher). Вместо того чтобы всё ломать, Normalize <strong>сохраняет</strong> полезные дефолтные свойства браузеров (например, размеры заголовков h1-h6 или маркеры списков), но при этом исправляет баги рендеринга и делает эти стили одинаковыми во всех браузерах.</p>
+        <span class="badge success-badge">Fix bugs, keep defaults</span>
+      </div>
+    </div>
+
+    <h2>Современный подход в 2026 году</h2>
+    <p>В современной веб-разработке чистый <code>Normalize.css</code> используется реже, так как большинство старых багов браузеров ушли в прошлое. Сегодня золотым стандартом является написание <strong>минималистичного кастомного Reset-а</strong> (например, по методикам Энди Белла или Джоша Комо), который решает конкретные современные задачи:</p>
+
+    <ul>
+      <li>Установка <code>box-sizing: border-box;</code> для всех элементов, включая псевдоэлементы.</li>
+      <li>Сброс внешних полей (<code>margin: 0</code>) для тегов <code>body</code>, заголовков и списков, так как дизайнеры всегда рисуют под них уникальные отступы.</li>
+      <li>Установка для тегов <code>img</code> и <code>svg</code> свойств <code>display: block</code> и <code>max-width: 100%</code>, чтобы они вели себя предсказуемо и не ломали разметку.</li>
+      <li>Сброс системных рамок и градиентов у элементов форм и кнопок (<code>button</code>, <code>input</code>), чтобы их было легко стилизовать с нуля.</li>
+    </ul>
+
+    <app-info-block type="warning" title="Проблема зазора под inline-изображениями">
+      <p>По умолчанию тег <code>&lt;img&gt;</code> является строчно-блочным (<code>inline-block</code>). Это значит, что он выравнивается по базовой текстовой линии строки. Из-за этого под любой картинкой всегда остается пустой зазор в несколько пикселей (зарезервированный под свисающие элементы букв вроде «у», «д» или «щ»).</p>
+      <p>Установка <code>display: block</code> для изображений мгновенно убирает этот неприятный зазор, что и демонстрирует ползунок песочницы.</p>
+    </app-info-block>
+
+    <!-- ГОТОВАЯ ШПАРАГАЛКА ДЛЯ КОПИРОВАНИЯ -->
+    <h2>Готовый шаблон для твоих проектов (Modern Reset)</h2>
+    <p>Просто скопируй этот код и добавь его в отдельный файл <code>reset.css</code> или в самое начало твоего основного файла стилей. Это проверенная и безопасная коммерческая база, которая используется во всех современных проектах.</p>
+    
+    <app-code-block [code]="productionReset()" language="css" title="modern-reset.css"></app-code-block>
+  </section>
+
+</div>

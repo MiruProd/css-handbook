@@ -6,6 +6,7 @@ import { BoxModel } from './pages/block-1/box-model/box-model';
 import { Display } from './pages/block-1/display/display';
 import { Units } from './pages/block-2/units/units';
 import { Colors } from './pages/block-1/colors/colors';
+import { CssResets } from './pages/block-1/css-resets/css-resets';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'colors',
         component: Colors,
+      },
+      {
+        path: 'css-resets',
+        component: CssResets,
       },
     ],
   },
