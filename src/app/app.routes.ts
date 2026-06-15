@@ -7,6 +7,7 @@ import { Display } from './pages/block-1/display/display';
 import { Units } from './pages/block-2/units/units';
 import { Colors } from './pages/block-1/colors/colors';
 import { CssResets } from './pages/block-1/css-resets/css-resets';
+import { Fonts } from './pages/block-1/fonts/fonts';
 
 export const routes: Routes = [
   {
@@ -35,16 +36,20 @@ export const routes: Routes = [
         component: Display,
       },
       {
-        path: 'units',
-        component: Units,
+        path: 'css-resets',
+        component: CssResets,
+      },
+      {
+        path: 'fonts',
+        component: Fonts,
       },
       {
         path: 'colors',
         component: Colors,
       },
       {
-        path: 'css-resets',
-        component: CssResets,
+        path: 'units',
+        component: Units,
       },
     ],
   },

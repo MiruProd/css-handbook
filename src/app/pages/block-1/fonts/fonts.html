@@ -1,0 +1,109 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>1.6. Шрифты (font-family, font-weight, @font-face)</h1>
+    <p class="lead">Типографика определяет характер интерфейса и удобство восприятия информации. CSS позволяет гибко настраивать размеры шрифтов, насыщенность начертания, интервалы, а также импортировать уникальные гарнитуры с помощью правила @font-face.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <h2>Интерактивная песочница</h2>
+    <p>Настраивайте параметры шрифта на пульте управления. Наблюдайте, как изменение высоты строки и межбуквенного интервала влияет на визуальную плотность и читаемость текстового блока.</p>
+
+    <app-playground [code]="generatedCss()" theme="primary">
+      
+      <!-- СЛОТ КОНТРОЛЛЕРОВ (ПУЛЬТ УПРАВЛЕНИЯ) -->
+      <div controls>
+        <app-playground-toggle 
+          label="Семейство (font-family)" 
+          [(value)]="fontFamily" 
+          [options]="['sans-serif', 'serif', 'monospace', 'cursive']"
+        ></app-playground-toggle>
+
+        <app-playground-slider 
+          label="Размер шрифта (font-size)" 
+          property="font-size" 
+          [(value)]="fontSizeValue" 
+          [(unit)]="fontSizeUnit"
+        ></app-playground-slider>
+
+        <app-playground-toggle 
+          label="Насыщенность (font-weight)" 
+          [(value)]="fontWeight" 
+          [options]="['300', '400', '700', '900']"
+        ></app-playground-toggle>
+
+        <app-playground-slider 
+          label="Высота строки (line-height)" 
+          [(value)]="lineHeight"
+          [customUnits]="['']"
+          [min]="1"
+          [max]="2.5"
+        ></app-playground-slider>
+
+        <app-playground-slider 
+          label="Межбуквенный интервал" 
+          [(value)]="letterSpacing"
+          [customUnits]="['px']"
+          [min]="-2"
+          [max]="10"
+        ></app-playground-slider>
+
+        <app-playground-toggle 
+          label="Начертание (font-style)" 
+          [(value)]="fontStyle" 
+          [options]="['normal', 'italic']"
+        ></app-playground-toggle>
+
+        <app-playground-toggle 
+          label="Регистр (text-transform)" 
+          [(value)]="textTransform" 
+          [options]="['none', 'uppercase', 'lowercase', 'capitalize']"
+        ></app-playground-toggle>
+      </div>
+
+      <!-- СЛОТ ИНТЕРАКТИВНОГО ПРЕВЬЮ -->
+      <div preview class="font-preview-wrapper">
+        <div class="text-preview-box" [ngStyle]="targetStyles()">
+          <h3 class="preview-title-text">Заголовок статьи</h3>
+          <p class="preview-paragraph-text">
+            Качественная типографика структурирует контент, расставляет акценты и делает чтение удобным. Правильный выбор высоты строки и размера шрифта предотвращает усталость глаз пользователей.
+          </p>
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Семейство шрифтов и безопасные шрифты</h2>
+    <p>Свойство <code>font-family</code> принимает приоритетный список шрифтов. Если первый шрифт недоступен на устройстве пользователя, браузер попытается загрузить второй, затем третий и так далее.</p>
+
+    <app-info-block type="tip" title="Резервные категории (Fallbacks)">
+      <p>В конце цепочки шрифтов рекомендуется указывать общее семейство:
+        <code>sans-serif</code> (шрифты без засечек, например Arial, Helvetica), 
+        <code>serif</code> (шрифты с засечками, например Times New Roman), 
+        <code>monospace</code> (моноширинные шрифты, например Courier New, Fira Code). 
+        Это гарантирует предсказуемое отображение интерфейса на любых операционных системах.
+      </p>
+    </app-info-block>
+
+    <h2>Подключение кастомных шрифтов через @font-face</h2>
+    <p>Правило <code>@font-face</code> позволяет импортировать шрифтовые файлы с собственного сервера или CDN, давая возможность использовать абсолютно любое дизайнерское оформление.</p>
+
+    <app-code-block [code]="fontFaceCode()" language="css" title="fonts.css"></app-code-block>
+
+    <h3>Современные форматы шрифтовых файлов</h3>
+    <ul>
+      <li><strong>WOFF2 (Web Open Font Format 2.0)</strong> — золотой стандарт веба. Имеет наилучшее сжатие данных (в среднем на 30% эффективнее WOFF) и поддерживается всеми современными браузерами.</li>
+      <li><strong>WOFF</strong> — предыдущее поколение веб-шрифтов, используется для обеспечения обратной совместимости с устаревшими браузерами.</li>
+      <li><strong>TTF / OTF</strong> — традиционные форматы шрифтов для настольных операционных систем. Из-за отсутствия встроенного веб-сжатия использовать их на сайтах без конвертации не рекомендуется.</li>
+    </ul>
+
+    <app-info-block type="warning" title="Оптимизация загрузки через font-display">
+      <p>Свойство <code>font-display: swap</code> указывает браузеру сразу отобразить текстовый контент системным шрифтом по умолчанию. После того как кастомный файл шрифта полностью загрузится в фоне, браузер плавно заменит им системное начертание. Это исключает появление «невидимого» текста на этапе загрузки страницы (проблема FOIT — Flash of Invisible Text).</p>
+    </app-info-block>
+  </section>
+
+</div>
