@@ -4,7 +4,7 @@ import { Introduction } from './pages/block-1/introduction/introduction';
 import { Selectors } from './pages/block-1/selectors/selectors';
 import { BoxModel } from './pages/block-1/box-model/box-model';
 import { Display } from './pages/block-1/display/display';
-import { Units } from './pages/block-1/units/units';
+import { Units } from './pages/block-2/units/units';
 import { Colors } from './pages/block-1/colors/colors';
 
 export const routes: Routes = [
