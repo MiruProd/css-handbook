@@ -1,0 +1,135 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>15. Grid Layout</h1>
+    <p class="lead">CSS Grid Layout — это мощная двухмерная система сеток, которая позволяет одновременно управлять как колонками (вертикально), так и строками (горизонтально), формируя любые сложные интерфейсы сайтов.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления сеткой -->
+      <div controls>
+        
+        <div class="panel-section-title">Конструктор ячеек</div>
+        <app-playground-slider
+          label="Число ячеек в превью"
+          [min]="1"
+          [max]="12"
+          [(value)]="itemCount"
+        ></app-playground-slider>
+
+        <div class="panel-section-title">Шаблоны структуры</div>
+        <app-playground-toggle
+          label="grid-template-columns"
+          [options]="columnsPresetsList"
+          [(value)]="columnsPreset"
+        ></app-playground-toggle>
+
+        <app-playground-toggle
+          label="grid-template-rows"
+          [options]="rowsPresetsList"
+          [(value)]="rowsPreset"
+        ></app-playground-toggle>
+
+        <div class="panel-section-title">Выравнивание внутри ячеек</div>
+        <app-playground-toggle
+          label="justify-items (Горизонтально)"
+          [options]="justifyOptions"
+          [(value)]="justifyItems"
+        ></app-playground-toggle>
+
+        <app-playground-toggle
+          label="align-items (Вертикально)"
+          [options]="alignOptions"
+          [(value)]="alignItems"
+        ></app-playground-toggle>
+
+        <div class="panel-section-title">Расстояние и отступы</div>
+        <app-playground-slider
+          label="Расстояние между ячейками (gap)"
+          [min]="0"
+          [max]="40"
+          [(value)]="gapVal"
+        ></app-playground-slider>
+
+      </div>
+
+      <!-- Превью-интерактив -->
+      <div preview style="width: 100%;">
+        <div [ngStyle]="containerStyles()" class="preview-container">
+          
+          @for (num of gridCells(); track num) {
+            <div class="grid-cell" [class]="'cell-' + num">
+              <span class="cell-label">Ячейка {{ num }}</span>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Основные концепции CSS Grid</h2>
+    <p>В отличие от Flexbox, который предназначен для одномерных раскладок (выстраивание блоков либо в одну строку, либо в одну колонку), CSS Grid создавался как **полноценный двухмерный инструмент**. Он позволяет разделять страницу на пересекающиеся столбцы и строки, привязывая контент к получившимся ячейкам.</p>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Flexbox (1D Layout)</h3>
+        <p>Выравнивает элементы вдоль одной выбранной оси (главной). Если элементы переносятся на новую строку (flex-wrap), строки не зависят друг от друга, и ячейки во второй строке не выравниваются по первой.</p>
+      </div>
+
+      <div class="comparison-card outline-card">
+        <h3>CSS Grid (2D Layout)</h3>
+        <p>Управляет строками и колонками одновременно. Элементы жестко привязываются к пересечениям сетки (сетка первична, контент вторичен), формируя ровные столбцы по всем строкам.</p>
+      </div>
+    </div>
+
+    <h2>Уникальные инструменты разметки Grid</h2>
+    <p>Для создания гибких сеток в CSS Grid используются уникальные математические функции и единицы измерения:</p>
+
+    <div class="position-modes-list">
+
+      <div class="position-mode-card">
+        <h3>Фракционная единица (1fr)</h3>
+        <p>Специальная единица измерения <code>fr</code> (fraction) представляет собой одну долю от всего свободного пространства контейнера. Шаблон <code>1fr 2fr 1fr</code> разделит контейнер на 4 равные части, отдав центральной колонке половину всей ширины родителя.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>Функция repeat(кол-во, размер)</h3>
+        <p>Избавляет от необходимости дублировать одинаковые значения. Вместо <code>grid-template-columns: 1fr 1fr 1fr 1fr</code> можно написать компактное и читаемое правило: <code>repeat(4, 1fr)</code>.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>Функция minmax(min, max)</h3>
+        <p>Задает ячейкам «резиновый» диапазон размеров. Например, <code>minmax(100px, 1fr)</code> означает, что колонка будет плавно сжиматься или растягиваться вместе с экраном, но никогда не станет уже физического порога в <code>100px</code>.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>Адаптивность без медиа-запросов (auto-fit)</h3>
+        <p>Конструкция <code>repeat(auto-fit, minmax(100px, 1fr))</code> заставляет браузер самостоятельно рассчитывать, сколько колонок шириной не менее <code>100px</code> помещается в текущем окне, и автоматически переносить ячейки без использования сложных медиа-запросов <code>@media</code>.</p>
+      </div>
+
+    </div>
+
+    <h2>Выравнивание внутри ячеек Grid</h2>
+    <p>Каждая ячейка в сетке Grid является микро-контейнером. Вы можете управлять положением элементов внутри ячеек:</p>
+
+    <div class="combinators-grid">
+      <div class="combinator-item">
+        <h3>justify-items</h3>
+        <p>Выравнивает содержимое всех ячеек по горизонтали (вдоль оси строк): <code>stretch</code> (растянуть во всю ширину), <code>start</code> (прижать влево), <code>end</code> (прижать вправо) или <code>center</code> (выровнять по центру).</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>align-items</h3>
+        <p>Выравнивает содержимое всех ячеек по вертикали (вдоль оси столбцов): <code>stretch</code> (растянуть во всю высоту), <code>start</code> (прижать к верху), <code>end</code> (прижать к низу) или <code>center</code> (выровнять по центру).</p>
+      </div>
+    </div>
+  </section>
+
+</div>

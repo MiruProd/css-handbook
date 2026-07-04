@@ -1,0 +1,157 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/shared" as *;
+
+// ==========================================================================
+// СЕТКА СРАВНЕНИЯ BORDER И OUTLINE
+// ==========================================================================
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.comparison-card {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  transition: transform $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    border-color: $color-primary-100;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    color: $color-primary;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &.outline-card {
+    &:hover {
+      border-color: $color-accent-100;
+    }
+
+    h3 {
+      color: $color-accent;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: $color-gray-700;
+      position: relative;
+      padding-left: 1.25rem;
+
+      &::before {
+        content: "•";
+        color: $color-primary;
+        font-weight: 700;
+        font-size: 1.25rem;
+        position: absolute;
+        left: 0;
+        top: -0.15rem;
+      }
+    }
+  }
+
+  &.outline-card ul li::before {
+    color: $color-accent;
+  }
+}
+
+// ==========================================================================
+// БЛОК СИНТАКСИСА BOX-SHADOW
+// ==========================================================================
+
+.shadow-syntax-box {
+  background-color: $color-gray-900;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: $shadow-sm;
+  overflow-x: auto;
+
+  pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+
+    code {
+      color: $color-white;
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.95rem;
+    }
+  }
+
+  .syntax-param {
+    color: $color-code-variable;
+    font-weight: 600;
+    border-bottom: 1px dotted rgba($color-code-variable, 0.4);
+    padding-bottom: 1px;
+  }
+}
+
+// ==========================================================================
+// СЕТКА ПАРАМЕТРОВ СИНТАКСИСА ТЕНИ
+// ==========================================================================
+
+.combinators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include phone {
+    grid-template-columns: 1fr;
+  }
+}
+
+.combinator-item {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-sizing: border-box;
+
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+    color: $color-gray-900;
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: $color-gray-700;
+    margin-bottom: 0;
+  }
+}

@@ -9,6 +9,12 @@ import { Colors } from './pages/block-1/colors/colors';
 import { CssResets } from './pages/block-1/css-resets/css-resets';
 import { Fonts } from './pages/block-1/fonts/fonts';
 import { Background } from './pages/block-1/background/background';
+import { BordersShadows } from './pages/block-1/borders-shadows/borders-shadows';
+import { Position } from './pages/block-2/position/position';
+import { Flexbox } from './pages/block-2/flexbox/flexbox';
+import { PseudoElements } from './pages/block-2/pseudo-elements/pseudo-elements';
+import { PseudoClasses } from './pages/block-2/pseudo-classes/pseudo-classes';
+import { Grid } from './pages/block-2/grid/grid';
 
 export const routes: Routes = [
   {
@@ -53,8 +59,32 @@ export const routes: Routes = [
         component: Background,
       },
       {
+        path: 'borders-shadows',
+        component: BordersShadows,
+      },
+      {
+        path: 'position',
+        component: Position,
+      },
+      {
         path: 'units',
         component: Units,
+      },
+      {
+        path: 'flexbox',
+        component: Flexbox,
+      },
+      {
+        path: 'pseudo-elements',
+        component: PseudoElements,
+      },
+      {
+        path: 'pseudo-classes',
+        component: PseudoClasses,
+      },
+      {
+        path: 'grid',
+        component: Grid,
       },
     ],
   },

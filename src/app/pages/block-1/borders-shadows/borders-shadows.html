@@ -1,0 +1,214 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>9. Рамки, контуры и тени</h1>
+    <p class="lead">Границы и тени создают визуальную глубину интерфейса, помогают группировать элементы и расставлять акценты. Поиграйте с настройками интерактивного стенда, чтобы увидеть разницу между физической рамкой и внешним контуром!</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления в левой колонке -->
+      <div controls>
+        
+        <!-- Секция: Рамка (Border) -->
+        <div class="panel-section-title">Рамка (Border)</div>
+        
+        <app-playground-slider
+          label="Толщина рамки"
+          property="border-width"
+          [(value)]="borderWidthVal"
+          [(unit)]="borderWidthUnit"
+        ></app-playground-slider>
+
+        <app-playground-toggle
+          label="Стиль рамки"
+          [options]="borderStyles"
+          [(value)]="borderStyle"
+        ></app-playground-toggle>
+
+        <div class="control-item">
+          <div class="control-row">
+            <span class="control-label">Цвет рамки:</span>
+            <app-color-selector [(color)]="borderColor"></app-color-selector>
+          </div>
+        </div>
+
+        <app-playground-slider
+          label="Скругление углов"
+          property="border-radius"
+          [(value)]="borderRadiusVal"
+          [(unit)]="borderRadiusUnit"
+        ></app-playground-slider>
+
+        <!-- Секция: Контур (Outline) -->
+        <div class="panel-section-title">Контур (Outline)</div>
+
+        <app-playground-slider
+          label="Толщина контура"
+          [min]="0"
+          [max]="15"
+          [(value)]="outlineWidth"
+        ></app-playground-slider>
+
+        @if (outlineWidth() > 0) {
+          <app-playground-toggle
+            label="Стиль контура"
+            [options]="['solid', 'dashed', 'dotted']"
+            [(value)]="outlineStyle"
+          ></app-playground-toggle>
+
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Цвет контура:</span>
+              <app-color-selector [(color)]="outlineColor"></app-color-selector>
+            </div>
+          </div>
+
+          <app-playground-slider
+            label="Смещение (offset)"
+            [min]="-15"
+            [max]="20"
+            [(value)]="outlineOffset"
+          ></app-playground-slider>
+        }
+
+        <!-- Секция: Тень (Box Shadow) -->
+        <div class="panel-section-title">Тень (Box Shadow)</div>
+
+        <app-playground-slider
+          label="Смещение по X"
+          [min]="-30"
+          [max]="30"
+          [(value)]="shadowX"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Смещение по Y"
+          [min]="-30"
+          [max]="30"
+          [(value)]="shadowY"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Размытие (Blur)"
+          [min]="0"
+          [max]="50"
+          [(value)]="shadowBlur"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Растяжение (Spread)"
+          [min]="-20"
+          [max]="30"
+          [(value)]="shadowSpread"
+        ></app-playground-slider>
+
+        <div class="control-item">
+          <div class="control-row">
+            <span class="control-label">Цвет тени:</span>
+            <app-color-selector [(color)]="shadowColor"></app-color-selector>
+          </div>
+        </div>
+
+        <div class="control-item">
+          <div class="control-row">
+            <span class="control-label">Положение тени:</span>
+            <div class="toggle-buttons">
+              <button 
+                class="toggle-btn" 
+                [class.active]="!shadowInset()" 
+                (click)="shadowInset.set(false)"
+              >
+                Снаружи
+              </button>
+              <button 
+                class="toggle-btn" 
+                [class.active]="shadowInset()" 
+                (click)="shadowInset.set(true)"
+              >
+                Внутри (inset)
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Визуальное превью в правой колонке -->
+      <div preview>
+        <div [ngStyle]="previewStyles()"></div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Свойства границ: Border и Outline</h2>
+    <p>Хотя внешне свойства <code>border</code> и <code>outline</code> могут выглядеть одинаково, они решают абсолютно разные задачи в веб-верстке и по-разному взаимодействуют с блочной моделью.</p>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Рамка: <code>border</code></h3>
+        <ul>
+          <li>Является частью физической блочной модели элемента.</li>
+          <li><strong>Влияет на габариты элемента:</strong> увеличивает его ширину и высоту (если не задано свойство <code>box-sizing: border-box</code>).</li>
+          <li>Всегда следует за формой скругления углов <code>border-radius</code>.</li>
+          <li>Используется для декоративного оформления границ контента.</li>
+        </ul>
+      </div>
+
+      <div class="comparison-card outline-card">
+        <h3>Контур: <code>outline</code></h3>
+        <ul>
+          <li>Рисуется поверх элемента и <strong>не занимает места в потоке документа</strong>.</li>
+          <li>Никак не влияет на размеры соседних блоков и не сдвигает их при появлении.</li>
+          <li>Свойство <code>outline-offset</code> позволяет отодвинуть контур наружу или задвинуть внутрь блока.</li>
+          <li>Критически важно для доступности интерфейса (показывает фокус ввода клавишей Tab).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Информационный блок по доступности -->
+    <app-info-block type="tip" title="Доступность (Accessibility)">
+      <p>Никогда не отключайте контур фокуса (<code>outline: none;</code> или <code>outline: 0;</code>) для интерактивных элементов (ссылок, кнопок, полей ввода), не предложив взамен явную альтернативную стилизацию фокуса через псевдокласс <code>:focus-visible</code>. Без этого пользователи, управляющие сайтом исключительно с клавиатуры, не увидят, на каком элементе сейчас находятся.</p>
+    </app-info-block>
+
+    <h2>Анатомия тени: Box Shadow</h2>
+    <p>Свойство <code>box-shadow</code> позволяет добавлять одну или несколько теней к блоку. Синтаксис принимает до 6 параметров:</p>
+
+    <div class="shadow-syntax-box">
+      <pre><code>box-shadow: <span class="syntax-param">x-offset</span> <span class="syntax-param">y-offset</span> <span class="syntax-param">blur-radius</span> <span class="syntax-param">spread-radius</span> <span class="syntax-param">color</span> <span class="syntax-param">inset</span>;</code></pre>
+    </div>
+
+    <div class="combinators-grid">
+      <div class="combinator-item">
+        <h3>1. Смещения (X и Y)</h3>
+        <p>Первые два значения определяют расстояние смещения тени по горизонтали (вправо при положительном значении) и по вертикали (вниз при положительном значении).</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>2. Размытие (Blur)</h3>
+        <p>Третье значение задает степень мягкости тени. Чем больше радиус размытия, тем больше и светлее становится тень. При значении <code>0</code> край тени будет абсолютно четким.</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>3. Растяжение (Spread)</h3>
+        <p>Четвертое значение масштабирует тень. Положительное значение растягивает её во все стороны, отрицательное — сжимает (что полезно для имитации реалистичных «направленных» теней).</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>4. Внутренняя тень (Inset)</h3>
+        <p>Необязательное ключевое слово <code>inset</code> переносит тень снаружи внутрь границ элемента, создавая эффект вдавленности или внутреннего свечения.</p>
+      </div>
+    </div>
+
+    <!-- Важное замечание о тенях -->
+    <app-info-block type="warning" title="Реалистичные тени">
+      <p>Старайтесь избегать использования чистого черного цвета высокой плотности для теней (например, <code>rgba(0, 0, 0, 0.5)</code>). В реальной жизни тени всегда перенимают часть оттенка окружения. Для аккуратных интерфейсных теней лучше использовать приглушенные темные тона с низкой непрозрачностью (например, <code>rgba(33, 37, 41, 0.08)</code>) или слегка подкрашивать тень в цвет основного фона.</p>
+    </app-info-block>
+  </section>
+
+</div>

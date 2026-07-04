@@ -1,0 +1,185 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>10. Позиционирование (position, z-index)</h1>
+    <p class="lead">Свойство <code>position</code> определяет, как элемент размещается на веб-странице и как он взаимодействует с естественным потоком документа. Поиграйте с режимами ниже, чтобы понять разницу между физическим сдвигом и выходом из потока!</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления параметрами -->
+      <div controls>
+        <div class="panel-section-title">Режим позиционирования</div>
+        
+        <app-playground-toggle
+          label="Значение position"
+          [options]="positionOptions"
+          [(value)]="positionMode"
+        ></app-playground-toggle>
+
+        <!-- Дополнительная опция для absolute -->
+        @if (positionMode() === 'absolute') {
+          <div class="control-item parent-position-toggle">
+            <span class="control-label">Родительский элемент имеет:</span>
+            <div class="toggle-buttons">
+              <button 
+                class="toggle-btn" 
+                [class.active]="parentPositioned()" 
+                (click)="parentPositioned.set(true)"
+              >
+                position: relative
+              </button>
+              <button 
+                class="toggle-btn" 
+                [class.active]="!parentPositioned()" 
+                (click)="parentPositioned.set(false)"
+              >
+                position: static
+              </button>
+            </div>
+            <span class="control-subtext">
+              При <code>static</code> абсолютный элемент игнорирует границы серого родителя и позиционируется относительно окна браузера!
+            </span>
+          </div>
+        }
+
+        <!-- Координаты смещения (скрыты для static) -->
+        @if (positionMode() !== 'static') {
+          <div class="panel-section-title">Координаты и наложение</div>
+
+          <app-playground-slider
+            label="Сдвиг сверху (top)"
+            [min]="-40"
+            [max]="160"
+            [(value)]="topVal"
+          ></app-playground-slider>
+
+          <app-playground-slider
+            label="Сдвиг слева (left)"
+            [min]="-40"
+            [max]="160"
+            [(value)]="leftVal"
+          ></app-playground-slider>
+
+          <app-playground-slider
+            label="Индекс слоя (z-index)"
+            [min]="-1"
+            [max]="10"
+            [(value)]="zIndexVal"
+          ></app-playground-slider>
+        } @else {
+          <div class="control-item disabled-info">
+            <span class="control-subtext">
+              У режима <code>static</code> свойства <code>top</code>, <code>left</code> и <code>z-index</code> игнорируются браузером.
+            </span>
+          </div>
+        }
+
+        <!-- Подсказка для режима sticky -->
+        @if (positionMode() === 'sticky') {
+          <app-info-block type="tip" title="Попробуйте прокрутку!">
+            <p>Прокрутите серую область справа вниз, чтобы увидеть, как синий блок «прилипает» к верхней границе родителя, когда доходит до <code>top: {{ topVal() }}px</code>!</p>
+          </app-info-block>
+        }
+
+      </div>
+
+      <!-- Интерактивный симулятор потока (Превью) -->
+      <div preview style="width: 100%;">
+        <div [ngStyle]="parentStyles()" class="preview-parent">
+          
+          <div class="flow-item preceding-item">
+            <span>Элемент А (в потоке)</span>
+          </div>
+
+          <!-- Наш целевой позиционируемый элемент -->
+          <div [ngStyle]="targetStyles()" class="preview-target">
+            {{ positionMode().toUpperCase() }}
+          </div>
+
+          <div class="flow-item succeeding-item">
+            <span>Элемент Б (в потоке)</span>
+          </div>
+
+          <!-- Дополнительный контент для демонстрации скролла и sticky -->
+          @if (enableScroll()) {
+            <div class="scroll-filler-text">
+              <p>⬇️ Листайте ниже ⬇️</p>
+              <p>Относительно родительского контейнера этот блок плавно уходит вверх, но синий элемент останется прикрепленным к верхней части, пока не закончится высота родителя.</p>
+              <p>Это классический паттерн для плавающих заголовков таблиц, боковых меню или шапок сайтов.</p>
+              <p>Конец демонстрационной области скролла.</p>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Сравнительный анализ режимов position</h2>
+    <p>Каждое значение изменяет точку отсчета координат элемента и его влияние на окружающие теги:</p>
+
+    <div class="position-modes-list">
+      
+      <div class="position-mode-card">
+        <h3>1. static</h3>
+        <p><strong>Поведение по умолчанию.</strong> Элемент находится в нормальном (естественном) потоке документа. Свойства <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> и <code>z-index</code> на него никак не влияют.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>2. relative (Относительное)</h3>
+        <p>Элемент сдвигается относительно своего <strong>исходного положения</strong> в потоке. Важно: физически элемент смещается, но браузер продолжает резервировать его исходное место в структуре страницы, поэтому соседние блоки не сдвигаются.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>3. absolute (Абсолютное)</h3>
+        <p>Элемент полностью <strong>вырывается из нормального потока</strong>. Другие блоки ведут себя так, будто его вовсе нет. Он позиционируется относительно ближайшего предка с <code>position</code> отличным от <code>static</code>. Если такого предка нет, точкой отсчета становится окно просмотра (viewport).</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>4. fixed (Фиксированное)</h3>
+        <p>Похоже на absolute, но элемент всегда позиционируется относительно <strong>окна браузера (viewport)</strong>. Он вырван из потока и остается на своем месте даже при прокрутке всей веб-страницы. Часто применяется для плавающих кнопок «Вверх» или фиксированных шапок.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>5. sticky (Липкое)</h3>
+        <p><strong>Гибридный режим.</strong> Элемент ведет себя как <code>relative</code>, пока не достигнет указанного порога скролла (например, <code>top: 20px</code>). После этого он «залипает» на месте как <code>fixed</code>. Элемент остается липким только внутри границ своего непосредственного родительского контейнера.</p>
+      </div>
+
+    </div>
+
+    <!-- Разбор z-index и Stacking Context -->
+    <h2>Индекс наложения (z-index) и Stacking Context</h2>
+    <p>Свойство <code>z-index</code> управляет тем, в каком порядке элементы накладываются друг на друга по виртуальной оси Z (ближе или дальше от взгляда пользователя).</p>
+
+    <app-info-block type="warning" title="Золотое правило z-index">
+      <p>Свойство <code>z-index</code> работает <strong>только</strong> для элементов, у которых значение <code>position</code> отличается от стандартного <code>static</code> (например, задано <code>relative</code>, <code>absolute</code>, <code>fixed</code> или <code>sticky</code>)! На статичных элементах оно полностью игнорируется браузером.</p>
+    </app-info-block>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Поведение z-index</h3>
+        <ul>
+          <li>По умолчанию элементы, идущие ниже в HTML-коде, перекрывают те, что объявлены выше.</li>
+          <li>Элемент с бо́льшим числом <code>z-index</code> отображается поверх элемента с меньшим индексом.</li>
+          <li>Значение может быть отрицательным (например, <code>z-index: -1</code>), чтобы увести элемент на задний план под текст.</li>
+        </ul>
+      </div>
+
+      <div class="comparison-card outline-card">
+        <h3>Контекст наложения (Stacking Context)</h3>
+        <ul>
+          <li>Контекст наложения создается определенными свойствами (<code>position + z-index</code>, <code>opacity &lt; 1</code>, <code>transform</code>, <code>filter</code>).</li>
+          <li>Внутри контекста дочерние элементы сравниваются только друг с другом.</li>
+          <li>Высокий <code>z-index</code> дочернего элемента не поможет перекрыть внешний блок, если родительский контекст наложения находится ниже по оси Z.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>

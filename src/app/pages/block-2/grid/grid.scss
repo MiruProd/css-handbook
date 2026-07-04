@@ -1,0 +1,175 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/shared" as *;
+
+// ==========================================================================
+// СТИЛИЗАЦИЯ СЕТКИ И ЯЧЕЕК В ПРЕВЬЮ (ПРАВАЯ КОЛОНКА)
+// ==========================================================================
+
+.preview-container {
+  overflow: auto; // Защищает от переполнения на очень узких экранах
+}
+
+// Оформление отдельной ячейки сетки Grid
+.grid-cell {
+  background-color: $color-primary-light;
+  border: 2px solid $color-primary;
+  border-radius: $radius-sm;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-sm;
+  transition: transform $transition-fast, background-color $transition-fast, box-shadow $transition-fast;
+  min-height: 60px;
+  user-select: none;
+  box-sizing: border-box;
+
+  &:hover {
+    transform: translateY(-2px);
+    background-color: $color-primary-100;
+    box-shadow: $shadow-md;
+  }
+
+  .cell-label {
+    font-family: $font-code;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: $color-primary-dark;
+    text-align: center;
+    line-height: 1.2;
+  }
+}
+
+// ==========================================================================
+// СЕТКА СРАВНЕНИЯ GRID И FLEXBOX
+// ==========================================================================
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.comparison-card {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  transition: border-color $transition-fast;
+
+  &:hover {
+    border-color: $color-primary-100;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    color: $color-primary;
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: $color-gray-700;
+    margin-bottom: 0;
+  }
+
+  &.outline-card {
+    &:hover {
+      border-color: $color-accent-100;
+    }
+
+    h3 {
+      color: $color-accent;
+    }
+  }
+}
+
+// ==========================================================================
+// КАРТОЧКИ УНИКАЛЬНЫХ ИНСТРУМЕНТОВ
+// ==========================================================================
+
+.position-modes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.position-mode-card {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  transition: border-color $transition-fast, background-color $transition-fast;
+
+  &:hover {
+    border-color: $color-primary-100;
+    background-color: $color-white;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-family: $font-code;
+    font-weight: 700;
+    color: $color-primary;
+    margin-bottom: 0.35rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: $color-gray-700;
+    margin-bottom: 0;
+  }
+}
+
+// ==========================================================================
+// КАРТОЧКИ ДЕТАЛЕЙ ВЫРАВНИВАНИЯ
+// ==========================================================================
+
+.combinators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @include phone {
+    grid-template-columns: 1fr;
+  }
+}
+
+.combinator-item {
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-sizing: border-box;
+
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+    color: $color-gray-900;
+  }
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: $color-gray-700;
+    margin-bottom: 0;
+  }
+}

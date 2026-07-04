@@ -1,0 +1,147 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>12. Flexbox Layout</h1>
+    <p class="lead">Flexbox (Flexible Box Layout) — это одномерный метод разметки, который позволяет распределять пространство между элементами и выравнивать их по горизонтали или вертикали, даже если их размеры неизвестны или динамичны.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления контейнером -->
+      <div controls>
+        
+        <div class="panel-section-title">Количество элементов</div>
+        <app-playground-slider
+          label="Число блоков в контейнере"
+          [min]="1"
+          [max]="10"
+          [(value)]="itemCount"
+        ></app-playground-slider>
+
+        <div class="panel-section-title">Оси и Направление</div>
+        <app-playground-toggle
+          label="flex-direction (Ось)"
+          [options]="directionOptions"
+          [(value)]="flexDirection"
+        ></app-playground-toggle>
+
+        <div class="panel-section-title">Выравнивание</div>
+        <app-playground-toggle
+          label="justify-content (Главная ось)"
+          [options]="justifyOptions"
+          [(value)]="justifyContent"
+        ></app-playground-toggle>
+
+        <app-playground-toggle
+          label="align-items (Поперечная ось)"
+          [options]="alignOptions"
+          [(value)]="alignItems"
+        ></app-playground-toggle>
+
+        <div class="panel-section-title">Перенос и Отступы</div>
+        <app-playground-toggle
+          label="flex-wrap"
+          [options]="wrapOptions"
+          [(value)]="flexWrap"
+        ></app-playground-toggle>
+
+        <app-playground-slider
+          label="Расстояние между блоками (gap)"
+          [min]="0"
+          [max]="40"
+          [(value)]="gapVal"
+        ></app-playground-slider>
+
+      </div>
+
+      <!-- Превью-интерактив -->
+      <div preview style="width: 100%;">
+        <div [ngStyle]="containerStyles()" class="preview-container">
+          
+          @for (num of flexItems(); track num) {
+            <div class="flex-item" [class]="'item-' + num">
+              <span class="item-number">{{ num }}</span>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Основные концепции Flexbox</h2>
+    <p>Ключевая идея Flexbox заключается в наличии <strong>родительского контейнера (flex container)</strong> и <strong>вложенных элементов (flex items)</strong>. При активации <code>display: flex</code> все непосредственные дочерние элементы становятся flex-элементами и начинают подчиняться правилам двух осей:</p>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Главная ось (Main Axis)</h3>
+        <p>Направление, вдоль которого по умолчанию выстраиваются элементы. Задается свойством <code>flex-direction</code> (по умолчанию слева направо для <code>row</code>).</p>
+      </div>
+
+      <div class="comparison-card outline-card">
+        <h3>Поперечная ось (Cross Axis)</h3>
+        <p>Перпендикулярное направление к главной оси. Используется для выравнивания высоты или вертикального положения элементов (для <code>row</code> направлена сверху вниз).</p>
+      </div>
+    </div>
+
+    <h2>Шпаргалка по свойствам контейнера</h2>
+    <div class="position-modes-list">
+
+      <div class="position-mode-card">
+        <h3>flex-direction</h3>
+        <p>Определяет главную ось контейнера: <code>row</code> (строка, слева направо), <code>row-reverse</code> (строка справа налево), <code>column</code> (колонка, сверху вниз) или <code>column-reverse</code> (колонка снизу вверх).</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>justify-content</h3>
+        <p>Распределяет свободное пространство вдоль <strong>главной оси</strong>: <code>flex-start</code> (в начале), <code>flex-end</code> (в конце), <code>center</code> (по центру), <code>space-between</code> (крайние элементы прижаты к бокам), <code>space-around</code> (одинаковые отступы вокруг) или <code>space-evenly</code> (равные расстояния между всеми элементами и краями).</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>align-items</h3>
+        <p>Выравнивает элементы вдоль <strong>поперечной оси</strong>: <code>stretch</code> (растягивает на всю высоту), <code>flex-start</code> / <code>flex-end</code> (в начало или конец оси), <code>center</code> (по центру) или <code>baseline</code> (по базовой линии текста).</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>flex-wrap</h3>
+        <p>Определяет, будут ли элементы сжиматься, пытаясь уместиться в одну линию (<code>nowrap</code>), или перенесутся на новые строки (<code>wrap</code> / <code>wrap-reverse</code>), когда свободного места в контейнере не останется.</p>
+      </div>
+
+    </div>
+
+    <h2>Свойства отдельных элементов (Flex Items)</h2>
+    <p>Помимо настроек общего контейнера, вы можете управлять поведением каждого элемента индивидуально с помощью следующих свойств:</p>
+
+    <div class="combinators-grid">
+      <div class="combinator-item">
+        <h3>flex-grow</h3>
+        <p>Определяет коэффициент «жадности» элемента: пропорцию, в которой он будет увеличиваться, поглощая свободное место в контейнере, если оно есть. По умолчанию равен <code>0</code>.</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>flex-shrink</h3>
+        <p>Задает способность элемента сжиматься, когда места в контейнере становится недостаточно. По умолчанию равен <code>1</code> (все элементы сжимаются в равной степени).</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>flex-basis</h3>
+        <p>Базовый начальный размер элемента перед распределением свободного пространства. Может задаваться в <code>px</code>, <code>%</code>, <code>rem</code> или принимать значение <code>auto</code>.</p>
+      </div>
+
+      <div class="combinator-item">
+        <h3>align-self</h3>
+        <p>Позволяет переопределить общее правило выравнивания <code>align-items</code> только для одного конкретного элемента, выбивая его из общего ряда.</p>
+      </div>
+    </div>
+
+    <app-info-block type="tip" title="Сокращенное свойство flex">
+      <p>В реальной верстке рекомендуется вместо трех отдельных свойств писать компактное объединенное свойство: <code>flex: [flex-grow] [flex-shrink] [flex-basis]</code>. Например, значение <code>flex: 1 0 auto;</code> означает, что элемент может расти, не будет сжиматься меньше своего базового авто-размера.</p>
+    </app-info-block>
+  </section>
+
+</div>

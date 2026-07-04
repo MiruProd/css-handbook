@@ -1,0 +1,231 @@
+<div class="topic-container">
+
+  <!-- Динамический тег <style> для псевдоэлементов selection, placeholder и first-letter -->
+  <div [innerHTML]="safeStyles()"></div>
+
+  <header class="topic-header">
+    <h1>13. Псевдоэлементы (::before, ::after и др.)</h1>
+    <p class="lead">Псевдоэлементы позволяют генерировать виртуальное содержимое или стилизовать специфические части элементов (первую букву, выделенный текст, плейсхолдеры) прямо из CSS без изменения HTML-кода.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления параметрами -->
+      <div controls>
+        
+        <!-- Секция 1: Генерация контента -->
+        <div class="panel-section-title">1. Генерируемый контент</div>
+        
+        <app-playground-toggle
+          label="Псевдоэлемент"
+          [options]="['before', 'after']"
+          [(value)]="pseudoType"
+        ></app-playground-toggle>
+
+        <app-playground-toggle
+          label="Тип контента (content)"
+          [options]="['quotes', 'emoji', 'custom']"
+          [(value)]="contentType"
+        ></app-playground-toggle>
+
+        @if (contentType() === 'custom') {
+          <div class="control-item">
+            <label class="control-label">Ваш символ (max 2 знака):</label>
+            <input 
+              type="text" 
+              [(ngModel)]="customSymbol" 
+              maxlength="2" 
+              class="custom-symbol-input"
+            >
+          </div>
+        }
+
+        <div class="control-item">
+          <div class="control-row">
+            <span class="control-label">Цвет декора:</span>
+            <app-color-selector [(color)]="quoteColor"></app-color-selector>
+          </div>
+        </div>
+
+        <app-playground-slider
+          label="Размер (font-size)"
+          [min]="2"
+          [max]="10"
+          [(value)]="quoteSize"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Прозрачность (opacity)"
+          [min]="0"
+          [max]="1"
+          [(value)]="quoteOpacity"
+          [(unit)]="quoteOpacityUnit"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Смещение по Y (top/bottom)"
+          [min]="-30"
+          [max]="60"
+          [(value)]="topOffset"
+        ></app-playground-slider>
+
+        <app-playground-slider
+          label="Смещение по X (left/right)"
+          [min]="-20"
+          [max]="50"
+          [(value)]="leftOffset"
+        ></app-playground-slider>
+
+        <div class="control-item">
+          <label class="control-label">Текст цитаты:</label>
+          <textarea [(ngModel)]="quoteText" class="quote-textarea"></textarea>
+        </div>
+
+        <div class="control-item">
+          <label class="control-label">Автор цитаты:</label>
+          <input type="text" [(ngModel)]="quoteAuthor" class="custom-symbol-input">
+        </div>
+
+        <!-- Секция 2: Буквица -->
+        <div class="panel-section-title">2. Первая буква (::first-letter)</div>
+        <div class="control-item checkbox-item">
+          <label class="checkbox-label">
+            <input type="checkbox" [ngModel]="enableFirstLetter()" (ngModelChange)="enableFirstLetter.set($event)">
+            Включить стилизацию первой буквы
+          </label>
+        </div>
+
+        @if (enableFirstLetter()) {
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Цвет буквицы:</span>
+              <app-color-selector [(color)]="firstLetterColor"></app-color-selector>
+            </div>
+          </div>
+
+          <app-playground-slider
+            label="Размер первой буквы"
+            [min]="1.5"
+            [max]="5"
+            [(value)]="firstLetterSize"
+          ></app-playground-slider>
+        }
+
+        <!-- Секция 3: Выделение текста -->
+        <div class="panel-section-title">3. Выделение текста (::selection)</div>
+        <div class="control-item checkbox-item">
+          <label class="checkbox-label">
+            <input type="checkbox" [ngModel]="enableSelection()" (ngModelChange)="enableSelection.set($event)">
+            Кастомизировать выделение мыши
+          </label>
+        </div>
+
+        @if (enableSelection()) {
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Фон выделения:</span>
+              <app-color-selector [(color)]="selectionBg"></app-color-selector>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Цвет текста выделения:</span>
+              <app-color-selector [(color)]="selectionColor"></app-color-selector>
+            </div>
+          </div>
+          
+          <div class="control-item disabled-info">
+            <span class="control-subtext">💡 Выделите текст мышкой в превью справа, чтобы увидеть эффект!</span>
+          </div>
+        }
+
+        <!-- Секция 4: Плейсхолдер -->
+        <div class="panel-section-title">4. Подсказка ввода (::placeholder)</div>
+        <div class="control-item checkbox-item">
+          <label class="checkbox-label">
+            <input type="checkbox" [ngModel]="enablePlaceholder()" (ngModelChange)="enablePlaceholder.set($event)">
+            Включить стилизацию подсказки
+          </label>
+        </div>
+
+        @if (enablePlaceholder()) {
+          <div class="control-item">
+            <div class="control-row">
+              <span class="control-label">Цвет подсказки:</span>
+              <app-color-selector [(color)]="placeholderColor"></app-color-selector>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- Превью-интерактив -->
+      <div preview style="width: 100%;">
+        <div class="preview-card" [ngStyle]="cardStyles()">
+          
+          <!-- Симуляция ::before или ::after через реальный span -->
+          <span [ngStyle]="pseudoStyles()">
+            @switch (contentType()) {
+              @case ('quotes') { “ }
+              @case ('emoji') { ✨ }
+              @default { {{ customSymbol() }} }
+            }
+          </span>
+
+          <blockquote class="preview-quote-body">
+            <p class="quote-text">{{ quoteText() }}</p>
+            <cite class="quote-author">— {{ quoteAuthor() }}</cite>
+          </blockquote>
+
+          <!-- Текстовое поле ввода для демонстрации ::placeholder -->
+          @if (enablePlaceholder()) {
+            <div class="placeholder-demo-wrapper">
+              <input 
+                type="text" 
+                class="preview-input" 
+                placeholder="Введите ваш текст здесь..."
+                readonly
+              >
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Основные псевдоэлементы CSS</h2>
+    <p>Псевдоэлементы позволяют точечно настраивать детали интерфейса. Ниже представлена сводная таблица самых популярных псевдоэлементов, используемых в современном веб-дизайне:</p>
+
+    <div class="position-modes-list">
+
+      <div class="position-mode-card">
+        <h3>::before и ::after</h3>
+        <p><strong>Генерация декоративного контента.</strong> Они внедряют виртуальное содержимое перед основным текстом родителя (<code>::before</code>) или после него (<code>::after</code>). Обязательно требуют наличия свойства <code>content</code> (даже если оно пустое: <code>content: ""</code>).</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>::selection</h3>
+        <p><strong>Выделение текста мышью.</strong> Управляет внешним видом текста в тот момент, когда его выделяет пользователь. Вы можете изменять цвет текста, цвет фоновой подсветки, тени и текстовые контуры для соответствия гамме бренда.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>::placeholder</h3>
+        <p><strong>Текст-подсказка в полях ввода.</strong> Позволяет стилизовать серый текст-заполнитель внутри элементов <code>&lt;input&gt;</code> и <code>&lt;textarea&gt;</code> до того, как пользователь начнет вбивать свои данные.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>::first-letter и ::first-line</h3>
+        <p><strong>Типографические эффекты.</strong> Псевдоэлемент <code>::first-letter</code> стилизует самый первый символ текстового абзаца (идеально для газетных буквиц), а <code>::first-line</code> накладывает стили исключительно на самую первую строку текста в блоке независимо от ширины экрана.</p>
+      </div>
+
+    </div>
+  </section>
+
+</div>

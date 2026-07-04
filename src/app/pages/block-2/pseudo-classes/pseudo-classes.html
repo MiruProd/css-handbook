@@ -1,0 +1,208 @@
+<div class="topic-container">
+
+  <header class="topic-header">
+    <h1>14. Псевдоклассы (:hover, :focus, :nth-child)</h1>
+    <p class="lead">Псевдоклассы динамически выбирают элементы на основе действий пользователя (наведение, клик, фокус) или их порядкового номера среди соседей в структуре HTML-страницы.</p>
+  </header>
+
+  <!-- Интерактивная песочница -->
+  <section class="topic-section">
+    <app-playground [code]="code()" theme="primary">
+      
+      <!-- Пульт управления параметрами -->
+      <div controls>
+        
+        <div class="panel-section-title">Режим демонстрации</div>
+        <app-playground-toggle
+          label="Категория псевдоклассов"
+          [options]="['interaction', 'nth-child']"
+          [(value)]="demoMode"
+        ></app-playground-toggle>
+
+        <!-- ПАНЕЛЬ 1: Динамические состояния -->
+        @if (demoMode() === 'interaction') {
+          <div class="panel-section-title">Состояния взаимодействия</div>
+          <div class="control-item disabled-info">
+            <span class="control-subtext">
+              👉 Справа в превью находятся интерактивная кнопка, ссылки и поле ввода. Наведите на них курсор, кликните или выберите поле ввода, чтобы увидеть, как браузер переключает псевдоклассы в реальном времени!
+            </span>
+          </div>
+          
+          <app-info-block type="tip" title="Порядок стилей LVHA">
+            <p>При стилизации ссылок и кнопок всегда соблюдайте правильный порядок в CSS: <code>:link</code> ➔ <code>:visited</code> ➔ <code>:hover</code> ➔ <code>:active</code>. Если нарушить этот порядок, некоторые состояния перекроют друг друга и перестанут работать.</p>
+          </app-info-block>
+        }
+
+        <!-- ПАНЕЛЬ 2: Выбор по индексу (nth-child) -->
+        @if (demoMode() === 'nth-child') {
+          <div class="panel-section-title">Выбор по индексу (Формула)</div>
+          
+          <div class="control-item">
+            <label class="control-label">Формула nth-child(an+b):</label>
+            <input 
+              type="text" 
+              [(ngModel)]="nthFormula" 
+              class="formula-text-input"
+              placeholder="например: 2n+1, odd, 3"
+            >
+          </div>
+
+          <div class="control-item">
+            <span class="control-label">Быстрые пресеты:</span>
+            <div class="preset-buttons-grid">
+              @for (preset of presetFormulas; track preset) {
+                <button 
+                  class="preset-btn" 
+                  [class.active]="nthFormula() === preset"
+                  (click)="nthFormula.set(preset)"
+                >
+                  :nth-child({{ preset }})
+                </button>
+              }
+            </div>
+          </div>
+
+          <app-info-block type="tip" title="Индексация в CSS">
+            <p>В отличие от большинства языков программирования, где индексы начинаются с нуля, в CSS отсчет элементов всегда начинается с **единицы (1)**. Первому элементу в списке соответствует псевдокласс <code>:first-child</code> (или <code>:nth-child(1)</code>).</p>
+          </app-info-block>
+        }
+
+      </div>
+
+      <!-- Превью-интерактив -->
+      <div preview style="width: 100%;">
+        
+        <!-- Сценарий 1: Интерактивные состояния -->
+        @if (demoMode() === 'interaction') {
+          <div class="interaction-preview-layout">
+            
+            <div class="preview-item-box">
+              <span class="preview-box-label">Ссылки (a:link / a:visited)</span>
+              <div class="links-demo-row">
+                <!-- Обычная ссылка на несуществующий якорь (непосещенная) -->
+                <a href="#unvisited-link-anchor" class="demo-interactive-link">Новая ссылка (:link)</a>
+                
+                <!-- Ссылка на внешний популярный ресурс (с высокой вероятностью посещенная пользователем) -->
+                <a href="https://www.google.com" target="_blank" class="demo-interactive-link-visited">Посещенная ссылка (:visited)</a>
+              </div>
+            </div>
+
+            <div class="preview-item-box">
+              <span class="preview-box-label">Кнопка (button:hover / :active)</span>
+              <button class="demo-interactive-btn">
+                Интерактивная кнопка
+              </button>
+            </div>
+
+            <div class="preview-item-box">
+              <span class="preview-box-label">Поле ввода (input:focus-visible)</span>
+              <input 
+                type="text" 
+                class="demo-interactive-input" 
+                placeholder="Нажмите Tab или кликните сюда..."
+              >
+            </div>
+
+          </div>
+        }
+
+        <!-- Сценарий 2: Позиционные псевдоклассы (nth-child) -->
+        @if (demoMode() === 'nth-child') {
+          <div class="nth-child-preview-layout">
+            <span class="preview-box-label grid-label">
+              Родительский контейнер (содержит 8 элементов)
+            </span>
+            
+            <div class="nth-items-grid">
+              @for (item of gridItems(); track item.id) {
+                <div class="grid-item" [class.active-matched]="item.matched">
+                  <span class="item-badge">
+                    @if (item.id === 1) { :first-child }
+                    @else if (item.id === 8) { :last-child }
+                    @else { #{{ item.id }} }
+                  </span>
+                  <span class="item-number">{{ item.id }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+      </div>
+
+    </app-playground>
+  </section>
+
+  <!-- Теоретический блок -->
+  <section class="topic-section theory-section">
+    <h2>Разница между псевдоклассами и псевдоэлементами</h2>
+    <p>Простое мнемоническое правило для запоминания:</p>
+    
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Псевдокласс ( Hover, Active, Focus, Nth-child )</h3>
+        <p>Выбирает **целиком существующий элемент**, когда он удовлетворяет определенному временному состоянию или условию расположения. Пишется через **одно** двоеточие (<code>:</code>).</p>
+      </div>
+
+      <div class="comparison-card outline-card">
+        <h3>Псевдоэлемент ( Before, After, Selection )</h3>
+        <p>Создает **новую виртуальную часть** элемента или выбирает только кусочек его содержимого. Пишется через **два** двоеточия (<code>::</code>).</p>
+      </div>
+    </div>
+
+    <h2>Интерактивные псевдоклассы и псевдоклассы состояний</h2>
+    <p>Они динамически реагируют на поведение и действия пользователя на странице:</p>
+
+    <div class="position-modes-list">
+
+      <div class="position-mode-card">
+        <h3>:link</h3>
+        <p><strong>Непосещенная ссылка.</strong> Находит любые ссылки (теги <code>&lt;a&gt;</code> с атрибутом <code>href</code>), по которым пользователь ещё ни разу не переходил с этого браузера.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:visited</h3>
+        <p><strong>Посещенная ссылка.</strong> Выбирает ссылки, по которым пользователь уже переходил. В целях **конфиденциальности пользователей** современные браузеры строго ограничивают стили для <code>:visited</code>: вы можете менять только цвет текста и фонов, чтобы сторонние сайты не могли тайно сканировать историю ваших просмотров.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:hover</h3>
+        <p><strong>Наведение мыши.</strong> Активируется в тот момент, когда курсор пользователя оказывается над границами элемента. Широко используется для плавных анимаций ховеров кнопок и ссылок.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:active</h3>
+        <p><strong>Элемент в процессе активации.</strong> Состояние нажатия. Срабатывает в момент удержания левой кнопки мыши на кнопке или ссылке до того, как кнопка будет отпущена.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:focus и :focus-visible</h3>
+        <p><strong>Элемент в фокусе.</strong> Псевдокласс <code>:focus</code> срабатывает всегда, когда элемент активен для ввода (например, кликнутое текстовое поле). Псевдокласс <code>:focus-visible</code> — более современный, он рисует рамку фокуса **только при навигации с клавиатуры** (кнопкой Tab), не раздражая пользователей мыши лишними обводками.</p>
+      </div>
+
+    </div>
+
+    <h2>Позиционные псевдоклассы (структурные)</h2>
+    <p>Позволяют выбирать элементы на основе их расположения внутри родителя без необходимости присваивать им классы:</p>
+
+    <div class="position-modes-list">
+
+      <div class="position-mode-card">
+        <h3>:first-child и :last-child</h3>
+        <p>Выбирают самый первый или самый последний элемент в своем родительском контейнере. Часто используются, чтобы убрать нижний отступ (margin-bottom) у последнего абзаца в карточке.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:nth-child(формула)</h3>
+        <p>Мощный селектор, который выбирает элементы по математической формуле <code>an+b</code>, где <code>n</code> — это счетчик, последовательно принимающий значения от 0 до бесконечности.</p>
+      </div>
+
+      <div class="position-mode-card">
+        <h3>:not(селектор)</h3>
+        <p><strong>Псевдокласс отрицания.</strong> Выбирает все элементы, которые НЕ соответствуют указанному селектору. Например, правило <code>li:not(:last-child)</code> применит стили ко всем элементам списка, кроме самого последнего.</p>
+      </div>
+
+    </div>
+  </section>
+
+</div>
